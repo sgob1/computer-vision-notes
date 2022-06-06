@@ -1,12 +1,12 @@
 #+TITLE: Computer Vision Study Guide
 #+AUTHOR: Marco Sgobino
 
-#+LATEX_CLASS: book
+#+LATEX_CLASS: report
 #+OPTIONS: H:5
 #+STARTUP: overview
 
 #+LATEX_CLASS_OPTIONS: [10pt]
-#+LATEX_HEADER: \usepackage[a4paper, inner=3.7cm, outer=4.5cm, tmargin=2.7cm, bmargin=3.0cm]{geometry} % Sets margins and borders
+#+LATEX_HEADER: \usepackage[a4paper, inner=4.1cm, outer=4.1cm, tmargin=2.7cm, bmargin=3.0cm]{geometry} % Sets margins and borders
 #+LATEX_HEADER: \usepackage[document]{ragged2e}
 #+LATEX_HEADER: \setlength{\parindent}{0cm}
 #+LATEX_HEADER: \usepackage[T1]{fontenc}
@@ -885,9 +885,6 @@ multiplied by \(k_i(\theta)\), where \(\theta\) is the angle upon which
 the direction \(u\) depends.
 
 **** High pass filtering
-    :PROPERTIES:
-    :CUSTOM_ID: high-pass-filtering
-    :END:
 A high-pass filter can be built by /subtracting/ a low-pass filtering
 result from the image (basically, by "removing" low frequencies by
 subtraction). Adding such high-pass filtered result to the image by a
@@ -898,7 +895,7 @@ Basically, a sharper image can be obtained in such way,
 
 \[f_{sharp} = f + \gamma(f - f * h_{blur}),\] where \(h_{blur}\) is, for
 example, a Gaussian filter. By doing some math,
-\[f_{sharp} = f + \gamma(f - f * h_{blur}) = f + \gamma f - \gamma (f * h_{blur}) = (\gamma + 1) f - \gamma (f * h_{blur}) = f * [(\gamma + 1) \delta - \gamma h_{blur}],\]
+\[\begin{array}{lll}f_{sharp} & = & f + \gamma(f - f * h_{blur}) = f + \gamma f - \gamma (f * h_{blur}) = (\gamma + 1) f - \gamma (f * h_{blur}) = \\ & = & f * [(\gamma + 1) \delta - \gamma h_{blur}],\end{array}\]
 
 where we used the property \(f * \delta = f\).
 
@@ -992,7 +989,7 @@ For filters described by a function it is quite the same. Given a filter
 
 An example of a separable filter is the Gaussian filter,
 
-\[ G(x,y;\sigma) = \frac{1}{2\pi \sigma^2}\exp{\left(-\frac{x^2 + y^2}{2 \sigma^2}\right)} = \frac{1}{\sqrt{2\pi} \sigma} \exp{\left(-\frac{x^2}{2\sigma^2}\right)}\frac{1}{\sqrt{2\pi} \sigma} \exp{\left(-\frac{y^2}{2\sigma^2}\right)} = g(x)h(y).\]
+\[\begin{array}{lll} G(x,y;\sigma) & = &\displaystyle  \frac{1}{2\pi \sigma^2}\exp{\left(-\frac{x^2 + y^2}{2 \sigma^2}\right)} = \frac{1}{\sqrt{2\pi} \sigma} \exp{\left(-\frac{x^2}{2\sigma^2}\right)}\frac{1}{\sqrt{2\pi} \sigma} \exp{\left(-\frac{y^2}{2\sigma^2}\right)} \\ & = & g(x)h(y).\end{array}\]
 
 *** Non-linear operators and other neighborhood operators
    :PROPERTIES:
@@ -1185,7 +1182,14 @@ transformation is the /rotation/. There are two kinds of warping: the
   /Forward warping transforms an image \(f(x)\) into an image \(g(x')\) by means of the transform \(x' = h(x)\):/
 #+end_quote
 
-=procedure ForwardWarp(f, h) out g for each pixel x in f(x) do compute the destination x' copy pixel f(x) to g(x') end procedure=
+#+BEGIN_EXAMPLE
+procedure ForwardWarp(f, h) out g
+    for each pixel x in f(x) do
+        compute the destination x'
+        copy pixel f(x) to g(x')
+    end for
+end procedure
+#+END_EXAMPLE
 
 This works by calculating point in the output image by applying transform of
 input pixels. Looks like this works well, but in practice it will not: by
@@ -1204,7 +1208,15 @@ transformed pixel reliably).
   /Inverse warping transforms an image \(f(x)\) into an image \(g(x')\) by means of the transform \(x = h^{-1}(x') = \hat{h}(x)\), with \(x' = h(x)\):/
 #+end_quote
 
-=procedure InverseWarp(f, h) out g for each pixel x' in g(x') do compute the source location x = h^{-1}(x') resample image f at location x in order to get f(x) value copy pixel f(x) to g(x') end procedure=
+#+BEGIN_EXAMPLE
+procedure InverseWarp(f, h) out g
+    for each pixel x' in g(x') do
+        compute the source location x = h^{-1}(x')
+        resample image f at location x in order to get f(x) value
+        copy pixel f(x) to g(x')
+    end for
+end procedure
+#+END_EXAMPLE
 
 This works well, because our output is /guaranteed to be an integer/, at
 the cost of resampling the /input/ in order to find the value of the
@@ -1228,13 +1240,7 @@ corresponding points, then interpolate to a dense displacement field via
 triangulation followed by the application of an affine motion.
 
 *** Multi-resolution representations
-   :PROPERTIES:
-   :CUSTOM_ID: multi-resolution-representations
-   :END:
 **** Upsampling and downsampling
-    :PROPERTIES:
-    :CUSTOM_ID: upsampling-and-downsampling
-    :END:
 /Upsampling/ and /downsampling/ are, respectively, increasing and
 decreasing the size of an image. Usually, upsampling is useful when the
 image needs to match the size of a pre-trained algorithm or the size of
@@ -1247,9 +1253,6 @@ Downsampling is also useful when we wish to find a pattern in an image
 with a fixed-size template.
 
 **** The upsampling process
-    :PROPERTIES:
-    :CUSTOM_ID: the-upsampling-process
-    :END:
 Upsampling is basically a correlation between the image and an
 /interpolation function/ \(h(i, j)\) (interpolation):
 
@@ -1425,7 +1428,7 @@ holds, and
 
 Rearranging the equation,
 
-\[E(x, y, \Delta x, \Delta y) = \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \begin{bmatrix} \sum_{d_x, d_y \in W} I^2_x & \sum_{d_x, d_y \in W} I_x I_y \\ \sum_{d_x, d_y \in W} I_x I_y & \sum_{d_x, d_y \in W} I^2_y \end{bmatrix} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix} = \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} C \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix},\]
+\[\begin{array}{lll}E(x, y, \Delta x, \Delta y) & = & \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \underbrace{\begin{bmatrix}\displaystyle  \sum_{d_x, d_y \in W} I^2_x & \displaystyle \sum_{d_x, d_y \in W} I_x I_y \\ \displaystyle \sum_{d_x, d_y \in W} I_x I_y & \displaystyle \sum_{d_x, d_y \in W} I^2_y \end{bmatrix}}_{C} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix} = \\ & = & \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} C \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix},\end{array}\]
 
 where \(C\) is /positive semidefinite/ by construction.
 
@@ -1436,7 +1439,7 @@ each term of the \(C\) matrix. Hence, by applying weights
 \[w(d_x, d_y) = \frac{1}{2 \pi \sigma^2}\exp{\left(-\frac{d_x^2 + d_y^2}{2\sigma^2}\right)},\]
 one finally gets
 
-\[E(x, y, \Delta x, \Delta y) = \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \begin{bmatrix} \sum_{d_x, d_y \in W} w(d_x, d_y) I^2_x & \sum_{d_x, d_y \in W} w(d_x, d_y) I_x I_y \\ \sum_{d_x, d_y \in W} w(d_x, d_y) I_x I_y & \sum_{d_x, d_y \in W} w(d_x, d_y) I^2_y \end{bmatrix} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix} = \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \hat{C} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix}.\]
+\[\begin{array}{lll}E(x, y, \Delta x, \Delta y) & = & \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \underbrace{\begin{bmatrix}\displaystyle  \sum_{d_x, d_y \in W} w(d_x, d_y) I^2_x & \displaystyle  \sum_{d_x, d_y \in W} w(d_x, d_y) I_x I_y \\ \displaystyle  \sum_{d_x, d_y \in W} w(d_x, d_y) I_x I_y & \displaystyle \sum_{d_x, d_y \in W} w(d_x, d_y) I^2_y \end{bmatrix}}_{\hat C} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix} = \\ & = & \begin{bmatrix} \Delta x & \Delta y \end{bmatrix} \hat{C} \begin{bmatrix} \Delta x \\ \Delta y \end{bmatrix}.\end{array}\]
 
 The rationale is that the farther away from the centre of the window
 (the center of the feature we are going to detect), the lesser the
@@ -1471,10 +1474,9 @@ There are \(3\) possible cases:
 In order to measure how likely a feature is a corner, we may employ
 different measures:
 
-- the /minimum eigenvalue/ \(\lambda_1\):
-- the quantity \(\mbox{det}(\hat{C}) - k \mbox{tr}^2(\hat{C})\); the
-  ratio \(\frac{\mbox{det}(\hat{C})}{\mbox{tr}(\hat{C})}\), which is
-  called /harmonic mean/.
+- the *minimum eigenvalue* \(\lambda_1\);
+- the quantity \(\mbox{det}(\hat{C}) - k \mbox{tr}^2(\hat{C})\);
+- the ratio \(\frac{\mbox{det}(\hat{C})}{\mbox{tr}(\hat{C})}\), which is called *harmonic mean*.
 
 **** General algorithm for Harris corner detector
     :PROPERTIES:
@@ -1556,7 +1558,7 @@ with \(E\) is maximal, and equal to \(\lambda_{max}\)/. So, in order to
 compute the max eigenvalue one could multiply \(\hat{C}\) by the
 quantity
 
-\[t_{max}^\top \hat{C} t_{max} = \begin{bmatrix}t_{max}^\top t_{max} & t_{max}^\top t_{min}\end{bmatrix} \begin{bmatrix} \lambda_{max} & 0 \\ 0 & \lambda_{min}\end{bmatrix}\begin{bmatrix} t_{max}^\top t_{max} \\ t_{max}^\top t_{min}\end{bmatrix} = \begin{bmatrix}1 & 0\end{bmatrix} \begin{bmatrix} \lambda_{max} & 0 \\ 0 & \lambda_{min}\end{bmatrix}\begin{bmatrix} 1 \\ 0\end{bmatrix} = \lambda_{max}.\]
+\[\begin{array}{lll}t_{max}^\top \hat{C} t_{max} & = & \begin{bmatrix}t_{max}^\top t_{max} & t_{max}^\top t_{min}\end{bmatrix} \begin{bmatrix} \lambda_{max} & 0 \\ 0 & \lambda_{min}\end{bmatrix}\begin{bmatrix} t_{max}^\top t_{max} \\ t_{max}^\top t_{min}\end{bmatrix} = \\ & = & \begin{bmatrix}1 & 0\end{bmatrix} \begin{bmatrix} \lambda_{max} & 0 \\ 0 & \lambda_{min}\end{bmatrix}\begin{bmatrix} 1 \\ 0\end{bmatrix} = \lambda_{max}.\end{array}\]
 
 \(\lambda_{min}\) can be obtained by multiplying by \(t_{min}\).
 
@@ -1750,8 +1752,8 @@ Transform/. SIFT has some interesting characteristics, for instance
   undersampling at each octave; it detects local extrema at *sub-pixel*
   and *sub-scale* level, by fitting a quadratic function of
   \(\Delta x, \Delta y\) and \(\Delta \sigma\) to a raw scale-space
-  location, and setting its gradient to zero; it *removes potential
-  edges and ridges* by means of the Hessian matrix of DoG.
+  location, and setting its gradient to zero;
+- it *removes potential edges and ridges* by means of the Hessian matrix of DoG.
 
 **** SIFT operations
     :PROPERTIES:
@@ -1995,8 +1997,9 @@ structures and algorithms.
     :END:
 The overall algorithm is as follows,
 
-#+BEGIN_EXAMPLE
-Input: image Output: position, scale and orientation of keypoints
+*Input:* image
+
+*Output:* position, scale and orientation of keypoints
 
 1. compute the Gaussian pyramid
 2. compute DioG by subtracting nearby levels of the same octave
@@ -2008,7 +2011,6 @@ Input: image Output: position, scale and orientation of keypoints
    maximum and minimum eigenvalues of the Hessian matrix
 7. compute dominant orientation of the keypoints, by histogram of
    gradients
-#+END_EXAMPLE
 
 *** Edge detection
    :PROPERTIES:
@@ -2139,7 +2141,13 @@ characteristics of a good detector).
 
 The algorithm is as follows,
 
-=input: image output: edge points location 1. Form an estimate of the gradient of the image 2. Obtain the magnitude of the gradient off the estimation 3. Identify image points where the value of the gradient magnitude is maximal in the direction perpendicular to the edge, and also large: these are edge points. In order to find points, employ non-maximum soppression and thresholding to remove noise=
+*Input:* image
+
+*Output:* edge points location
+
+1. Form an estimate of the gradient of the image
+2. Obtain the magnitude of the gradient off the estimation
+3. Identify image points where the value of the gradient magnitude is maximal in the direction perpendicular to the edge, and also large: these are edge points. In order to find points, employ non-maximum soppression and thresholding to remove noise
 
 **** The Canny edge detector
     :PROPERTIES:
@@ -2202,7 +2210,7 @@ position. Procedure works as follows:
 Basically, interpolation is needed to find out whether a pixel is
 actually a maximum of the gradient or not; to do that, interpolate the
 gradient and pick nearby points \(r\) and \(p\) along the gradient
-direction - check if the gradient maximum is in \(q\).
+direction -- check if the gradient maximum is in \(q\).
 
 **** Hysteresis thresholding
     :PROPERTIES:
@@ -2460,7 +2468,7 @@ the straight line we are looking for.
 
 [[./pics/fit/hough-peak-detection.jpg]]
 
-**** Possible issues of above formulation
+**** Issues of above formulation
     :PROPERTIES:
     :CUSTOM_ID: possible-issues-of-above-formulation
     :END:
@@ -2601,9 +2609,7 @@ The problem is formalized as follows,
 
 Formalizing our problem such as
 
-\[z = \begin{bmatrix}p \\ q\end{bmatrix},\]
-\[b = \begin{bmatrix}y_1\\ \vdots \\ y_N\end{bmatrix},\]
-\[A = \begin{bmatrix} x_1 & 1 \\ \vdots & \vdots \\ x_N & 1\end{bmatrix},\]
+\[z = \begin{bmatrix}p \\ q\end{bmatrix}, \hspace*{1cm} b = \begin{bmatrix}y_1\\ \vdots \\ y_N\end{bmatrix}, \hspace*{1cm} A = \begin{bmatrix} x_1 & 1 \\ \vdots & \vdots \\ x_N & 1\end{bmatrix},\]
 one obtains the problem \[\min_z ||Az - b||\] that has well-known
 solution \[z = (A^\top A)^{-1}A^\top b.\]
 
@@ -2635,8 +2641,7 @@ one can formalize the problem in such a way that
 
 To solve this, let's apply the *Lagrangian multiplier technique*.
 Basically, one starts with the Lagrangian
-\[L(a, b, c, \lambda) = \sum_i (ax_i + by_i + c)
-+ \lambda(a^2 + b^2 - 1),\] and imposes the /stationary conditions/
+\[L(a, b, c, \lambda) = \sum_i (ax_i + by_i + c) + \lambda(a^2 + b^2 - 1),\] and imposes the /stationary conditions/
 
 \[ \left\{ \begin{array}{lll} \frac{\partial \mathcal{L}}{\partial a} & = & 2\sum_i x_i(ax_i + by_i + c) + 2 \lambda a = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial b} & = & 2\sum_i y_i(ax_i + by_i + c) + 2 \lambda b = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial c} & = & 2\sum_(ax_i + by_i + c) = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial \lambda} & = & a^2 + b^2 - 1 = 0 \end{array} \right. . \]
 
@@ -2659,7 +2664,7 @@ remaining terms, and get the matrix form
 
 \[ \begin{bmatrix} \overline{x^2} - \overline{x}\overline{x} & \overline{xy} - \overline{y}\overline{x} \\ \overline{xy}- \overline{x}\overline{y} & \overline{y^2} - \overline{y}\overline{y} \end{bmatrix} \begin{bmatrix} a\\ b \end{bmatrix} = \mu \begin{bmatrix} a\\ b \end{bmatrix}, \]
 
-where we substituted \(-\frac{\lambda}{N} = \mu\). By calling
+where we substituted \(\displaystyle-\frac{\lambda}{N} \doteq \mu\). By calling
 
 \[ M = \begin{bmatrix} \overline{x}^2 - \overline{x}\overline{x} & \overline{xy} - \overline{y}\overline{x} \\ \overline{xy}- \overline{x}\overline{y} & \overline{y}^2 - \overline{y}\overline{y} \end{bmatrix}, \]
 
@@ -2702,7 +2707,7 @@ particular technique uses a /sub-quadratic loss function/ in order to
 reduce the influence of far away outliers. Basically, instead of
 formulating a problem of minimizing squares of residuals such as
 
-\[\min \sum_i r_i^2,\] one solves \[\min \sum_i \rho(r_i),\] where
+\[\min \sum_i r_i^2,\] one solves \[\min \sum_i \rho(r_i)\] where
 \(\rho\) is a symmetric, non-negative function with an unique global
 minimum in \(\rho=0\) (in other words, a function that behaves similarly
 to squares in the beighborhood of \(0\), but as we go away it stays
@@ -2742,12 +2747,12 @@ solution is
 \[\hat{x} = \mbox{arg} \min_x ||Ax - b||^2 = \mbox{arg} \min_x (Ax - b)^\top (Ax - b) = (A^\top A)^{-1}A^\top b.\]
 
 However, this /weighted/ least squared regression minimizes the
-quantity, with \(w_i \geq 0\), \[\sum_i w_i r_i^2,\] with each residual
+quantity, \[\sum_i w_i r_i^2,\hspace*{1cm} \mbox{ with } w_i \geq 0\] and each residual
 having weight \(\sqrt{w_i}\). By defining a matrix
 \(W = \mbox{diag}\{w_1, \dots\}\) and the other items as in the previous
 formulation (with no weights), the loss can be written as follows,
 
-\[\sum_i w_i r_i^2 = (Ax - b)^\top W (Ax - b) = (\sqrt{W}Ax -\sqrt{W}b)^\top (\sqrt{W}Ax - \sqrt{W}b) = \left(\tilde A x - \tilde b\right)^\top \left(\tilde A x - \tilde b \right),\]
+\[\begin{array}{lll}\sum_i w_i r_i^2 & = & (Ax - b)^\top W (Ax - b) = (\sqrt{W}Ax -\sqrt{W}b)^\top (\sqrt{W}Ax - \sqrt{W}b) = \\ & = & \left(\tilde A x - \tilde b\right)^\top \left(\tilde A x - \tilde b \right),\end{array}\]
 where \(\sqrt{W}A \doteq \tilde A\) and \(\sqrt{W} b \doteq \tilde b\).
 
 For the above reasons, since the form of the problem is similar to a
@@ -3666,7 +3671,7 @@ Support Vector method (VSV):
 
 ** Recognition
 *** Recognition
-**** What's `recognition', in a broad sense?
+**** Recognition in a broad sense
 *Recognition* can thought as three main things:
 1. /object detection/ -- find all the regions of an image where an object is likely to occur (for instance, a face);
 2. /instance recognition/ -- given a known specific object, recognize it after perturbations, occlusions or under a novel viewpoint;
@@ -3698,7 +3703,11 @@ The features the VJ face detector adopts are the *Haar\--like features*. Haar\--
 
 where the white portion means positive (+) values, while the dark portion means negative (-) values. VJ detector employs more than $160000$ /different/ Haar\--like features, each one being a variation over position, scale and type (two\--rectangle feature, three\--rectangle feature and four\--rectangle feature) in a $24 \times 24$ window.
 **** The integral image technique
-Viola\---Jones detector adopts *Integral image* technique to speed\--up processing\footnote{ASK}.
+Viola\---Jones detector adopts *Integral image* technique to speed\--up processing.
+
+#+BEGIN_COMMENT
+ASK how it speeds up processing
+#+END_COMMENT
 
 Integral image exploits the fact that /rectangle features can be computed very rapidly/ using an intermediate representation called /integral image/: for a given image $I$, the integral image at location $x, y$ contains the sum of the pixels above and to the left of $x, y$, that is $$I_{int}(x, y) = \sum_{i \leq x, j \leq y} I(i,j),$$ as in Figure.
 
@@ -3706,14 +3715,14 @@ Integral image exploits the fact that /rectangle features can be computed very r
 
 The sum of all pixel values in a rectangular window is a linear combination of four values of the integral image (the corners). In fact, consider a window $W$ defined by $p, q, r, s$ as in Figure. The sum $S_W$ of all pixels in $W$ will be $$S_W = I_{int}(p) - I_{int}(r) - I_{int}(s) - I_{int}(q).$$
 
-Thus, only *three additions are required, independent of the rectangle size*. There is *no need to scale the image*.
+Thus, only /three additions are required, independent of the rectangle size/. There is /no need to scale the image/.
 
 As a bonus, the integral image can be computed in a single pass over the original image, using the /recurrences/:
 \begin{eqnarray}\nonumber
 s(x,y) & = & s(x-1,y) + I(x,y) \\\nonumber
 I_{int}(x,y) & = & I_{int}(x, y-1) + s(x,y)
 \end{eqnarray}
-where $s(\cdot,y) is the /cumulative sum of row/ $y$, as in Figure.
+where $s(\cdot,y)$ is the /cumulative sum of row/ $y$, as in Figure.
 
 [[./pics/recog/integral-image-2.jpg]]
 
@@ -3796,10 +3805,10 @@ An example of training could be the following one:
 + the second classifiers adopts $10$ features and rejects $80\%$ of not faces (FPR of $20\%$), while correctly detecting $\sim100\%$ of faces.
 
 *** Instance recognition
-**** What's instance recognition from local features?
+**** Instance recognition from local features
 *Local features* can be exploited in order to perform /instance recognition/. In particular, at training time a possible approach could be to /build a model as a collection of local features and their relative location/. The features will be invariant to translation, rotation and scale. At testing time, instead, the goal will be to /detect local features/ in the image, /find candidate matches/ based on Euclidean distance between feature descriptors (of course, any metric can ne used) and finally /check geometric consistency/.
 
-**** What's geometric consistency? How can it be assured?
+**** Geometric consistency
 
 Geometric consistency can be checked using RANSAC or Generalized Hough Transform. The basic assumptions for this is that objects should be planar, or the observed deformation should be explained by an /affine transformation/, otherwise they will be not labeled as the same object. Affine transformation is one of the linear transformations, linear plus constant of the form $y = MX + N$.
 
@@ -3816,7 +3825,7 @@ As in Figure, biggest votes are for the point in the middle: we have located the
 
 [[./pics/recog/ght-2.jpg]]
 
-**** What's the `visual vocabulary'? How can we use it in order to recognize features in a large database? How are informations retrieved?
+**** The `visual vocabulary'
 Instance recognition can also happen through the use of very large image databases. Suppose a database contains millions of objects (for example, photos of places and monuments from the internet, along with their geolocalization data). The time required to match a new image against each database image can become prohibitive, thus efficient searching techniques are mandatory.
 
 Sivic and Zisserman (2003) borrow ideas from /text retrieval/, where
@@ -3829,7 +3838,10 @@ The idea is to use the /local feature descriptors/ as the analogous of words. In
 
 First, detection of /Harris keypoints/ and /maximally stable extremal regions/ is performed. After that, computation of $128$ dimensional /SIFT descriptors/ from each normalized region are computed (elliptical regions are affinely transformed into circular regions). Corresponding feature vectors are collected from each database image: each feature vector is a point in the $128$ dimensional feature space.
 
-Subsequently, *k\--means clustering* is applied, with /the visual words as cluster centers/. K\--means clustering allows quantizing the feature space\footnote{ASK}, while all clusters are described by their center of mass. A partition of the feature space is therefore obtained, according to the distance from the cluster centers.
+#+BEGIN_COMMENT
+ASK quantizing feature space
+#+END_COMMENT
+Subsequently, *k\--means clustering* is applied, with /the visual words as cluster centers/. K\--means clustering allows quantizing the feature space, while all clusters are described by their center of mass. A partition of the feature space is therefore obtained, according to the distance from the cluster centers.
 
 [[./pics/recog/visual-vocabulary-construction.jpg]]
 
@@ -3839,7 +3851,7 @@ Very common visual words are not informative (as the word /and/ in English langu
 
 To speed up the searching of potentially matching instances and discarding non\--relevant ones, an *inverted file index* should be built. An inverted file index stores -- for each visual word in the vocabulary -- the list of the images that contains that visual word. The retrieval of that word happens through the inverted file index, with a speed that is /greater than searching every image/, assuming that not all images contain every word (otherwise the contrary would be true, but the task would be trivial).
 
-**** What is term frequency-inverse document frequency?
+**** Term frequency\---inverse document frequency
 Information retrieval systems are based on the *relative frequence of words in documents*.
 
 Let $n_{id}$ be the number of occurrences of a word $i$ in the document $d$. The *term frequency* is the quantity $$f_t = \frac{n_{id}}{n_d}.$$ In order to downweight words that occur frequently and focus on rarer ones (corresponding to more informative tokens) an *inverse document frequency* weighting $\log{\frac{N}{N_i}}$ is applied. Hence, the *term frequency\---inverse document frequency* /tf--idf/ will be the quantity $$t_i = \frac{n_{id}{n_d}}\log{\frac{N}{N_i}}.$$
@@ -4005,13 +4017,13 @@ the classification and categorization size of the Computer Vision.
 
 First trainable ANN is /Rosenblatt's Perceptron/ in 1958.
 
-**** Convolutional Neural Networks
+**** The design difference between CNNs and classic machine learning techniques
+
 CNNs are /Artificial Neural Networks/ which have a particular
 architecture /suited for dealing with images/. Other kinds of CNN could
 also be employed for non-images. The term /Deep Learning/ has become
 popular to identify the approach to ANN-based machine learning.
 
-**** The design difference between CNNs and classic machine learning techniques
 The most common design for a classic machine learning problem is the
 /rules-based system/. In such system, we don't explicitly used
 /examples/ to get information or labels, we only exploit /a priori
@@ -4030,6 +4042,7 @@ the raw input.
 In Figure, the gray shading represents the blocks where some learning
 occurs. For instance, this could happend with a SVM.
 
+#+ATTR_LATEX: :scale 0.35
 [[./pics/cnn/representation-learning.jpg]]
 
 **** Artificial Neural Networks
@@ -4517,13 +4530,16 @@ However, lots of improvements are available. For instance, let's adopt
 
 \[\left\{\begin{array}{lll} v & \leftarrow & \alpha v - \varepsilon \hat{g}\\ \theta & \leftarrow & \theta + v \end{array}\right.\]
 
-This is a first-order dynamical system, in which we change the
+This is a first-order dynamic system, in which we change the
 /velocity/ \(v\) of the movement, and actual change in parameters is
 associated to the velocity. We can think of it as a particle moving in
 the parameter space. If nothing happens or the gradient is decreasing,
 the \(\alpha\) value will decade (like a velocity). Change ultimately
 depends on both gradient computed and the past velocity weighted by
-\(\alpha\); [[./pics/cnn/momentum-gd-comparison.jpg]]
+\(\alpha\);
+
+#+ATTR_LATEX: :scale 0.4
+[[./pics/cnn/momentum-gd-comparison.jpg]]
 
 - *global adaption* of learning rate, so called /annealing/, for
   instance with a /step decay/ that reduces the learning factor every
@@ -4549,6 +4565,7 @@ algorithm*. The trick is that a neural network can be seen as the
 for which we can employ the *chain rule*
 \[(f \circ g)'(x) = f'(g(x))g'(x).\]
 
+#+ATTR_LATEX: :scale 0.35
 [[./pics/cnn/backpropagation.jpg]]
 
 The network is composed by single neurons which will have an activation
@@ -4577,8 +4594,7 @@ backpropagation, we do:
    Such value will be adopted to change the previous weights into new
    ones; the new \(w_0\) could be, for instance \(2 - 0.2\) where
    \(\varepsilon = 1\). The gradient will be
-   \[ s = (2-0.2) \times (-1) + (-3-0.39) \times (-2)
-   + (-3+0.2) = 2.18.\] Evaluating output for a sigmoid function with
+   \[ s = (2-0.2) \times (-1) + (-3-0.39) \times (-2) + (-3+0.2) = 2.18.\] Evaluating output for a sigmoid function with
    this updated weighting yields \((1 + e^{-s})^{-1} = 0.898\), and it's
    clear that the output has been increased by the new set of updated
    weights.
@@ -5650,29 +5666,40 @@ Epipolar geometry describes the /relationship between conjugate points/, in Figu
 
 [[./pics/stereo/epipolar-scheme.jpg]]
 
-Points $E^\prime$ and $E^{\prime\prime}$ are the intersection between the line that connects the centres of symmetry of both lenses and the image planes of the lenses, and are therefore called    *epipoles*. Fixed $M^{\prime\prime}$ point, any possible conjugate point $M^\prime$ must lie in the plane containing $M, C^\prime, C^{\prime\prime}$, called the *epipolar plane* of $M$. The last two points are produced by intersecting the line connecting the epipoles with the straight lines from $M$ to the cojugate points $M^\prime$ and $M^{\prime\prime}$. By picking any possible conjugate point $M^\prime$, a line can be drawn: the *epipolar line*. All the epipolar lines $\mathcal R^\prime$ will pass through the epipole $E^\prime$ -- the same, of course, goes for $\mathcal R^{\prime\prime}$ epipolar lines through the epipole $E^{\prime\prime}$. $E^\prime$ is the projection of $C^{\prime\prime}$ in $\mathcal R^\prime$, and similarly $E^{\prime\prime}$ is the projection of $C^\prime$ in $\mathcal R^{\prime\prime}$. MARK
+Points $E^\prime$ and $E^{\prime\prime}$ are the intersection between the line that connects the centres of symmetry of both lenses and the image planes of the lenses, and are therefore called    *epipoles*. Fixed $M^{\prime\prime}$ point, any possible conjugate point $M^\prime$ must lie in the plane containing $M, C^\prime, C^{\prime\prime}$, called the *epipolar plane* of $M$. The last two points are produced by intersecting the line connecting the epipoles with the straight lines from $M$ to the cojugate points $M^\prime$ and $M^{\prime\prime}$. By picking any possible conjugate point $M^\prime$, a line can be drawn: the *epipolar line*. All the epipolar lines $\mathcal R^\prime$ will pass through the epipole $E^\prime$ -- the same, of course, goes for $\mathcal R^{\prime\prime}$ epipolar lines through the epipole $E^{\prime\prime}$. $E^\prime$ is the projection of $C^{\prime\prime}$ in $\mathcal R^\prime$, and similarly $E^{\prime\prime}$ is the projection of $C^\prime$ in $\mathcal R^{\prime\prime}$.
 
 For instance, in Figure $M$ moves in $M^{\prime\prime}$ /epipolar axis/; it doesn't change matrix $M^{\prime\prime}$ but it indeed moves the $M^\prime$ point.
-**** What's the equation of the epipolar line? TODO
-    :PROPERTIES:
-    :CUSTOM_ID: whats-the-equation-of-the-epipolar-line-todo
-    :END:
-TODO \(\simeq\) means equal up to a scale factor
 
-**** What's the Fundamental matrix? TODO
-    :PROPERTIES:
-    :CUSTOM_ID: whats-the-fundamental-matrix-todo
-    :END:
-It's the kernel of the bilinear form
+**** Equation of the epipolar line
+Let's derive the /equation of the epipolar line/.
 
-**** The eight-point algorithm.
-    :PROPERTIES:
-    :CUSTOM_ID: the-eight-point-algorithm.
-    :END:
+Suppose we employ two perspective projection matrices $P^\prime = \begin{bmatrix} Q^\prime & \vline & q^\prime\end{bmatrix}$ and $P^{\prime\prime} = \begin{bmatrix} Q^{\prime\prime} & \vline & q^{\prime\prime}\end{bmatrix}$; then $$\left\{\begin{array}{lll} m^\prime & \simeq & P^\prime m \\ m^{\prime\prime} & \simeq & P^{\prime\prime}m\end{array}\right.,$$ with $\simeq$ that means /equal up to a scale factor/.
+
+The epipolar line corresponding to $M^\prime$ -- in violet -- is the /projection/ through $P^{\prime\prime}$ of the optical ray through $M^\prime$ -- in orange. The equation of the orange line is indeed $$m = c^\prime + \lambda\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix},$$ where $c^\prime$ is the /vector of homogeneous coordinates of $C^\prime$, with respect to the world refedence frame/. By substitution, one can soon obtain the following chain of equations,
+
+$$\begin{array}{lll}m^{\prime\prime} & \simeq & P^{\prime\prime}m = P^{\prime\prime} \left(c^\prime + \lambda\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix}\right) = \underbrace{P^{\prime\prime}c^\prime}_{e^{\prime\prime}} + \lambda\begin{bmatrix}Q^{\prime\prime} & \vline & q^{\prime\prime}\end{bmatrix}\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix} \\ & = & e^{\prime\prime} + \lambda Q^{\prime\prime} (Q^\prime)^{-1} m^\prime,\end{array}$$
+
+leading to the *equation of the epipolar line*
+
+$$m^{\prime\prime} \simeq e^{\prime\prime} + \lambda Q^{\prime\prime} (Q^\prime)^{-1} m^\prime.$$
+
+Now, let's multiply both terms by the quantity $[e^{\prime\prime}]_\times$,
+$$[e^{\prime\prime}]_\times m^{\prime\prime} \simeq [e^{\prime\prime}]_\times (e^{\prime\prime} + \lambda Q^{\prime\prime} (Q^\prime)^{-1} m^\prime) = \lambda [e^{\prime\prime}]_\times Q^{\prime\prime}(Q^\prime)^{-1}m^\prime.$$ The term on the left is orthogonal to $m^{\prime\prime}$ due to the involved cross product -- if one multiplies both terms by $m^{\prime\prime\top}$, gets the *Longuet\--Higgins equation* $$0 = m^{\prime\prime\top} [e^{\prime\prime}]_\times Q^{\prime\prime}(Q^\prime)^{-1}m^\prime,$$ as the left term goes to zero. The Longuet\--Higgins equation is a bilinear form.
+
+**** The fundamental matrix
+Given the Longuet\--Higgins equation $$m^{\prime\prime\top} [e^{\prime\prime}]_\times Q^{\prime\prime}(Q^\prime)^{-1}m^\prime = 0,$$ the *fundamental matrix* is the matrix $$F = [e^{\prime\prime}]_\times Q^{\prime\prime}(Q^\prime)^{-1},$$ that is the kernel of the bilinear form of the equation. Hence, $$m^{\prime\prime\top} F m^\prime = 0.$$
+
+Given $m^\prime$, the triplet $\lambda, F, m^\prime$ such that $\lambda = Fm^\prime$ /defines the epipolar line/ by the equation $$\lambda^\top m^{\prime\prime} = 0.$$
+
+The fundamental matrix defines a /relationship between homogeneous pixels coordinates of conjugate points/ in a pair of images. Furthermore, $F$ has *rank $2$*, because $$F = [e^{\prime\prime}]_\times Q^{\prime\prime}(Q^{\prime})^{-1}$$ is the product of a skew\--symmetric matrix $[e^{\prime\prime}]_\times$ whose rank is $2$, and two full\--rank matrices $Q^{\prime\prime}$ and $(Q^{\prime})^{-1}$.
+
+Since the fundamental matrix depends on both $Q^{\prime}$ and $Q^{\prime\prime}$, it encodes information on /both intrinsic and extrinsic parameters/, and thus is of a crucial importance when it comes of camera calibration. Moreover, $F$ can be computed from $P^{\prime}$ and $P^{\prime\prime}$ and it can be estimated from point matches in pixel coordinates only.
+
+**** The eight\--point algorithm.
 Fundamental matrix can be estimated with the *eight-point algorithm*.
 The minimum number of correspondences needed in order to apply this
 method is \(8\). Given \(N\) pairs of pixels
-\[\{(m'^{(i)}_ a, m'^{(i)}_ b), i = 1, \dots, N >= 8\},\] one can
+\[\{(m'^{(i)}_ a, m'^{(i)}_ b), i = 1, \dots, N \geq 8\},\] one can
 estimate \(F\) by imposing
 
 \[m'^{(i)\top}_ b F m'^{(i)}_ a = 0\] for each \(i\) that goes from
@@ -5684,76 +5711,37 @@ Using the *Kronecker product* \(\otimes\) together with the =vec=
 
 \[m'^{(i)\top}_ b F m'^{(i)}_ a = 0,\]
 \[\mbox{vec }(m'^{(i)\top}_ b F m'^{(i)}_ a) = 0,\]
-\[(m'^{(i)\top}_ b \otimes m'^{(i)\top}_ a)\mbox{vec}(F) = 0.\]
+\[(m'^{(i)\top}_ b \otimes m'^{(i)\top}_ a)\mbox{vec}(F) = 0.\] Remind that, as a $3\times 3$ matrix, $F$ has $9$ entries -- for each correspondence of pixel coordinates, one can build an equation of $9$ unknowns.
 
-Since there are \(N\) correspondences, we get
+Basically, for \(N\) correspondences, one gets
+
+$$\underbrace{\begin{bmatrix} m^{\prime(1)\top}_a \otimes m^{\prime(1)\top}_b \\
+m^{\prime(2)\top}_a \otimes m^{\prime(2)\top}_b \\
+\vdots \\
+m^{\prime(N)\top}_a \otimes m^{\prime(N)\top}_b \\ \end{bmatrix}}_{A^{n \times 9}}\mbox{ vec}(F) = 0,$$ whose solution is the null\--space of matrix $A$. For $N = 8$, the null\--space has dimension $1$, therefore the result is determined up to a /multiplicative constant/. In all relevant practices, more than $8$ correspondences are available, and due to noise the matrix $A$ will possess full\--rank, that is rank $9$. Therefore, a least square solution should be determined by solving $$\mbox{arg}\min_{||f||=1} ||Af||^2,$$ where the constraint $||f||=1$ forces to discard the trivial solution $f=0$, which is not acceptable since $F\neq 0$. The solution is well\--known to be, again, the right singular vector of $A$, corresponding to the smallest singular value. Provided $$A = U\Sigma V^\top,$$ one has $f = v_9$; that is, the rightmost column of $V$.
 
 In order to force the rank of \(F\) equal to \(2\), a nice approach is
 to simply pick the singular value decomposition of \(F\), and set the
 lowest /singular value/ (\(f_3\)) to \(0\). This way, we can enforce
-rank-deficiency to \(F\) without changing it too much.
+rank-deficiency to \(F\) without changing it too much. Hence, from $F=U\begin{bmatrix}f_1 & 0 & 0 \\ 0 & f_2 & 0 \\ 0 & 0 & f_3\end{bmatrix}V^\top$, one obtains $\hat F=U\begin{bmatrix}f_1 & 0 & 0 \\ 0 & f_2 & 0 \\ 0 & 0 & 0\end{bmatrix}V^\top$.
 
 Seven-points algorithms do exists (because \(F\) has \(7\) degrees of
 freedom; one degree is lost due to scale factor, and rank is \(2\)
 (algebraic constraint).
 
-TODO finish till the end
-** Epipolar geometry
-   :PROPERTIES:
-   :CUSTOM_ID: epipolar-geometry
-   :END:
-Epipolar geometry describes the relationship between conjugate points.
+**** Robust estimation using RANSAC
 
-FIGURE TODO: M moves in M'' axis, it doesn't change M'' but it moves the
-M' point.
+RANSAC can be improved with $F$ to perform /robust estimation/. In particular, one can compute $F$ and find inliers with respect to it, instead of computing SIFT plus nearest neighbor distance (for example).
 
-**** What's the equation of the epipolar line? TODO
-    :PROPERTIES:
-    :CUSTOM_ID: whats-the-equation-of-the-epipolar-line-todo
-    :END:
-TODO \(\simeq\) means equal up to a scale factor
+**** Normalized eight\--point algorithm
 
-**** What's the Fundamental matrix? TODO
-    :PROPERTIES:
-    :CUSTOM_ID: whats-the-fundamental-matrix-todo
-    :END:
-It's the kernel of the bilinear form
+Since the equation corresponding to the pair $m^\prime_a = \begin{bmatrix}u_a & v_a & 1\end{bmatrix}^\top$ and $m^\prime_b = \begin{bmatrix}u_b & v_b & 1\end{bmatrix}^\top$ takes the form $$\begin{bmatrix}u_a u_b & u_a v_b & u_a & v_a u_b & v_a v_b & v_a & u_b & v_b & 1 \end{bmatrix}\mbox{vec}(F) = 0,$$ and in a typical image $u, v\approx 10^2$, the entries of $A$ usually take values in the interval $[1, \approx 10^4]$ and $A^\top A$ in the interval $[1, \approx 10^8]$, there might be /numerical problems/. Indeed, the algorithm should also perform some kind of /normalization/. To do so, Hartley (1995) proposed the *normalized eight\--point algorithm*.
 
-**** What's the Kronecker product? What's the =vec= operator? What are
-their properties? TODO
-    :PROPERTIES:
-    :CUSTOM_ID: whats-the-kronecker-product-whats-the-vec-operator-what-are-their-properties-todo
-    :END:
-**** The eight-point algorithm.
-    :PROPERTIES:
-    :CUSTOM_ID: the-eight-point-algorithm.
-    :END:
-Fundamental matrix can be estimated with the *eight-point algorithm*.
-The minimum number of correspondences needed in order to apply this
-method is \(8\). Given \(N\) pairs of pixels
-\[\{(m'^{(i)}_ a, m'^{(i)}_ b), i = 1, \dots, N >= 8\},\] one can
-estimate \(F\) by imposing
+*Input:* a set of at least eight corresponding points $\{(m^\prime_a, m^\prime_b\}$ in two images
 
-\[m'^{(i)\top}_ b F m'^{(i)}_ a = 0\] for each \(i\) that goes from
-\(1\) to \(N\), with \(F\) being a \(3 \times 3\) matrix having rank
-\(2\).
+*Output:* the fundamental matrix $F$
 
-Using the *Kronecker product* \(\otimes\) together with the =vec=
-/vector operator/, one gets
-
-\[m'^{(i)\top}_ b F m'^{(i)}_ a = 0,\]
-\[\mbox{vec }(m'^{(i)\top}_ b F m'^{(i)}_ a) = 0,\]
-\[(m'^{(i)\top}_ b \otimes m'^{(i)\top}_ a)\mbox{vec}(F) = 0.\]
-
-Since there are \(N\) correspondences, we get
-
-In order to force the rank of \(F\) equal to \(2\), a nice approach is
-to simply pick the singular value decomposition of \(F\), and set the
-lowest /singular value/ (\(f_3\)) to \(0\). This way, we can enforce
-rank-deficiency to \(F\) without changing it too much.
-
-Seven-points algorithms do exists (because \(F\) has \(7\) degrees of
-freedom; one degree is lost due to scale factor, and rank is \(2\)
-(algebraic constraint).
-
-TODO finish till the end
+1. Center the image data at the origin, and rescale it to get a mean distance from the origin of $sqrt 2$;
+2. employ the eight\--point algorithm in its standard form to obtain $F$ from the normalized points;
+3. enforce rank\--two constraint via singular value decomposition; force smallest value to $0$;
+4. transform the fundamental matrix back to its original units. If $T_a$ and $T_b$ are normalizing transformations for the two images, then $$F_{orig} = T^\top_b F T_a.$$
