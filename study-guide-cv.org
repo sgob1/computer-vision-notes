@@ -1065,7 +1065,7 @@ A binary image is obtained by a non-binary image by applying a
 
 Morphological operations consists in two steps,
 
-1. convolve the image with a /binary structuring element/ (e.g. a box
+1. convolve the image with a /binary structuring element/ (e.g. a box
    filter);
 2. select a binary output, based on the thresholded result of previous
    operation.
@@ -1570,7 +1570,7 @@ The concepts of *invariance* and *covariance* are quite similar, despite
 being different in some core aspects.
 
 As a general rule, keypoint locations should be both /invariant/ to photometric
-transformations and /covariant/ to geometric transformations./
+transformations and /covariant/ to geometric transformations.
 
 - *invariance*: the image is transformed and keypoint locations /do not
   change/;
@@ -1997,6 +1997,11 @@ structures and algorithms.
     :END:
 The overall algorithm is as follows,
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 *Input:* image
 
 *Output:* position, scale and orientation of keypoints
@@ -2011,6 +2016,11 @@ The overall algorithm is as follows,
    maximum and minimum eigenvalues of the Hessian matrix
 7. compute dominant orientation of the keypoints, by histogram of
    gradients
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 *** Edge detection
    :PROPERTIES:
@@ -2141,6 +2151,11 @@ characteristics of a good detector).
 
 The algorithm is as follows,
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 *Input:* image
 
 *Output:* edge points location
@@ -2148,6 +2163,11 @@ The algorithm is as follows,
 1. Form an estimate of the gradient of the image
 2. Obtain the magnitude of the gradient off the estimation
 3. Identify image points where the value of the gradient magnitude is maximal in the direction perpendicular to the edge, and also large: these are edge points. In order to find points, employ non-maximum soppression and thresholding to remove noise
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 **** The Canny edge detector
     :PROPERTIES:
@@ -2526,10 +2546,7 @@ cases where we could exploit some a-priori knowledge, or we are able to
 choose the grid carefully according to the kind of task.
 
 **** Hough transform for generic curves fitting
-    :PROPERTIES:
-    :CUSTOM_ID: hough-transform-for-generic-curves-fitting
-    :END:
-Yes, Hough transform can be generalized for other kinds of geometric
+Hough transform can be generalized for other kinds of geometric
 primitives. In particular, it can be used to fit a /circle/.
 
 Let a circle be described by a triple \((x_c, y_c, r)\) with
@@ -2553,6 +2570,11 @@ The general algorithm is as follows. For detecting a curve
 \(y = f(x, a)\), where \(a\) denotes a vector of parameters
 \(a = [a_1, \dots, a_P]^\top\),
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 *Input*: a pixel map \(E(i, j)\)
 
 *Output*: a set of vectors \(a_1, ..., a_N\) describing the curve
@@ -2569,6 +2591,11 @@ instances detected in pixel map \(E\)
    \(y = f(x, a)\) for the pair \((x, y)\) corresponding to \((i, j)\);
 4. find all local maxima \(a_1, ..., a_N\) of \(A\) above a certain
    threshold.
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 **** Possible exploitations of a priori knowledge in Hough transform
     :PROPERTIES:
@@ -2752,7 +2779,7 @@ having weight \(\sqrt{w_i}\). By defining a matrix
 \(W = \mbox{diag}\{w_1, \dots\}\) and the other items as in the previous
 formulation (with no weights), the loss can be written as follows,
 
-\[\begin{array}{lll}\sum_i w_i r_i^2 & = & (Ax - b)^\top W (Ax - b) = (\sqrt{W}Ax -\sqrt{W}b)^\top (\sqrt{W}Ax - \sqrt{W}b) = \\ & = & \left(\tilde A x - \tilde b\right)^\top \left(\tilde A x - \tilde b \right),\end{array}\]
+\[\begin{array}{lll}\sum_i w_i r_i^2 & = & (Ax - b)^\top W (Ax - b) = (\underbrace{\sqrt{W}A}_{\tilde A}x -\underbrace{\sqrt{W}b}_{\tilde b})^\top (\underbrace{\sqrt{W}A}_{\tilde A}x - \underbrace{\sqrt{W}b}_{\tilde b}) = \\ & = & \left(\tilde A x - \tilde b\right)^\top \left(\tilde A x - \tilde b \right),\end{array}\]
 where \(\sqrt{W}A \doteq \tilde A\) and \(\sqrt{W} b \doteq \tilde b\).
 
 For the above reasons, since the form of the problem is similar to a
@@ -2767,6 +2794,11 @@ weights we can strongly reduce the influence of outliers.
 
 The iterative algorithm is as follows, and is able to adapt to a desired
 sub-quadratic loss function:
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 *Input*: a matrix \(A \in \mathbb{R}^{m \times n}\), a vector of
 measurements \(b \in \mathbb{R}^m\), a function
@@ -2791,10 +2823,15 @@ which minimizes a loss function that depends on \(f(\cdot)\);
    copy \(\hat x = \hat x ^{(t)}\), *return* it, and *exit*;
 6. *else* =t++=, and go to step \(3\);
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 For example, to implement a Huber loss function, the following \(f\)
 must be chosen
 
-\[ f(r) = \left\{ \begin{array}{lll} 1 & \mbox{ if } & |r| \leq k\\ \frac{k}{|r|} & \mbox{ if } & |r| > k \end{array} \right. \]
+\[ f(r) = \left\{ \begin{array}{lll} 1 & \mbox{ if } &  |r| \leq k\\ \displaystyle\frac{k}{|r|} & \mbox{ if } & |r| > k \end{array} \right. \]
 
 where the trivial choice of \(f(r) = 1\) leads to the ordinary least
 squares (not robust).
@@ -2830,6 +2867,11 @@ The RANSAC loop is as follows,
     :END:
 The RANSAC algorithm is as follows
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 *Input*: the smallest number of points required \(n\), the number of
 iterations required \(k\), the threshold used to identify a point that
 fits well \(t\), and the number of nearby points required to assert a
@@ -2851,6 +2893,11 @@ model that well fits \(d\);
 9. *until* \(k\) iterations
 
 The output will be the best fit from the collection obtained.
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 **** How many iterations are needed for RANSAC?
     :PROPERTIES:
@@ -3001,7 +3048,7 @@ classified.
 Diversely, parameter noise is a kind of noise that affects the
 /parameters/ of the separating hyperplane. In particular, one can expect
 noise in both \(w\) and \(b\) parameters, however the maximal margin is
-the one that makes it the more difficult to observe misclassifications
+the one that makes it the more difficult to observe misclassifications.
 
 [[./pics/svm/mm-parameter-noise.jpg]]
 
@@ -3026,8 +3073,7 @@ The Lagrangian can be safely rewritten as
 \[L(w, b, \alpha) = \frac 1 2 w\cdot w - \sum_{i=1}^l \alpha_i[y_i(w \cdot x_i + b) - 1],\]
 while applying stationary conditions on derivatives one obtains
 
-\[ \frac {\partial L}{\partial b} = 0 \Longrightarrow \sum_{i=1}^l \alpha_i y_i = 0, \]
-\[ \frac {\partial L}{\partial w} = 0 \Longrightarrow w = \sum_{i=1}^l \alpha_i y_i x_i, \]
+\[ \frac {\partial L}{\partial b} = 0 \Longrightarrow \sum_{i=1}^l \alpha_i y_i = 0, \hspace*{1cm} \frac {\partial L}{\partial w} = 0 \Longrightarrow w = \sum_{i=1}^l \alpha_i y_i x_i, \]
 
 as the term $\displaystyle \frac 1 2 w \cdot w$ has derivative $w$.
 
@@ -3065,8 +3111,8 @@ links the two solutions of the primal and dual problems; namely,
 set, multiplied by the solutions of the dual problem
 \(\hat{\alpha}_ i\).
 
-It is known that the solution of the primal problem must satisfy the KKT
-(Karush-Kuhn-Tucker) conditions:
+It is known that the solution of the primal problem must satisfy the *KKT*
+(*Karush-Kuhn-Tucker*) conditions:
 
 \[\hat{\alpha}_ i [y_i(\hat{w} \cdot x_i + \hat{b}) - 1] = 0, \forall i = 1,\dots, l.\]
 However, since the quantity
@@ -3106,6 +3152,29 @@ condition on support vectors, which yields
 formula is derived from the KKT condition
 \(y_i(x_i \cdot \hat{w} + \hat{b}) = 1\) for the \(i\)-th vector.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+*Proof* In fact, from stationary condition one has
+\[\hat{w} = \sum_{i=1}^l \hat{\alpha}_ i y_i x_i,\] and for KKT conditions \[\hat \alpha_i[y_i(x_i \cdot \hat{w} + \hat{b}) - 1] = 0.\] This means that for support vectors whose $\alpha_i \neq 0$ it holds
+
+$$\begin{array}{rcl} y_i(\hat w \cdot x_i + \hat b) - 1 & = & 0 \\ y_i\hat w \cdot x_i + y_i\hat b - 1 & = & 0 \\ y_i\hat b & = & 1 - y_i\hat w \cdot x_i \\ \hat b & = & \frac{1}{y_i} - \hat w \cdot x_i \\ \hat b & = & y_i - \hat w \cdot x_i \end{array}$$
+
+where since $y_i \in \{-1, +1\}$ one has $\frac{1}{y_i} = y_i$. Substituting the stationary condition into the just obtained result, one has that
+
+$$\begin{array}{rcl} \hat b & = & \displaystyle y_i - \left(\sum_{j=1}^{l}\hat\alpha_j y_j x_j\right) \cdot x_i \\ & = & \displaystyle y_i - \sum_{j=1}^l \hat \alpha_j y_j (x_j \cdot x_i),\end{array}$$ which is the correct result.
+
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 However, a better formulation comes in the case where we express the
 decision function in terms of the support vectors only.
 
@@ -3133,6 +3202,7 @@ only. This means that it can be extended as long as we are able to
 substitute the scalar product with a different kind of thing. The kind of
 extension will be -- remarkably -- that of the /kernel trick/.
 
+#+ATTR_LATEX: :scale 0.23
 [[./pics/svm/primal-dual-graph-comparison.jpg]]
 
 The selling point of the dual configuration is that it allows to count
@@ -3218,7 +3288,7 @@ adopted.
 
 [[./pics/svm/svm-non-linear.jpg]]
 
-In particular, a /feature mapping/ is a nonlinear transformation $$Phi(x) :
+In particular, a /feature mapping/ is a nonlinear transformation $$\Phi(x) :
 \mathcal X \longrightarrow \mathcal F$$ that renders the transformed data
 linearly separable. $\mathcal X$ is the /input space/, while $\mathcal F$ is
 said to be the /feature space/.
@@ -3265,11 +3335,11 @@ If $x \in \mathbb{R}^n$, the number of monomials of degree $d$ obtained by mulit
 
 $$ \binom{n + d - 1}{d}, $$
 
-while the number of monomial whose degree is $\leq d$ will be  $$ \binom{n+d}{d}. $$
+while the number of monomials whose degree is $\leq d$ will be  $$ \binom{n+d}{d}. $$
 
 Let's now pick a realistic example -- a $16 \times 16$ image, with a monomial of
 fifth degree:
-$$\binom{256 + 5 - 1}{5} \approx 10^10,$$ which is a *huge* number. Serious
+$$\binom{256 + 5 - 1}{5} \approx 10^{10},$$ which is a *huge* number. Serious
 computational difficulties arise from this methodology of computation on such a
 huge space, because we are actually considering /all/ combinations of monomials.
 
@@ -3300,7 +3370,7 @@ under constraints \(y_i(w \cdot \Phi(x_i) + b) \geq 1 - \xi_i, \forall
 i=1,\dots,l,\) with $\xi_i \geq 0, \forall i=1,\dots,l$.
 
 The primal form suffers a sever issue: it is computationally untractable. In fact,
-for high $N$ values (think of $N=10^10$ in the case of the 256--pixel image) the
+for high $N$ values (think of $N=10^{10}$ in the case of the 256--pixel image) the
 needed computations become largely unfeasible.
 
 To solve it, let's consider the *dual form*,
@@ -3324,6 +3394,10 @@ the end result will be the evaluated by the kernel. Thus, computing the kernel
 function for $x$ and $x^\prime$ is /all we need/ to find the hyperplane on
 $\mathcal F$.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 A classic example is the following one. Let $\mathcal X = \mathbb R^2$, and let
 $x = (x_1, x_2)$, $y=(y_1,y_2)$. Suppose we want to find out what the following
@@ -3334,6 +3408,11 @@ $$k(x,y) = (x\cdot)^2 = [(x_1, x_2)\cdot(y_1, y_2)]^2.$$ Computing and collectin
 $$k(x,y) = \Phi(x)\cdot \Phi(y) = (x_1^2, \sqrt{2}x_1x_2, x_2^2)\cdot (y_1^2, \sqrt{2}y_1y_2, y_2^2),$$ therefore this kernel computes the mapping $\Phi:\mathbb R^2 \rightarrow \mathbb R^3$ with monomial features of degree two such that
 
 $$\Phi(x) = (x_1^2, \sqrt{2}x_1x_2, x_2^2),$$ with $\mathcal F = \mathbb R^3$.
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 We now are ready to formalize the optimization problem, whose solution is the optimal hyperplane in the feature space, in terms of a /kernel/
 
@@ -3492,6 +3571,7 @@ remaining/. The $n$ decision functions will have the (primal) form $$h_i(x) =
 other classes at once. Dual form should be picked for computational issues, but
 it's harder to study from.
 
+#+ATTR_LATEX: :scale 0.25
 [[./pics/svm/svm-ovr-1.jpg]]
 
 This approach does not lead to a perfect classification of all regions of the
@@ -3506,6 +3586,7 @@ feature space). It is a *signed* distance: if it's outside boundaries, distance
 would be negative, otherwise it would be positive. The distance should also be
 expressed in dual form, to avoid any computational issue.
 
+#+ATTR_LATEX: :scale 0.25
 [[./pics/svm/svm-ovr-2.jpg]]
 
 **** One--against--rest classifier when adopting decision trees
@@ -3518,6 +3599,7 @@ Classification is performed by evaluating, in sequence, the binary classifiers
 in the constructed decision tree. As soon as the $i$ -th classifier produces a
 positive output, the pattern is classified into class $i$.
 
+#+ATTR_LATEX: :scale 0.25
 [[./pics/svm/svm-ovr-3.jpg]]
 
 Some problems arise from the adoption of decision trees. First, /lower index
@@ -3527,7 +3609,7 @@ regions. Upper index classes will be /underrepresented/ -- the classifier will
 *depend on the order* in which the single classes are taken into account. Since
 the order matters so much, it is very important to choose it wisely. The guiding
 principle is that /classes that are easily separable from the rest should be
-upper in the tree. This makes sence, since those upper classes should be more
+upper in the tree/. This makes sense, since those upper classes should be more
 `general' somehow, representing a general division of the space. Indeed, the
 more data are misclassified at the upper node of the decision tree, the worse
 the classification performance becomes.
@@ -3570,6 +3652,10 @@ estimated through counting support vectors, is high).
 
 The algorithm for the /DAG structure for an $n$ class problem/ is as follows:
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 1. Generate the initial list of classifiers $\{1,\dots,n\}$;
 2. =while= there is at least one list remaining of more than two elements, =do=
    a. choose a list and select the class pair $(i, j)$ from it, based on the /highest generalization capability/;
@@ -3577,6 +3663,10 @@ The algorithm for the /DAG structure for an $n$ class problem/ is as follows:
       i. generate two lists deleting $i$ and $j$, respectively, from the list.
     c. =end if=
 3. =end while=
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 Basically, at each step we discriminate each pair of classes, picking the one
 pair which has the lowest number of Support Vectors. Easiest classes will have
@@ -3654,7 +3744,7 @@ space. Recalling the definition of Euclidean distance in terms of dot product,
 $$||x - y||^2 = x \cdot x - 2x \cdot y + y \cdot y,$$ the distance in the feature space may be written as
 
 \begin{eqnarray}\nonumber
-||\Phi(x_i) - Phi(x_j)||^2 & = & \Phi(x_i)\cdot\Phi(x_i) - 2 \Phi(x_i)\cdot \Phi(x_j) + \Phi(x_j)\cdot \Phi(x_j) \\\nonumber
+||\Phi(x_i) - \Phi(x_j)||^2 & = & \Phi(x_i)\cdot\Phi(x_i) - 2 \Phi(x_i)\cdot \Phi(x_j) + \Phi(x_j)\cdot \Phi(x_j) \\\nonumber
                             & = & k(x_i, x_i) - 2k(x_i, x_j) + k(x_j, x_j).
 \end{eqnarray}
 a quantity that can *implicitly be computed by means of the kernel*. The closest
@@ -3736,7 +3826,7 @@ Each weak learner is a very simple function of the input, and is not expected to
 Viola and Jones restrict the weak learner to the set of /classification functions, each of which depends on a single feature/. Each classifier is called *elementary classifier*, and takes the form
 
 $$h_j(x, f_j, p_j, \theta_j) = \left\{\begin{array}{ll} 1 & \mbox{ if } p_j f_j(x) < p_j\theta_j \\ 0 & \mbox{ otherwise } \end{array}\right. ,$$
-where $f_j(x)$ is the value of feature $j$ in image $x, p_j$ is a polarity, and $\theta_j$ a threshold. Recall that over $160000$ features are adopted in the Viola\---Jones detector.
+where $f_j(x)$ is the value of feature $j$ in image $x$, $p_j$ is a polarity, and $\theta_j$ a threshold. Recall that over $160000$ features are adopted in the Viola\---Jones detector.
 
 Intuitively, boosting works by iteratively building a classifier after the others, by increasing weights on misclassified points and the outcome function being a linear combination of the just built weak classifiers, as in Figure.
 
@@ -3746,11 +3836,15 @@ Initially, weight each training example equally. In each /boosting round/, first
 
 Then, compute the final classifier as a /linear combination/ of all the just built weak learners, with the weight of each learner directly correlated to its accuracy).
 
-Exact formulas for re\--weighting depend on algorithm adopted (for instance, /AdaBoost/).
+Exact formulas for re\--weighting depend on algorithm adopted (for instance, /Ada\-Boost/).
 
 **** The AdaBoost algorithm and its properties.
 *AdaBoost* algorithm (1997, employed in Viola\---Jones in 2001) can be expressed as follows.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 As *input*, get $n$ /example images/ $(x_1, y_1), \dots, (x_n, y_n)$, where $y_i = \{0, 1\}$, respectively, for negative and positive example.
 
 As *output*, produce a strong classifier composed of $T$ weak classifiers.
@@ -3764,6 +3858,10 @@ The steps are the following ones:
 6. update the weights with a formula of choice: $$w_{t+1,i} = w_{t,i}\beta_{t}^{1-e_i},$$ where $e_i = \{0, 1\}$ corresponding, repsectively, to a correct and an uncorrect classification of $x_i$ and $\beta_t = \frac{\varepsilon_t}{1 - \varepsilon_t};$
 7. *end for*.
 8. The final, strong classifier can be built as $$C(x) ) \left\{\begin{array}{ll} 1 & \mbox{ if } \displaystyle \sum_{t=1}^T\alpha_t h_t(x) \geq \frac 1 2 \sum_{t=1}^T \alpha_t \\ 0 & \mbox{ otherwise } \end{array}\right. ,$$ where $\alpha_t = \log{\frac 1 {\beta_t}}$.
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 Boosting can be seen as a *greedy feature selection*. In fact, each weak learner is equipped with a single feature from the $160000$ set of features in the detector. For each $t$, the goal is to select the single rectangle feature and threshold that best separates positive (faces) and negative (non\--faces) training examples, in terms of weighted error. Hence, the first feature that will be picked up is the one among the $160000$ features that performs best in the un\--weighted training set -- subsequent features are those that perform best in the weighted training set.
 
@@ -3771,7 +3869,7 @@ Boosting can be seen as a *greedy feature selection*. In fact, each weak learner
 
 
 **** The cascade of classifiers: reducing the false positive rate
-The goal of the *cascade of classifiers* is to /speed up/ the evaluation of the many subwindows of an entire image. Basically, what happens is that /many stages of classifiers/ are put in sequence, and evaluate each subwindow in a *multi\--stage classifier* which is capable of *rejecting the negative instances as soon as possible.
+The goal of the *cascade of classifiers* is to /speed up/ the evaluation of the many subwindows of an entire image. Basically, what happens is that /many stages of classifiers/ are put in sequence, and evaluate each subwindow in a *multi\--stage classifier* which is capable of *rejecting the negative instances as soon as possible*.
 
 The crucial point is that a subwindow can be immediately be rejected by the first stage. This is of a paramount importance, since /most of the windows in an image are not faces/ (but something else).
 
@@ -3894,6 +3992,10 @@ The histogram is known as *bag of (visual) words* and it constitutes a compact d
 
 [[./pics/recog/bag-of-words-pipeline.jpg]]
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 From Grauman and Leibe (2011), the steps of the /training/ process for a bag\--of\--words classification are the following ones:
 
 1. collect training image examples from each category of interest;
@@ -3908,6 +4010,11 @@ The steps of the /recognition/ process for bag\--of\--words classifications are 
 1. given a novel test image, repeat the feature detection, description and histogram steps as during training, adopting the very same visual vocabulary;
 2. classify the test example using the trained SVM. For non\--linear kernels, this entails computing kernel values between the novel bag\--of\--words histogram, and the training instances involved in the decision function -- the support vectors.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 Even though the Bag\--of\--Words technique is typically adopted for image\--level classification, it is straightforward to instead train with bounding box annotations and test with a sliding window scan.
 
 **** The specialized kernels
@@ -3921,7 +4028,7 @@ $$h(x) = \Theta\left[\sum_{SV} y_i\alpha_i k(x_i, x_j) + b\right].$$ An
 important remark is that the matrix $[K_{ij}] = [k(x_i, x_j)], i,j=1,\dots,l$ is
 the so--called *Gram matrix* associated to the quadratic form appearing in the cost functional. For training, we need to evaluate the kernel for all pairs of training examples, while for testing we need to compute the kernels for all the pairs $(x_i, x)$, where $x_i$ is a support vector and $x$ is the instance to be classified.
 
-From the standard Gaussian kernel $$k(x,x^\prime)= \exp{\left(-\frac{||x-x^\prime||^2}{\sigma^2}\right)},$$ one can define a *generalized Gaussian kernel* in the following way, $$k(x,x^\prime)= \exp{\left(-\frac{D(x, x^\prime)}{A}\right)},$$ where $A > 0$ is  a /scaling parameter/ and $D(x, x^\prime)$ is some distance between input vectors $x$ and $x^\prime$. Euclidean distance, as well as other metrics, can be successfully employed\.
+From the standard Gaussian kernel $$k(x,x^\prime)= \exp{\left(-\frac{||x-x^\prime||^2}{\sigma^2}\right)},$$ one can define a *generalized Gaussian kernel* in the following way, $$k(x,x^\prime)= \exp{\left(-\frac{D(x, x^\prime)}{A}\right)},$$ where $A > 0$ is  a /scaling parameter/ and $D(x, x^\prime)$ is some distance between input vectors $x$ and $x^\prime$. Euclidean distance, as well as other metrics, can be successfully employed.
 
 A first metric we will see is the *Earth Mover's Distance*. Suppose two descriptors are given, of the form
 $$x = \{(t_1, w_1),\dots,(t_m,w_m)\},$$ and
@@ -3941,7 +4048,7 @@ The histogram intersection kernel can be determined very quickly and it is thus 
 
 [[./pics/recog/spatial-pyramid-kernel.jpg]]
 
-The spatial pyramid kernel (Lazebnik et al., 2006) is based on the
+The *spatial pyramid kernel* (Lazebnik et al., 2006) is based on the
 intersection of multi-level histograms. The goal is to augment
 bag-of-words with loose notions of 2D spatial location. This is achieved
 by repeatedly subdividing an image and computing histograms of image
@@ -3961,6 +4068,7 @@ Steps are the following ones,
    in figure;
 4. combine weighted histograms intersections in a hierarchical fashion.
 
+#+ATTR_LATEX: :scale 0.5
 [[./pics/recog/spatial-pyramid-procedure.jpg]]
 
 For example, at level
@@ -4102,7 +4210,7 @@ A typical CNN has *million* of parameters, such as the VGG (Simonyan and Zisserm
 **** Typical activation functions
 An /activation function/ \(f\) is the output of a neuron. The generic
 activation function has the form \[f\left(\sum_i w_i x_i + b\right).\]
-In other words, an activation function is like a gate that checks that
+In plain words, an activation function is like a gate that checks that
 an incoming value is greater than a critical number.
 
 Typically adopted solution are the /sigmoid function/
@@ -4126,7 +4234,7 @@ and the /softplus/
 **** Specific characteristics of a Convolutional Neural Network
 A convolutional neural newtwork is similar to the multilayer perceptron,
 in that it is organized in layers that process the input in a
-feed-forward manner. However, it has some distinctive features, among
+feed-forward manner. However, it has some distinctive features in order to deal effectively with images, among
 which:
 
 - /local connectivity/: local connectivity implies that each neuron of
@@ -4214,7 +4322,7 @@ obtain an /activation map/ or /feature map/. This map will have a single
 channel. By picking a \(32 \times 32 \times 3\) image, we get a
 \(28 \times 28 \times 1\) activation map. Each element of the map is
 obtained by computing the linear combination \(w^T x + b\), with \(w\)
-weights and \(b\) bias. Matrix \(x\) are filter-sized chunks of the
+weights and \(b\) bias. Matrices \(x\) are filter-sized chunks of the
 image.
 
 Typically, several different filters are employed. Each filter will
@@ -4232,15 +4340,10 @@ interspersed with activation functions. This is depicted in Figure.
 
 [[./pics/cnn/conv-layers-3.jpg]]
 
-**** Other properties of CNNs
-    :PROPERTIES:
-    :CUSTOM_ID: other-properties-of-cnns
-    :END:
-The first one is the /equivariance to translation/. Basically, this is
-the property
+**** Equivariance to translation
+The first one is the *equivariance to translation* $T$. Basically, given a translation $T$ of an image, the following property holds
 
-\[f(T(x)) = T(f(x)),\] for which activation maps of translated images are
-translated activation maps of the original image.
+\[f(T(x)) = T(f(x)),\] for which activation maps of translated images are translated activation maps of the original image.
 
 **** Pooling layers
     :PROPERTIES:
@@ -4251,7 +4354,7 @@ each depth slice of the input volume, downsampling will be performed.
 
 [[./pics/cnn/pooling-layers.jpg]]
 
-The most common operator is the /max/ operator.
+The most common operator is the /max pooling/ operator, although it is also common the /average pooling/ operator. The first operator will simply take the maximum value across a slice, the second one the average of the slice.
 
 Pooling will basically reduce spatially the volume, but will not affect
 the number of channels for each layer.
@@ -4265,9 +4368,7 @@ weren't able to adopt CNNs in a proper way. SVMs also had more
 theoretical foundation, competitive advantages in digit classification,
 all without domain-specific adjustements or a priori knowledge. The
 issue with SVMs is that they need very good features and very good
-kernels. The last ones were handcrafted in first years of 00s, in order
-to increase performance of SVMs. Very good features were also
-handcrafted.
+kernels, which might be provided by transfer learning. The last ones were handcrafted in first years of 00s, in order to increase performance of SVMs. Very good features were also handcrafted.
 
 Then, what made possible to adopt CNNs?
 
@@ -4277,8 +4378,8 @@ CNN rebirth was possible due to:
 - ReLU non-linearity that avoid /vanishing gradient problem/. Vanishing
   gradient problem happens when activation functions are flat in some
   regions. In those points, gradient is so small that the computations
-  needed to obtain the optimum are too huge; fast GPU implementations.
-  We now can exploit capabilities of GPU in order to perform
+  needed to obtain the optimum are too huge; fast GPU implementations;
+- We now can exploit capabilities of GPU in order to perform
   convolutions, speeding up training process with their multi-core
   computing; more data available.
 
@@ -4291,7 +4392,7 @@ Consider a classification problem with \(K\) number of classes.
 We are given \(N\) labeled instances, each with dimension \(D\). The
 following set will be available,
 
-\[\mathcal{T} = \{(x_i, y_i), x_i \in \mathbb{R}^D, y_i \in 1, \dots, K, i = 1, \dots, N \}.\]
+\[\mathcal{T} = \{(x_i, y_i), x_i \in \mathbb{R}^D, y_i \in \{1, \dots, K\}, i = 1, \dots, N \}.\]
 
 Let the architecture of a network be defined, such as the output of the
 network is the overall function
@@ -4310,15 +4411,15 @@ in terms of /prediction capability/. The higher the prediction
 capability will be, the better it is.
 
 This way we face the problem as an optimization problem. In order to do
-so, we first identify the /cost function/ or /objective function/
+so, we first identify the *cost function* or *objective function*
 
 \[J(\theta) = \frac{1}{N} = \sum_{i=1}^{N} L(f(x_i, \theta), y_i) + \lambda R(\theta),\]
 
 which is a weighted sum (the average) of the empirical loss \(L\), and
 \(R(\theta)\) is a regularization term, with \(\lambda\) being a value
 that allows trade-off regularization and loss. ``Loss'' function \(L\)
-can be chosen among many possibilities. For instance, in /multiclass SVM
-loss/, we choose
+can be chosen among many possibilities. For instance, in *multiclass SVM
+loss*, we choose
 \[L(f(x_i, \theta), y_i) = \sum_{j \neq y_i} \max{(0, f_j(x_i, \theta) - f_{y_i}(x_i, \theta) + \Delta)},\]
 with the term \(f_j(x_i, \theta) - f_{y_i}(x_i, \theta) + \Delta)\)
 being the difference between the \(j\mbox{-th}\) neuron and the real
@@ -4330,7 +4431,7 @@ other score of at least \(\Delta\). Thus, winning class must be correct
 /and/ the difference between winning score and the others must be
 greater than \(\Delta\).
 
-Another possibility is the /cross-entropy loss/, for which
+Another possibility is the *cross-entropy loss*, for which
 
 \[L(f(x_i, \theta), y_i) = \sum_{j} -\log{\frac{e^{f_{y_i}(x_i, \theta)}}{\sum_j e^{f_j(x_i, \theta)}}}.\]
 
@@ -4389,14 +4490,14 @@ this corresponds to a normalization such as
 \[\sum_{j=1}^K \hat{s}_ j = 1,\] and the output of the softmax layer is
 defined in terms of scores. In particular,
 
-\[\hat{s}_ l = \frac{\exp{s_ l}}{\sum_{j=1}^K \exp{s_j}}, \mbox{ with } l = 1, \dots, K.\]
+\[\hat{s}_l = \frac{\exp{(s_l)}}{\sum_{j=1}^K \exp{(s_j)}}, \mbox{ with } l = 1, \dots, K.\]
 
 As a consequence, the softmax layer outputs sum up to \(1\).
 
 A softmax layer is reasonably composed of a cross-entropy loss function.
 In particular,
 
-\[L(f(x_i, \theta), y_i) = -\log{\hat{s}_ {y_i}} = \sum_ {j} -\log{\frac{\exp{s_{y_i}}}{\sum_j \exp{s_{y_j}}}}.\]
+\[L(f(x_i, \theta), y_i) = -\log{\hat{s}_ {y_i}} = -\log{\frac{\exp{s_{y_i}}}{\sum_j \exp{s_{y_j}}}}.\]
 
 An alternative way to express such loss is with the \(\delta\) Kronecker
 function,
@@ -4452,14 +4553,13 @@ The most important adaptation rule employs the /error back-propagation/
 which is a /gradient descent/ variant, which reduces the risk to getting
 to local minima.
 
-We update the weights iteractively, according to the gradient descent
-criterion. We follow the steepest path across that landscape.
+Simply put, one updates the weights iteractively, according to the gradient descent criterion; then, follows the steepest path across that landscape.
 
 At each step of iteration,
 
 1. compute an estimate \(\hat{g}\) of the gradient \(\nabla J(\theta)\);
 2. update the weight vector using a parameter \(\varepsilon\), called
-   /learning rate/, \[\theta \leftarrow \theta - \varepsilon \hat{g}.\]
+   *learning rate*, \[\theta \leftarrow \theta - \varepsilon \hat{g}.\]
 
 Learning rate is associated with the /speed/ of which learning happens.
 Finding proper value for learning rate could be tricky, because it is
@@ -4470,9 +4570,6 @@ a too low value will make learning very slow.
 [[./pics/cnn/learning-rate.jpg]]
 
 **** Stochastic Gradient Descent
-    :PROPERTIES:
-    :CUSTOM_ID: stochastic-gradient-descent
-    :END:
 We compute the gradient of the cost function by taking in account all
 gradients in the training dataset; this is called /deterministic
 approach/,
@@ -4483,7 +4580,11 @@ The issue is that we could fall into a local minimum due to
 non-randomness of the process. The local minimum, in fact, could be
 wrong. How to escape from that local minimum?
 
-/Stochastic Gradient Descent/ approach is the one in which we add a salt
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+*Stochastic Gradient Descent* approach is the one in which we add a salt
 of randomness. For each iteration,
 
 1. pick just a /minibatch/ of \(m\) examples from the training data set,
@@ -4496,6 +4597,10 @@ of randomness. For each iteration,
    approach;
 3. apply the update (the variation)
    \[\theta \leftarrow \theta - \varepsilon \hat{g}.\]
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 An important parameter in SGD is the size of minibatch \(m\). Computing
 gradient with a high value of examples can lead to more accurate
@@ -4526,36 +4631,23 @@ rule will simply move in the gradient direction by subtracting the
 inverse of the gradient, weighted by a constant coefficient
 \(\varepsilon\). This is the simplest technique, the *gradient descent*.
 However, lots of improvements are available. For instance, let's adopt
-*momentum*,
 
-\[\left\{\begin{array}{lll} v & \leftarrow & \alpha v - \varepsilon \hat{g}\\ \theta & \leftarrow & \theta + v \end{array}\right.\]
+- *Gradient Descent with momentum*,
 
-This is a first-order dynamic system, in which we change the
-/velocity/ \(v\) of the movement, and actual change in parameters is
-associated to the velocity. We can think of it as a particle moving in
-the parameter space. If nothing happens or the gradient is decreasing,
-the \(\alpha\) value will decade (like a velocity). Change ultimately
-depends on both gradient computed and the past velocity weighted by
-\(\alpha\);
+  \[\left\{\begin{array}{lll} v & \leftarrow & \alpha v - \varepsilon \hat{g}\\ \theta & \leftarrow & \theta + v \end{array}\right.\]
 
-#+ATTR_LATEX: :scale 0.4
-[[./pics/cnn/momentum-gd-comparison.jpg]]
+  This is a first-order dynamic system, in which we change the /velocity/ \(v\) of the movement, and actual change in parameters is associated to the velocity. We can think of it as a particle moving in the parameter space. If nothing happens or the gradient is decreasing, the \(\alpha\) value will decade (like a velocity). Change ultimately depends on both gradient computed and the past velocity weighted by \(\alpha\);
 
-- *global adaption* of learning rate, so called /annealing/, for
-  instance with a /step decay/ that reduces the learning factor every
-  few epochs, or an exponential decay such as
-  \[\varepsilon = \varepsilon_0 e^{-kt}.\] The novelty here is that
-  \(\varepsilon\) will change (will be annealed) during the learning
-  process;
+  #+ATTR_LATEX: :scale 0.4
+  [[./pics/cnn/momentum-gd-comparison.jpg]]
+
+- *global adaption* of learning rate, so called /annealing/, either with a /step decay/ that reduces the learning factor every few epochs, or an /exponential decay/ such as \[\varepsilon = \varepsilon_0 e^{-kt}.\] The novelty here is that \(\varepsilon\) will change (will be annealed) during the learning process;
 - *per-parameter adaption* of learning rate, in which each component of
   \(\theta\) has a different, adaptive, learning rate. For instance,
   possible approaches are /AdaGrad/, /RMSProp/, or /Adam/ (a bit old,
   but is much adopted).
 
 **** Gradient \(\nabla J(\theta)\) computation
-    :PROPERTIES:
-    :CUSTOM_ID: gradient-nabla-jtheta-computation
-    :END:
 In order to compute the gradient, we use the *error backpropagation
 algorithm*. The trick is that a neural network can be seen as the
 /composition of many functions/. The output will be such as
@@ -4575,7 +4667,7 @@ backpropagation, we do:
 
 1. /forward step/: from input to output, depicted in green, set the
    ``state'' and output of the network corresponding to a particular,
-   chosen input. In Figure, we have \(x_1 = -1, x_2 = -2\);
+   chosen input. In Figure, we have \(x_0 = -1, x_1 = -2\);
 2. /backward step/: from output to input, depicted in red. By applying
    chain rule, compute the gradient of the result with respect to the
    weights, for the given state determined in step \(1\). The starting
@@ -4583,11 +4675,12 @@ backpropagation, we do:
    derivative of \(\frac{1}{x}\), which is \(-\frac{1}{x^2}\), and
    compute \(-\frac{1}{1.37^2} = -0.53\) by picking the green value that
    was the result of the previous step. Basically, derivative is
-   calculated for previous point. Since the next step is \(+1\),
+   calculated for each previous point. Since the next step is \(+1\),
    derivative doesn't change. In next step, we evaluate derivative of
    the esponential function in the point \(-1.00\), which is the output
    of the previous step, and multiply it by what we had (\(-0.53\)), and
-   so on. The end result is that the gradient, with respect to each
+   so on;
+3. the end result is that the gradient, with respect to each
    weight, will depend on the number that is obtained. Numbers obtained
    for inputs will be disregarded. For instance, in example Figure we
    know that the gradient depends on \(w_0\) by a factor of \(-0.2\).
@@ -4684,11 +4777,11 @@ sampling a mask value of one (or causing the corresponding unit to be
 present), while \(1-p\) is the probability of a neuron to be removed.
 Previously seen techniques such as forward and backward propagation are
 applied in the reduced network, and update is performed based on the
-average gradient over the minibatch: the same as before.
+average gradient over the minibatch: the same as before, except for the removed nodes.
 
 [[./pics/cnn/dropout2.jpg]]
 
-In practice, *during training*, for each element of the training set a
+A special technique goes even further: *during training*, for each element of the training set a
 different subnetwork with random sampled nodes is employed to compute
 the gradient. Dropout is a way of approximating an ensamble of several
 different subnetworks, efficiently, and has be proven to be effective in
@@ -4698,10 +4791,10 @@ At *test time*, the effect of averaging the prediction of all those
 subnetworks is approximated by simply using the *complete network with
 smaller weights*, scaled by \(p\). Hence, in test time we will not
 remove neurons: we will only change weights according to \(p\). This key
-idea allow efficiency, since we can `simulate' the learning of an
+idea allow efficiency, since we can ``simulate'' the learning of an
 ensamble of subnetworks. In plain words, this idea of weighting weights
 with \(p\) is equivalent of adopting all the subnetwork. Of course, this
-is done in test time only. In training time, neurons were removed.
+is done in test time only: in training time, neurons were removed, to ``simulate'' the learning process of multiple (simpler) networks.
 
 [[./pics/cnn/dropout3.jpg]]
 
@@ -4730,6 +4823,7 @@ optimizer due to large changes of the input distributions to each
 leayer, a *small learning rate* is necessary so that the training
 process is slow.
 
+#+ATTR_LATEX: :scale 0.4
 [[./pics/cnn/batch-normalization.jpg]]
 
 The deeper the network, the worse is the phenomenon, hence a smaller
@@ -4752,21 +4846,22 @@ the /covariance matrix/, which sadly has a quadratic size over the whole
 set \(\mathcal{X}\). To reduce its size and at the same time to reduce
 covariate shift, two techniques are adopted:
 
-1. normalize each feature \(x_k\) independently on others, to zero mean
+1. the first, is to normalize each feature \(x_k\) independently on others, to zero mean
    and unit variance, such as
    \[\hat{x}_ k = \frac{x_k - \mathbb{E}[x]}{\sqrt{\mbox{var} [x_k]}}.\]
-2. estimate the mean and the variance by only using minibatch instead of
+2. the second, is to estimate the mean and the variance by only using minibatch instead of
    the entire training set.
 
-The normalization can change what the layer may represent. For instance,
+The normalization /can change what the layer can represent/. For instance,
 normalizing the input of a \(\tanh{}\) layer would force the linear
 regime on the nonlinearity. The approach above descripted will reduce
 covariance shift, improve convergence, but can potentially worsen the
 performance of the trained neural network.
 
+#+ATTR_LATEX: :scale 0.4
 [[./pics/cnn/tanh.jpg]]
 
-However, the best idea was to add /mean and variance as parameters/,
+However, the best idea is to add /mean and variance as parameters/,
 respectively \(\gamma_k\) and \(\beta_k\), to each feature \(x_k\), and
 *simply learn them* by adding scaling and shifting so that
 \[ y_k = \gamma_k x_k + \beta_k, \]
@@ -4774,12 +4869,13 @@ respectively \(\gamma_k\) and \(\beta_k\), to each feature \(x_k\), and
 with \(\gamma_k = \sqrt{\mbox{var}[x]}\) and
 \(\beta_k = \mathbb{E}[x]\).
 
+#+ATTR_LATEX: :scale 0.35
 [[./pics/cnn/mean-variance-parameters.jpg]]
 
 A batch normalization layer is hence added to the pipeline. Typically,
 this method is only used in learning phase. During prediction phase, we
 usually speed up computation using only fixed values of \(\gamma\) and
-\(\beta\). Basically, we learn them during learn phase, and use the
+\(\beta\). Basically, we learn them during training phase, and use the
 result of this learning for testing out performance of the network: this
 way, our whitening layer /becomes just a linear layer/.
 
@@ -4887,6 +4983,7 @@ Figure, which brings \(x\) directly to output.
 This will reduce significantly test error, while improving performance
 too.
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/cnn/residuals.jpg]]
 
 **** Transfer learning
@@ -4952,7 +5049,7 @@ representation is /redundant/. This is because $\lambda$ multiplies all three el
 
 Homogeneous coordinates are a trick for recovering linear maps.
 
-***** A definition: /projective plane/
+***** Projective plane
       :PROPERTIES:
       :CUSTOM_ID: definition-projective-plane
       :END:
@@ -5000,13 +5097,13 @@ homogeneous coordinates. Let \(x\) be a vector and
 augmented vector in homogeneous coordinates, $w=1$. In the case of translation
 \(t\),
 
-\[x' = x + t,\] or \[x' = [I | t] \overline{x},\] where
+\[x' = x + t,\] or \[x' =\begin{bmatrix} I & \vline & t\end{bmatrix} \overline{x},\] where
 \[t = \begin{bmatrix} t_x\\ t_y \\ t_z\end{bmatrix},\] or
 \[x' = \begin{bmatrix} I & t \\ 0^\top & 1\end{bmatrix}\overline{x}.\]
 
 This is actually a compact way to represent a translation in augmented
 vectors, with
-\[[I|t] = \begin{bmatrix} 1 & 0 & 0 & t_x\\ 0 & 1 & 0 & t_y\\ 0 & 0 & 1 & t_z\\ 0 & 0 & 0 & 1\end{bmatrix}.\]
+\[\begin{bmatrix} I & \vline & t\end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 & t_x\\ 0 & 1 & 0 & t_y\\ 0 & 0 & 1 & t_z\\ 0 & 0 & 0 & 1\end{bmatrix}.\]
 That matrix allows transforming an augmented vector \(\overline{x}\)
 into the transformed vector \(x'\).
 
@@ -5014,7 +5111,7 @@ We can also represent rotations and translations (so called /rigid body
 motions/); the transformed augmented vector will be \[x' = Rx + t,\] where we
 applied both /translation/ \(t\) and /rotation/ \(R\). In particular,
 
-\[x' = [R|t]\overline{x};\] \[x' = \begin{bmatrix} R & t\\ 0^\top & 1 \end{bmatrix}, \]
+\[x' = \begin{bmatrix} R & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} R & t\\ 0^\top & 1 \end{bmatrix}, \]
 
 where rotation matrix \(R\) is an orthonormal matrix so that
 \[RR^\top = R^\top R = I\] and \(\mbox{det}(R) = 1\), which satisfy the
@@ -5027,7 +5124,7 @@ In the two-dimensional case \(R\) takes the form
 Similarity transformations can be described as well,
 
 \[x' = sRx + t,\] and
-\[x' = [sR|t]\overline{x};\] \[x' = \begin{bmatrix} sR & t\\ 0^\top & 1 \end{bmatrix}. \]
+\[x' = \begin{bmatrix} sR & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} sR & t\\ 0^\top & 1 \end{bmatrix}. \]
 
 ***** Perspective projection matrix
       :PROPERTIES:
@@ -5053,7 +5150,10 @@ approximate it by ignoring distance \(z\). By ignoring \(z\), we say
 that they are *equal up to a scale factor*.
 
 **** General model of the camera
-[[./pics/cal/general-model.jpg]] General model of a camera is slightly
+#+ATTR_LATEX: :scale 0.45
+[[./pics/cal/general-model.jpg]]
+
+General model of a camera is slightly
 different from the simplified basic one. Main differences from the basic
 models are:
 
@@ -5077,7 +5177,7 @@ pixels over meters.
 ***** Pixelization effect
 Taking the new pixelization effect into account,
 
-\[ \begin{bmatrix} -k_u & 0 & u_0 \\ 0 & -k_v & v_0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} -f & 0 & 0 & 0 \\ 0 & -f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} = \begin{bmatrix} -fk_u & 0 & u_0 & 0 \\ 0 & -fk_v & v_0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} = K[I|0],\]
+\[ \begin{bmatrix} -k_u & 0 & u_0 \\ 0 & -k_v & v_0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} -f & 0 & 0 & 0 \\ 0 & -f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} = \begin{bmatrix} -fk_u & 0 & u_0 & 0 \\ 0 & -fk_v & v_0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} = K\begin{bmatrix} I & \vline & 0\end{bmatrix},\]
 where, by posing \(fk_u = \alpha_u\) and \(fk_v = \alpha_v\), one
 obtains the *calibration matrix*
 
@@ -5174,9 +5274,8 @@ Let \(P = [Q | q]\) be a \(3 \times 4\) matrix and let
   \[(q_1 \times q_3)^\top (q_2 \times q_3) = 0.\]
 
 **** Localizing the center of projection
-    :PROPERTIES:
-    :CUSTOM_ID: localizing-the-center-of-projection
-    :END:
+
+#+ATTR_LATEX: :scale 0.35
 [[./pics/cal/center-of-projection.jpg]]
 
 Suppose we have a \(P\) perspective projection matrix, the trick is to
@@ -5205,9 +5304,8 @@ solving for \(\tilde c\) means that \[Q\tilde c + q = 0,\] and finally,
 \[\tilde c = -Q^{-1} q.\]
 
 **** Optical rays
-    :PROPERTIES:
-    :CUSTOM_ID: optical-rays
-    :END:
+
+#+ATTR_LATEX: :scale 0.3
 [[./pics/cal/optical-ray.jpg]]
 
 An optical ray of an image point \(M'\) is the locus of points in space
@@ -5229,9 +5327,6 @@ line through all the space. Basically, homogeneous coordinates are a
 very powerful tool when calibrating cameras.
 
 *** Camera calibration
-   :PROPERTIES:
-   :CUSTOM_ID: camera-calibration-1
-   :END:
 The goal of calibration is to experimentally obtain parameters of
 perspective projection matrix (intrinsic parameters) together with
 location and orientation of camera in space (extrinsic parameters), all
@@ -5339,9 +5434,7 @@ discard trivial solution where \(p\) is simply equal to \(p = 0\). Since
 projection, hence posing a different constraint than \(||p|| = 1\) will
 result in more complexity and will ultimately be a waste of time.
 
-What's the solution then?
-
-The solution is well-known to be *the right singular vector of \(A\)*,
+What's the solution then? The solution is well-known to be *the right singular vector of \(A\)*,
 corresponding to the smallest singular value, that is
 
 \[ A = U\Sigma V^\top.\] This way, \(p=v_{12}\) is the rightmost column
@@ -5354,7 +5447,7 @@ therefore it will be the solution.
     :PROPERTIES:
     :CUSTOM_ID: degenerate-point-configurations
     :END:
-Yes. Basically, such configurations are those for which
+*Degenerate point configurations* are those for which
 
 \[ \mbox{dim}( \mbox{ker } A) \geq 2 \Rightarrow \mbox{rank}(A) \leq 10,\]
 and this means that the space of solutions has greater dimension than
@@ -5395,7 +5488,7 @@ the measured projections. This is the sum of the squares of the
 distances of the projeted points and the real points, and measures the
 reprojection error.
 
-This new definition of geometric residual will result in non-linear
+This new definition of geometric residual will result in a non-linear
 optimization problem that can be iteratively solved, starting from an
 initial guess obtained via the DLT.
 
@@ -5418,19 +5511,13 @@ Hence, basically \(Q = KR\) and \(q = Kt\).
 Recall the /QR factorization/, that any linear real square matrix can be
 written as the product of an orthogonal matrix, and an upper triangular
 matrix (this proves really useful in this case!), hence let
-\(Q^{-1} = US\) be QR-factorized, so we can write \[Q = S^{-1}U^{-1},\]
+\(Q^{-1} = US\) be QR-factorized with $U$ orthogonal and $S$ upper triangular, so we can write \[Q = S^{-1}U^{-1},\]
 where $S^{-1}$ is upper triangular (inverse of an upper triangular will
 be upper triangular too) and \(U^{-1}\) being orthogonal (inverse of an
 orthogonal matrix with respect to another matrix will be still
 orthogonal). A solution is soon found,
 
-\[ R = U^{-1}, \]
-
-\[ K = S^{-1}, \]
-
-and
-
-\[ t = K^{-1}q. \]
+\[ R = U^{-1}, \hspace*{1cm} K = S^{-1}, \hspace*{1cm} t = K^{-1}q. \]
 
 Notice that the arbitrary scale factor in \(P\) will affect \(K\). The
 proper scale for \(K\) can be obtained by imposing \(K_{33} = 1\), that
@@ -5485,6 +5572,11 @@ then
 with matrix \(H=\begin{bmatrix} p_1 & p_2 & p_4 \end{bmatrix}\) be
 non-singular unless for degenerate cases.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 #+begin_quote
   /*Predicate* Given at least \(4\) pairs of original and projected points, a matrix \(H\) corresponding to a homography can be computed via DLT./
 #+end_quote
@@ -5514,7 +5606,12 @@ which corresponds to the matrix form
 $\blacksquare$
 \end{flushright}
 
-There are then two equations. Since \(H\) has nine entries but is defined up to a scale factor, the actual degree of freedom are \(8\). Therefore, at least four correspondences are necessary. In order to do that, it is advisable to employ many more correspondences, obtaining a ``/tall/'' matrix of size $2N \times 9$. Due to measurement errors and modeling side\--effects, the matrix will possess a rank of $9$, therefore a least square solution can be found employing the method of Singular Value Decomposition.
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+There are then two equations. Since \(H\) has nine entries but is defined up to a scale factor, the actual degree of freedom are \(8\). Therefore, at least four correspondences are necessary. In order to do that, it is advisable to employ many more correspondences, obtaining a /tall matrix/ of size $2N \times 9$. Due to measurement errors and modeling side\--effects, the matrix will possess a rank of $9$, therefore a least square solution can be found employing the method of Singular Value Decomposition.
 
 ***** Zhang's method workings
      :PROPERTIES:
@@ -5664,6 +5761,7 @@ $$ \varepsilon (P) = \sum_{i=1}^N \left(\frac{p_1^{i\top} m}{p_3^{i\top} m} -u^i
 
 Epipolar geometry describes the /relationship between conjugate points/, in Figure $M^\prime$ and $M^{\prime\prime}$.
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/stereo/epipolar-scheme.jpg]]
 
 Points $E^\prime$ and $E^{\prime\prime}$ are the intersection between the line that connects the centres of symmetry of both lenses and the image planes of the lenses, and are therefore called    *epipoles*. Fixed $M^{\prime\prime}$ point, any possible conjugate point $M^\prime$ must lie in the plane containing $M, C^\prime, C^{\prime\prime}$, called the *epipolar plane* of $M$. The last two points are produced by intersecting the line connecting the epipoles with the straight lines from $M$ to the cojugate points $M^\prime$ and $M^{\prime\prime}$. By picking any possible conjugate point $M^\prime$, a line can be drawn: the *epipolar line*. All the epipolar lines $\mathcal R^\prime$ will pass through the epipole $E^\prime$ -- the same, of course, goes for $\mathcal R^{\prime\prime}$ epipolar lines through the epipole $E^{\prime\prime}$. $E^\prime$ is the projection of $C^{\prime\prime}$ in $\mathcal R^\prime$, and similarly $E^{\prime\prime}$ is the projection of $C^\prime$ in $\mathcal R^{\prime\prime}$.
@@ -5737,6 +5835,11 @@ RANSAC can be improved with $F$ to perform /robust estimation/. In particular, o
 
 Since the equation corresponding to the pair $m^\prime_a = \begin{bmatrix}u_a & v_a & 1\end{bmatrix}^\top$ and $m^\prime_b = \begin{bmatrix}u_b & v_b & 1\end{bmatrix}^\top$ takes the form $$\begin{bmatrix}u_a u_b & u_a v_b & u_a & v_a u_b & v_a v_b & v_a & u_b & v_b & 1 \end{bmatrix}\mbox{vec}(F) = 0,$$ and in a typical image $u, v\approx 10^2$, the entries of $A$ usually take values in the interval $[1, \approx 10^4]$ and $A^\top A$ in the interval $[1, \approx 10^8]$, there might be /numerical problems/. Indeed, the algorithm should also perform some kind of /normalization/. To do so, Hartley (1995) proposed the *normalized eight\--point algorithm*.
 
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
 *Input:* a set of at least eight corresponding points $\{(m^\prime_a, m^\prime_b\}$ in two images
 
 *Output:* the fundamental matrix $F$
@@ -5745,3 +5848,8 @@ Since the equation corresponding to the pair $m^\prime_a = \begin{bmatrix}u_a & 
 2. employ the eight\--point algorithm in its standard form to obtain $F$ from the normalized points;
 3. enforce rank\--two constraint via singular value decomposition; force smallest value to $0$;
 4. transform the fundamental matrix back to its original units. If $T_a$ and $T_b$ are normalizing transformations for the two images, then $$F_{orig} = T^\top_b F T_a.$$
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
