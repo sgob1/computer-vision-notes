@@ -15,6 +15,7 @@
 #+LATEX_HEADER: \usepackage{amsmath}
 #+LATEX_HEADER: \usepackage{amssymb}
 #+LATEX_HEADER: \usepackage{gensymb}
+#+LATEX_HEADER: \usepackage{cancel}
 #+BEGIN_COMMENT
 #+LATEX_HEADER: \usepackage[italian]{babel}
 #+LATEX_HEADER: \usepackage[p]{scholax}
@@ -192,6 +193,182 @@ of some monuments. In particular, three crucial computer vision problems:
 The second milestone was *AlexNet*, the first /Convolutional Neural Network/
 that was able to win the ImageNet challenge, by a large margin, bringing down
 the state-of-the-art top-5 error rate from $26.1\%$ to $15.3\%$.
+* Linear Algebra Review
+** Matrices
+*** Matrix Operations
+**** Matrix multiplication
+*Matrix product* is an operation between $A \in \mathbb{R}^{m \times n}$ and $B \in \mathbb{R}^{n \times p}$ which results in a matrix $C = AB \in \mathbb{R}^{m \times p}$ such that $$c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}.$$ Matrix product is /non\--commutative/, /associative/, and /distributive/. When $AB = BA$ one can say that the two matrices /commute/.
+**** Matrix product for submatrices
+*Matrix product* can be also expressed when both $A$ and $B$ are expressed by submatrices. In practice, this means that result will be expressed by submatrices as well, with each submatrix $$C_{ij} = \sum_{k=1}^n A_{ik}B_{kj}.$$ Columns of $A$ and $B$ must be partitioned consistently so that the rules of the general multiplication hold, and each submatrix product can be performed.
+**** Dot product
+*Dot product* or *inner product* between column vectors $x$ and $y$, both belonging to $\mathbb{R}^n$, is a special case of the matrix product such that $$x^\top y = \sum_{i=1}^n x_i y_i \in \mathbb R.$$ The dot product is commutative, associative and distributive.
+
+The inner product has a geometric meaning -- in fact, given two vectors $x$ and $y$ in a space, $$x \cdot y = x^\top y = y^\top x = ||x||||y||\cos\theta,$$ with $\theta$ acute angle between the two vectors. Two vectors are said to be *orthogonal* if their inner product (dot product) is zero, $$x \cdot y = 0.$$
+**** Outer product
+*Outer product* between column vectors $x$ and $y$ belonging to $\mathbb{R}^n$ produces a $n\times n$ matrix as a result: $$x y^\top = \begin{bmatrix}x_1y_1 & x_1 y_2 & \cdots & x_1 y_n \\ x_2 y_1 & x_2 y_2 & \cdots & x_2 y_n \\ \vdots & \vdots & \vdots & \vdots \\ x_n y_1 & x_n y_2 & \cdots & x_n y_n\end{bmatrix} \in \mathbb{R}^{n \times n}.$$ One has $xy^\top = yx^\top$.
+**** Product between a matrix and a vector
+The product between a matrix $A\in \mathbb{R}^{m \times n}$ and a vector $x \in \mathbb{R}^n$ can be either seen as a product between two matrices (one being the vector $x$), or in multiple ways. A first way is $$y = Ax = \begin{bmatrix}a_1^\top \\ a_2^\top \\ \vdots \\ a_n^\top\end{bmatrix}x = \begin{bmatrix}a_1^\top x \\ a_2^\top x \\ \vdots \\ a_n^\top x\end{bmatrix},$$ that is as if each entry (row) of the matrix was $y_i = a_i^\top x \in \mathbb R$.
+
+A second way is by writing $A$ column\--wise, hence $$y = Ax = \begin{bmatrix} a_1 & a_2 & \cdots & a_n\end{bmatrix}\begin{bmatrix}x_1 \\ x_2 \\ \vdots \\ x_n\end{bmatrix} = \begin{bmatrix}a_1\end{bmatrix}x_1 + \begin{bmatrix}a_2\end{bmatrix}x_2 + \cdots + \begin{bmatrix}a_n\end{bmatrix}x_n,$$ a /linear combination/ of the columns of matrix $A$, where the coefficients are the entries of vector $x$. The sum will yield a column vector like in the previous case.
+
+The third way is by writing $A$ row\--wise, employing the outer product. Hence, $$y = x^\top A = \begin{bmatrix} x_1 & x_2 & \cdots & x_n\end{bmatrix}\begin{bmatrix}a_1^\top \\ a_2^\top \\ \vdots \\ a_n^\top\end{bmatrix} = x_1\begin{bmatrix}a_1^\top\end{bmatrix} + x_2\begin{bmatrix}a_2^\top\end{bmatrix} + \cdots + x_n\begin{bmatrix}a_n^\top\end{bmatrix}$$ which is quite the contrary as before.
+
+The above methods can be also generalized for products between matrices -- in this case, $x$ will be a matrix, and the result will not be a column vector, but a matrix whose entries are rows or columns of $A$ and $x$, depending on the method of choice. Basically, instead of having entries of $x$, one has entire columns or rows, and should perform inner or outer products between rows\---columns and columns\---rows, respectively.
+**** Some special matrices
+The *transpose* $A^\top$ of $A$ is such that $\left(A^\top\right)_{ij} = A_{ji}$. Its properties are
+
+$$(A^\top)^\top = A; \hspace*{1cm} (AB)^\top = B^\top A^\top; \hspace*{1cm} (A + B)^\top = A^\top + B^\top.$$
+
+A square matrix $A^{n \times n}$ is *symmetric* if $$A = A^\top,$$ whilst it is *skew\--symmetric* or *anti\--symmetric* if $$A = -A^\top.$$
+
+Any square matrix $A$ can be written as the sum of a symmetric and a skew\--symmetric matrix, that is $$A = \frac 1 2 (A + A^\top) + \frac 1 2 (A - A^\top).$$
+
+The *inverse* matrix $A^{-1}$ of square matrix $A$ is defined as the matrix that, if exists, $$A^{-1}A = AA^{-1} = I_n.$$ It has the following properties,
+$$(A^{-1})^{-1} = A \hspace*{0.5cm} (A^{-1})^\top = (A^\top)^{-1} \doteq A^{-\top} \hspace*{0.5cm} (AB)^{-1} = A^{-1}B^{-1}.$$ In that case, $A$ is said to be *invertible* -- otherwise, it is said to be *singular*.
+*** Matrix properties
+**** Trace
+The *trace* of a square matrix is the sum of the elements of the diagonal $$\mbox{tr }A = \sum_{i=1}^n a_{ii}.$$ The following properties hold
+$$\mbox{tr} A = \mbox{tr}A^\top \hspace*{0.5cm} \mbox{tr}(A + B) = \mbox{tr}A + \mbox{tr}B \hspace*{0.5cm} \mbox{tr}(\alpha A) = \alpha\mbox{tr}A, \forall \alpha \in \mathbb R \hspace*{0.5cm} \mbox{tr}(AB) = \mbox{tr}A\mbox{tr}B.$$
+**** Norm
+A *norm* is any function $||\cdot||:\mathbb{R}^n \longrightarrow \mathbb{R}$ such that
+1. $||x|| > 0, \forall x\neq 0$ (positivity);
+2. $||ax|| = |a|||x||, \forall a \in \mathbb R$ (homogeneity);
+3. $||x + y|| \leq ||x|| + ||y|| (triangle inequality);
+
+Some examples are the /Euclidean norm/ $$||x||_2 = \sqrt{\sum_{i=1}^n x^2_i},$$ the $\mathcal {L}_1$ norm $$||x||_1 = \sum_{i=1}^n |x_i|$$ and the $\mathcal{L}_\infty$ norm $$||x||_\infty = \max_{i}|x_i|.$$ The level surfaces of the previous norms are, respectively, spheres, diamonds and cubes. The generic $\mathcal{L}_p$ norm for $p\in \mathbb R, p \geq 1$ is defined as $$||x||_p = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac 1 p}.$$
+
+Any vector norm /induces/ a matrix norm. Given a norm, the corresponding *induced $\mathcal{L}_p$ matrix norm* is defined as $$||A|| = \max_{||x||=1}||Ax||,$$ that is the maximum /amplification/ that a vector $x$ can have when multiplied by matrix $A$, given a norm $\mathcal{L}_p$.
+
+A special norm is the *Frobenius norm*. Frobenius norm is defined so that $$||A||_F = \sqrt{\sum_{i=1}^m\sum_{j=1}^n a_{ij}^2},$$ as if we were stacking all entries of a matrix and performing the Euclidean norm. Moreover, $$||A||_F = \sqrt{\mbox{tr}(A^\top A)}.$$
+**** Determinant
+The *determinant* $\mbox{det}A$ or $|A|$ of a square matrix $A^{n \times n}$ is a quantity defined by recursion in the following ways,
+
+$$\left\{\begin{array}{lll} \mbox{det}A & = & \sum_{j=1}^n a_{ij}(-1)^{i+j}\mbox{det}(A_{\cancel i,\cancel j}), \mbox{ with } i \mbox{ fixed } \\ \mbox{det}(a) & = & a;\end{array}\right.$$
+
+or
+
+$$\left\{\begin{array}{lll} \mbox{det}A & = & \sum_{i=1}^m a_{ij}(-1)^{i+j}\mbox{det}(A_{\cancel i,\cancel j}), \mbox{ with } j \mbox{ fixed } \\ \mbox{det}(a) & = & a;\end{array}\right.$$
+
+and with result not depending on fixed indexes of choice. The determinant of a $2\times 2$ matrix such as $$\left|\begin{bmatrix}a & b \\ c & d\end{bmatrix}\right| = ad - bc$$ has an absolute value which represents the /area of the parallelogram/ that is constructed by picking the rows of $A$ as vectors, $a, b$ and $c, d$. Determinant enjoys the following properties,
+
+$$\mbox{det}(AB) = \mbox{det}A\mbox{ det}B \hspace*{0.5cm} \mbox{det}(\alpha A) = \alpha^n\mbox{det}A, \alpha \in \mathbb R \hspace*{0.5cm} \mbox{det}(I) = 1 \hspace*{0.5cm} \mbox{det}(A^{-1}) = \frac {1}{\mbox{det}}(A).$$ Moreover, $A$ is invertible if and only if $\mbox{det}(A) \neq 0$, and its inverse can be written as $$A^{-1} = \frac{1}{\mbox{det}(A)}\mbox{adj}(A),$$ with $\mbox{adj}(A) \in \mathbb{R}^{n \times n}$ denoting the *adjoint matrix* such that $$\mbox{adj}(A)_{ij} =(-1)^{i+j}\mbox{det}(A_{\cancel j,\cancel i}).$$
+**** Linear dependence
+A set of vectors $x_1, x_2, \dots, x_n$ is said to be *linearly independent* if $$\sum_{i=1}^m \alpha_i x_i = 0 \Longrightarrow \alpha_i = 0, \forall i.$$
+**** Normal vector
+A vector $x \in \mathbb{R}^n$ is *normalized* whether it is $$||x||_2 = 1.$$
+**** Orthogonal matrices
+A square matrix $U \in \mathbb{R}^{n \times n}$ is *orthogonal* if all its columns are orthonormal to each other, that means that
+1. they are /normalized/;
+2. they are mutually orthogonal.
+
+It immediately follows that $UU^\top = U^\top U = I_n$, thus $U^{-1} = U^\top$ for any orthogonal matrix. Moreover, if $U$ is orthogonal, operating a vector with it will not change its norm, $$||Ux||_2 = ||x||_2.$$
+**** Rank
+The *column rank* of a matrix $A \in \mathbb{R}^{m \times n}$ is the size of the largest subset of columns of  $A$ that constitute a linearly independent set.
+
+The *row rank* of a matrix $A \in \mathbb{R}^{m \times n}$ is the size of the largest subset of rows of  $A$ that constitute a linearly independent set.
+
+The *rank* $\mbox{rank}(A)$ of a matrix is the column or row rank, as they are equal for any $A \in \mathbb{R}^{m \times n}$ matrix.
+
+Rank for $A,B \in \mathbb{R}^{m \times n}$ has the following properties:
++ $\mbox{rank}(A) \leq \min(m, n)$. If $\mbox{rank}(A) = \min(m, n)$ the matrix is said to be *full\--rank*; more precisely, full\--row rank or full\--column rank depending on its shape;
++ $\mbox{rank}(A) = \mbox{rank}(A^\top)$;
++ $\mbox{rank}(AB) \leq \min{(\mbox{rank}(A),\mbox{rank}(B))}$;
++ $\mbox{rank}(A + B) = \mbox{rank}(A) + \mbox{rank}(B)$;
++ if $A$ is square and full\--rank, then $\mbox{rank}(A) \neq 0$;
++ if $B$ is invertible, $\mbox{rank}(AB) = \mbox{rank}(BA) = \mbox{rank}(A)$.
+**** Span
+The *span* of a set of vectors $\{x_1, x_2, \dots, x_n\}$ is the set of all vectors that can be written as a linear combination of that set. Hence. $$\mbox{span}\{x_1, x_2, \dots, x_n\} = \left\{\nu : \nu = \sum_{i=1}^n \alpha_i x_i, \alpha\in \mathbb{R} \right\}.$$ In other words, it is the vector space /generated/ by the very same set of vectors.
+
+The span of a set of vectors is the span of the largest subset of vectors which are /independent/. Suppose a vector $x_k$ of the set can be written as a linear combination of the others -- it is straightforward to prove that $$\mbox{span}(\{x_1, x_2, \dots, x_n\}) = \mbox{span}(\{x_1, x_2, \dots, x_n\} \textbackslash x_k).$$
+**** Subspace and basis
+A space $\mathcal V$ is a *subspace* $\mathcal V \subseteq \mathbb{R}^n$ of $\mathbb{R}^n$ if it is closed with respect to the linear combinations $$u,v \in \mathcal V \Longrightarrow \alpha u + \beta v \in \mathcal V, \forall \alpha,\beta \in \mathbb{R}.$$
+
+A set of vectors $V = \{v_1, v_2, \dots, v_m\}$ is said to be a *basis* for $\mathcal V$ if the latter is /generated/ by the set $V$, $$\mathcal V = \mbox{span}\{v_1, v_2, \dots, v_m\}$$ and at the same time $V$ is a /linearly independent/ set of vectors.
+
+Given two basis $V_1$ and $V_2$ of a same $\mathcal V$ having, respectively, a $p$ and $q$ number of elements, it can be proven that they possess the same number of elements, so $p = q$.
+
+The *dimension* $\mbox{dim}\mathcal V$ of a subspace $\mathcal V$ is the number of vector of any basis of $\mathcal V$. The null subspace $\mathcal V = \{0\}$ has dimension zero.
+**** Range and nullspace
+The *range* $\mbox{im} A$ of a matrix $A \in \mathbb{R}^{m \times n}$, also said *columnspace* or *image*, is the subspace of $\mathbb{R}^m$ given by the span of the columns of $A$, that is $$\mbox{im} A = \{v \in \mathbb{R}^m : v = Ax, x\in \mathbb{R}^n\}.$$ Its properties are $$\mbox{dim}(\mbox{im}A) = \mbox{rank}(A) \hspace*{1cm} \mbox{im}A = \mbox{im}(AA^\top).$$
+
+The *rowspace* is, equivalently, the span of the rows, and is denoted by $\mbox{im}(A^\top)$. Its dimension is equal to the rank, in fact it suffices to substitute to above formulas to prove it.
+
+The *nullspace* or *kernel* of $A\in\mathbb{R}^{m \times n}$ is the set of all vectors of $\mathbb{R}^n$ that equals to $0$ when multiplied by $A$, $$\mbox{ker}(A) = \{x \in \mathbb{R}^n : Ax = 0\}.$$ The kernel $\mbox{ker}(A)$ is a subspace as well, since $Au = 0, Bv = 0 \Longrightarrow A(\alpha u + \beta v) = 0$
+
+**** Rank\--nullity theorem, and orthogonal complements
+The *Rank\--nullity theorem* states that, for a matrix $A\in\mathbb{R}^{m \times n}$ it is $$n = \underbrace{\mbox{dim}(\mbox{im}(A))}_{\mbox{\footnotesize rank}(A)} + \mbox{dim }{\mbox{ker}(A)}.$$
+
+Another fundamental theorem is the following *Theorem of the orthogonal complements*: let $A \in \mathbb{R}^{m \times n}$; then $$\left\{ w : w = u + v, u \in \mbox{im}(A^\top), v \in \mbox{ker }A \right\} = \mathbb{R}^n$$ and $$\mbox{im}(A^\top) \cap \mbox{ker }A = \{0\}.$$ The rowspace and the nullspace have /trivial intersection/ and together span the whole $\mathbb{R}^n$ space. They are said to be /orthogonal complements/ $\mbox{im}(A^\top) = \mbox{ker}(A)^\bot$.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/orthogonal-complements.jpg]]
+
+**** QR decomposition theorem
+Every matrix $A \in \mathbb{R}^{m \times n}$ with /linearly independent columns/ can be uniquely factorized as $$A = QR$$, in which the columns of $Q \in \mathbb{R}^{m \times n}$ are an orthonormal basis for $\mbox{im }A$ and $R\in\mathbb{R}^{n \times n}$ is an upper\--triangular matrix with positive entries on the diagonal.
+**** Eigenvalues and eigenvectors
+Given a square matrix $A\in\mathbb{R}^{n \times n}$, $\lambda \in \mathbb{C}$ is an *eigenvalue* of $A$ and $\nu \in \mathbb{C}^n$ is the corresponding *eigenvector* if $$A\nu = \lambda\nu, \nu\neq 0,$$ with $(\nu, \lambda)$ *eigenpair*. Multiplying $A$ by one of its eigenvectors $\nu$ results in the very same vector $\nu$, multiplied by the eigenvalue $\lambda$. Rewriting the above equation as $$(\lambda I - A)\nu = 0$$ results in an equation whose non\--zero solutions exist if and only if the matrix $(\lambda I - A)$ is rank\--deficient (not a full\--rank matrix); that happens if and only if $$\mbox{det}(\lambda I - A) = 0,$$ that also means that the eigenvalues are the roots of the $n$ th degree *characteristic polynomial* $$p(\lambda) = \mbox{det}(\lambda I - A).$$ A $n$ rows and columns matrix will possess $n$ eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$.
+
+If $\lambda_k$ is an eigenvalue, the set of corresponding eigenvectors is the set of the non\--zero solutions of $$\mbox{det}(\lambda_k I - A)\nu = 0.$$ The union between such set and $\{0\}$ is said to be *eigenspace*.
+
+For any matrix $A\in\mathbb{R}^{n\times n}$,
++ $\mbox{tr }A = \sum_{i=1}^n \lambda_i$;
++ $\mbox{det }A = \prod_{i=1}^n \lambda_i$, a singular matrix has at least an eigenvalue which is equal to zero;
++ the rank of $A$ is equal to the number of non\--zero eigenvalues of $A$;
++ if $A$ is not singular, then $(\nu, \lambda)$ is an eigenpair of $A$, whilst $(\nu, \frac{1}{\lambda})$ is an eigenpair of $A^{-1}$;
++ if $A$ is triangular, its eigenvalues are the entries of the main diagonal;
++ if $A$ is symmetric, its eigenvalues are real\--valued and its eigenvectors are orthogonal.
+**** Schur decomposition and diagonalization
+Any matrix $A\in\mathbb{R}^{n \times n}$ can be expressed as the *Schur decomposition* $$QUQ^*$$ where $U$ is upper\--triangular, $Q$ is an /unitary matrix/ (whose inverse is the conjugate transpose $Q^*$), and both are complex valued.
+
+Any /symmetric/ matrix $A\in\mathbb{R}^{n \times n}$ having eigenvalues $\lambda_1,\dots,\lambda_n$ can be expressed as $$A = T\Lambda T^\top, $$ where $\Lambda = \begin{bmatrix} \lambda_1 & 0 & \cdots & 0 \\ 0 & \lambda_2 & \cdots & 0 \\ 0 & 0 & \cdots & \lambda_n\end{bmatrix}$ and $T$ is an orthogonal matrix. The columns $t_i$ of $T$ are the /eigenvectors/ associated to the eigenpair $(t_i, \lambda_i)$.
+*** Quadratic forms
+**** Definition
+Given $A\in\mathbb{R}^{n\times n}$ and $x\in\mathbb{R}^n$ the scalar value $x^\top A x$ is called a *quadratic form* such that
+
+$$x^\top A x = \sum_{i=1}^n x_i(Ax)_i = \sum_{i=1}^n x_i\left(\sum_{j=1}^n a_{ij}x_j\right)_i = \sum_{i=1}^n\sum_{j=1}^n a_{ij}x_i x_j.$$
+
+It can be rewritten as $x^\top A x = x^\top A^\top x$ for properties of transposition. By rearrangin first and last term, $$x^\top A x = x^\top \underbrace{\left( \frac A 2 + \frac{A^\top}{2} \right)}_{\footnotesize \mbox{symmetric part of } A}x,$$ therefore /only the symmetric part contributes to the quadratic form/.
+**** Positive definite and semidefinite
+A *positive definite* matrix $A\in\mathbb{R}^{n \times n}$ is a matrix denoted as $A \succ 0$ such that $$x^\top A x > 0, \forall x\in\mathbb{R}^n, x \neq 0.$$
+
+A *positive semidefinite* matrix $A\in\mathbb{R}^{n \times n}$ is a matrix denoted as $A \succeq 0$ such that $$x^\top A x \geq 0, \forall x\in\mathbb{R}^n.$$
+
+A *negative definite* matrix $A\in\mathbb{R}^{n \times n}$ is a matrix denoted as $A \prec 0$ such that $$x^\top A x < 0, \forall x\in\mathbb{R}^n, x \neq 0.$$
+
+A *negative semi semidefinite* matrix $A\in\mathbb{R}^{n \times n}$ is a matrix denoted as $A \preceq 0$ such that $$x^\top A x \leq 0, \forall x\in\mathbb{R}^n.$$
+
+Since all eigenvalues of a symmetric matrix $A$ are real, the following lemmas are useful.
+
+*Lemma 1* A symmetric matrix $A$ is positive (negative) definite if and only if all its eigenvalues $\lambda_i$ are strictly positive (strictly negative), $$A \succ 0 \Longrightarrow \lambda_i > (<) 0, i=1,\dots,n.$$
+
+*Lemma 2* A symmetric matrix $A$ is positive (negative) semidefinite if and only if all its eigenvalues $\lambda_i$ are positive (negative), $$A \succeq 0 \Longrightarrow \lambda_i \geq (\leq) 0, i=1,\dots,n.$$
+
+For any squared matrix $A$, the matrices $(A^\top A)$ and $(AA^\top)$ are both positive semidefinite. For non symmetric matrices, the eigenvalue check should be carried out on their symmetric part.
+**** Gradient and Hessian matrix of a quadratic form
+For any symmetric $A\in\mathbb{R}^{n\times n}$ matrix,
++ the *gradient* of a quadratic form (as a column vector) is $$\nabla x^\top A x = 2Ax;$$
++ the *Hessian matrix* of a quadratic form is $$H(x^\top A x) = 2A.$$
+
+**** Cholesky theorem
+Any real symmetric and positive definite matrix $A$ can be decomposed uniquely as the product of a lower triangular matrix having strictly positive eigenvalues and its transpose, that is $$A = LL^\top,$$ with $L$ lower triangular having strictly positive eigenvalues (entries on the diagonal that are strictly positive).
+*** Principal Component analysis
+The *Principal Component Analysis* (*PCA*) is an important application of the Schur diagonalization. PCA has many different motivations and interpretations -- among which, one of the most common is /to find the direction along with data varies the most/.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/pca1.jpg]]
+
+Let $n$ points $x_1, \dots, x_n \in \mathbb{R}^m$ and suppose their mean is zero\footnote{Otherwise, one could subtract $\overline x$ from all vectors.}, $$\overline x \doteq \frac 1 n \sum_{i=1}^n x_i = 0.$$ The component of $x_i$ along the direction $d\in\mathbb{R}^m$ is given by the dot product $d^\top x_i$; the /amount of variation of the data set along direction $d$/ is then the empirical variance of the components $$\frac 1 n \sum_{i=1}^n \left(d^\top x_i\right)^2.$$
+
+To find the direction of maximal variance, one has to solve
+
+$$\mbox{arg}\max_{||d||_2 = 1} \sum_{i=1}^n \left(d^\top x_i\right)^2 = \mbox{arg}\max_{||d||_2=1} \sum_{i=1}^n \left(d^\top x_i\right)\left(x_i^\top d\right),$$ where the division by $n$ could be removed as the maximizer is the same.
+
+Collecting all data in a single matrix $X = \begin{bmatrix}x_1 & \cdots & x_n\end{bmatrix}$ one has that \(d^\top X =\begin{bmatrix}d^\top x_1 & \cdots & d^\top x_n\end{bmatrix}\) and \(X^\top d = \begin{bmatrix}x_1^\top d \\ \vdots \\ x_n^\top d\end{bmatrix},\) hence one can rewrite $$\mbox{arg}\max_{||d||_2=1} d^\top XX^\top d,$$ a more compact form.
+
+The matrix $XX^\top$ is called the *covariance matrix*, a symmetric and positive semidefinite matrix by construction. According to Schur diagonalization theorem it can be diagonalized as an orthogonal transform $$XX^\top = T\Lambda T^\top = T\begin{bmatrix} \lambda_1 & 0 & \cdots & 0 \\ 0 & \lambda_2 & \cdots & 0 \\ 0 & 0 & \cdots & \lambda_m\end{bmatrix}T^\top.$$ Each eigenvalue will have a lower value as we run through the diagonal, that is $\lambda_1 \geq \lambda_2 \geq \dots \geq \lambda_m \geq 0$. The new objective function becomes $$d^\top T\Lambda T^\top d,$$ searching for the maximizing unit vector $d$. By letting $y = T^\top d$, and since $T$ is orthogonal $||y||_2 = 0 \iff ||d||_2=0$ the problem becomes $$\mbox{arg}\max_{||y||_2=0} y^\top \Lambda y.$$ Since the eigenvalues appear in decreasing order, the /solution/ of the above problem is $$y = \begin{bmatrix} 1 & 0 & \dots & 0 \end{bmatrix}^\top.$$ The maximizing $d$ is, therefore, $$d = Ty = t_1,$$ which is the first column of $t_1$, corresponding to the eigenvector associated with the /largest eigenvalue/ of the covariance matrix.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/pca2.jpg]]
 
 * Image Formation
 ** Image Formation
@@ -269,18 +446,22 @@ similarity of triangles construction, we will have that
 
 \[ [X', Y', Z']^T =  [-\frac{f}{Z}X, -\frac{f}{Z}Y, -f]^T,\]
 
-because of the similarity relationship of \[\frac{M}{f} = \frac{M'}{Z}\]
+because of the similarity relationship of \[\frac{M'}{f} = \frac{M}{Z}\]
 hence the ratio \[\frac{M'}{M} = \frac{f}{Z} \equiv p.\] The latter is
 called /perspective scale factor/, and it describes the effect for which
 farther away objects appear smaller. The far the object moves, the
 smaller the shrinking due to perspective scale factor is.
 
+Hence,
+
+$$ \begin{bmatrix}x' \\ y' \\ z'\end{bmatrix} = \begin{bmatrix} -px \\ -py \\ -pz\end{bmatrix}$$ and one soon obtains the previous relationship.
+
 In particular, for objects very far from the camera - so that they're
 thin (with maximum length \(\Delta Z\)) with respect to their distance
-\(Z_0\) from the camera - perspective scale factor is roughly constant.
+\(Z_0\) from the camera - perspective scale factor $\varrho$ is roughly constant.
 Namely,
 
-\[ psf = \frac{f}{Z_0 + \Delta Z} \approx \frac{f}{Z_0} \] due to the
+\[ \varrho = \frac{f}{Z_0 + \Delta Z} \approx \frac{f}{Z_0} \] due to the
 fact that \(Z_0 >> \Delta Z\).
 
 Hence, we can approximate perspective projection such as
@@ -288,7 +469,7 @@ Hence, we can approximate perspective projection such as
 \[ X' = -\frac{f}{Z_0}X;\] \[ Y' = -\frac{f}{Z_0}Y.\]
 
 Leonardo da Vinci developed a rule of thumb to understand when the
-previous condition holds - that is when \[\frac{\Delta Z}{Z_0} < 0.10.\]
+previous condition holds - that is when \[\frac{\Delta Z}{Z_0} < 0.10,\] or $$Z_0 > 10\Delta z.$$
 This rule helps us determine when perspective becomes /weak perspective/
 in the sense that it doesn't count much anymore.
 
@@ -338,7 +519,7 @@ particular properties:
 2. rays coming horizontally will be all directed towards a single point
    \(F\), called /focal point/;
 3. rays departing from the same point will follow other directions, but
-   always reach the focal point.
+   always reach the focal point. That's how more light can actually be collected, as many rays will be collected by the lens and will hit the same point on the image plane.
 
 With these properties we can build our pinhole system with a thin lens.
 
@@ -448,11 +629,11 @@ blurring of the image in the circle where the rays are incident.
 
 A blur circle diameter is given by the formula
 
-\[d_{blur} = d\frac{|\Delta Z'|}{Z'},\]
+\[d_{blur} = d\cdot\frac{|\Delta Z'|}{Z'},\]
 
 where \(d\) is the lens diameter and the expression is obtained using
 triangles similarities. In fact, we have
-\[ \frac{d_{blur}}{d} = \frac{\Delta Z'}{Z'}\].
+\[ \frac{d_{blur}}{d} = \frac{\Delta Z'}{Z'}.\]
 
 Blurring prevents getting sharp and detailed images: therefore, we must
 avoid getting blur effects on our images.
@@ -5711,7 +5892,7 @@ $$r_2 = \lambda K^{-1}h_2,$$
 $$t = \lambda K^{-1}h_3,$$ and $$r_3 = r_1 \times r_2.$$
 
 The factor \(\lambda\) will be such that \(r_1\) and \(r_2\) have norm \(1\). Therefore, $$\lambda = \frac{1}{||K^{-1}h_1||} = \frac{1}{||K^{-1}h_2||}.$$
-However, it's not guaranteed that those two vectors, forming a matrix $R$, are orthogonal ($R$ might not be orthogonal). We should then find the /closest/ orthogonal matrix (/in Frobenius norm/, which is the Euclidean norm of two matrices by picking all elements and summing them up[fn::Frobenius norm is that in which, having a matrix $A_{m \times n}$, is $$||A||_F \doteq \sqrt{\sum_{i=1}^m\sum_{j=1}^n |a_{ij}|^2}.$$]), which is \[R' = UV^\top,\] having \[R = U\Sigma V^\top \] as the singular value decomposition of \(R\), and replacing \(\Sigma\) with the identity matrix \(I_3\). Typical approach is to force orthogonoality by singular value decomposition and just pick the \(R'\) matrix with the just mentioned process.
+However, it's not guaranteed that those two vectors, forming a matrix $R$, are orthogonal ($R$ might not be orthogonal). We should then find the /closest/ orthogonal matrix (/in Frobenius norm/, which is the Euclidean norm of two matrices by picking all elements and summing them up), which is \[R' = UV^\top,\] having \[R = U\Sigma V^\top \] as the singular value decomposition of \(R\), and replacing \(\Sigma\) with the identity matrix \(I_3\). Typical approach is to force orthogonoality by singular value decomposition and just pick the \(R'\) matrix with the just mentioned process.
 
 **** How the number of calibration images affects the accuracy of the calibration?
 
