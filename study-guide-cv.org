@@ -5,6 +5,7 @@
 #+OPTIONS: H:5
 #+STARTUP: overview
 
+
 #+LATEX_CLASS_OPTIONS: [10pt]
 #+LATEX_HEADER: \usepackage[a4paper, inner=4.1cm, outer=4.1cm, tmargin=2.7cm, bmargin=3.0cm]{geometry} % Sets margins and borders
 #+LATEX_HEADER: \usepackage[document]{ragged2e}
@@ -38,6 +39,40 @@
 #+LATEX_HEADER: \fancyfoot[LE,RO]{\thepage}
 #+LATEX_HEADER: \renewcommand{\headrulewidth}{1pt}
 
+#+begin_src emacs-lisp :exports results :results none :eval export
+  (make-variable-buffer-local 'org-latex-title-command)
+  (setq org-latex-title-command (concat
+     "\\begin{titlepage}\n"
+        "\\begin{center}\n"
+                "\\Large\n"
+                "\\textbf{UNIVERSITÀ DEGLI STUDI DI TRIESTE}\n"
+                "\\par\\noindent\\rule{\\textwidth}{1.8pt}\n"
+                "\\vspace*{0.6cm}\n"
+                "\\large\n"
+                "\n"
+                "\\emph{Marco Sgobino}\n"
+                "\n"
+                "\\large\n"
+                "\\vspace*{0.6cm}\n"
+                "\\Large Notes from the course of\n"
+                "\n"
+                "\\vspace*{0.6cm}\n"
+                "\\Huge\n"
+                "\\textsc{Computer Vision and Pattern Recognition}\n"
+                "\n"
+                "\\vspace*{.1cm}\n"
+                "\\vspace*{2cm}\n"
+                "\\begin{center}\n"
+                "\\includegraphics[width=.6\\textwidth, keepaspectratio]{./pics/cv-titlepage.png}\n"
+                "\\end{center}\n"
+                "\\vfill\n"
+                "\\par\\noindent\\rule{\\textwidth}{1.8pt}\n"
+                "\\vspace*{0.6cm}\n"
+                "\\large\n"
+                "\\emph{Academic Year 2021-2022}\n"
+        "\\end{center}\n"
+"\\end{titlepage}\n"))
+#+end_src
 
 * Introduction
 \setstretch{1.25}
@@ -1166,6 +1201,7 @@ we could be interested in:
 /Image warping/ is the idea to modify an image by applying some kind of
 transformation.
 
+#+ATTR_LATEX: :scale 0.27
 [[./pics/proc/image-warping.jpg]]
 
 The above transformations will change the /domain/ of the image, are
@@ -1174,10 +1210,10 @@ transformation is the /rotation/. There are two kinds of warping: the
 /forward warping/ and the /inverse warping/.
 
 **** Forward warping
-    :PROPERTIES:
-    :CUSTOM_ID: forward-warping
-    :END:
-
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 #+begin_quote
   /Forward warping transforms an image \(f(x)\) into an image \(g(x')\) by means of the transform \(x' = h(x)\):/
 #+end_quote
@@ -1190,6 +1226,10 @@ procedure ForwardWarp(f, h) out g
     end for
 end procedure
 #+END_EXAMPLE
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 This works by calculating point in the output image by applying transform of
 input pixels. Looks like this works well, but in practice it will not: by
@@ -1200,10 +1240,10 @@ location will be an integer (and thus, we cannot locate the resulting
 transformed pixel reliably).
 
 **** Inverse warping
-    :PROPERTIES:
-    :CUSTOM_ID: inverse-warping
-    :END:
-
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 #+begin_quote
   /Inverse warping transforms an image \(f(x)\) into an image \(g(x')\) by means of the transform \(x = h^{-1}(x') = \hat{h}(x)\), with \(x' = h(x)\):/
 #+end_quote
@@ -1217,6 +1257,10 @@ procedure InverseWarp(f, h) out g
     end for
 end procedure
 #+END_EXAMPLE
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
 
 This works well, because our output is /guaranteed to be an integer/, at
 the cost of resampling the /input/ in order to find the value of the
@@ -1226,9 +1270,6 @@ filter, because generally a sampling rate \(r\) is not defined for
 \(g(x')\) output image.
 
 **** Non-parametric transforms
-    :PROPERTIES:
-    :CUSTOM_ID: non-parametric-transforms
-    :END:
 [[./pics/proc/non-parametric-transform.jpg]]
 
 Non-parametric transforms are all those that are non global. Basically,
