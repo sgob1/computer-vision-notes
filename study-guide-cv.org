@@ -352,7 +352,7 @@ For any symmetric $A\in\mathbb{R}^{n\times n}$ matrix,
 
 **** Cholesky theorem
 Any real symmetric and positive definite matrix $A$ can be decomposed uniquely as the product of a lower triangular matrix having strictly positive eigenvalues and its transpose, that is $$A = LL^\top,$$ with $L$ lower triangular having strictly positive eigenvalues (entries on the diagonal that are strictly positive).
-*** Principal Component analysis
+*** Principal Component Analysis
 The *Principal Component Analysis* (*PCA*) is an important application of the Schur diagonalization. PCA has many different motivations and interpretations -- among which, one of the most common is /to find the direction along with data varies the most/.
 
 #+ATTR_LATEX: :scale 0.3
@@ -386,7 +386,7 @@ Let the following linear system of equations $$Ax = b$$ where $A \in\mathbb{R}^{
 **** Non\--homogeneous linear systems
 If $b \neq 0$, the system is said to be /non\--homogeneous/.
 
-*Theorem* Consider the system $$Ax = b$$, where $A \in\mathbb{R}^{m\times n}$, $x\in\mathbb{R}^n$ and $b\in\mathbb{R}^m$; the system admits solution if and only if $$\mbox{rank }A = \mbox{rank }\left(\begin{bmatrix} A & b \end{bmatrix}\right).$$ If the system admits solution $\overline x$, then $$\{x:x = x_0 + \overline x \mbox{ where } x_0 \in \mbox{ker }A\}$$ is the entire space of the solutions.
+*Theorem* Consider the system $$Ax = b$$ where $A \in\mathbb{R}^{m\times n}$, $x\in\mathbb{R}^n$ and $b\in\mathbb{R}^m$; the system admits solution if and only if $$\mbox{rank }A = \mbox{rank }\left(\begin{bmatrix} A & b \end{bmatrix}\right).$$ If the system admits solution $\overline x$, then $$ \overline{\mathcal{X}} = \{x:x = x_0 + \overline x \mbox{ where } x_0 \in \mbox{ker }A\}$$ is the entire space of the solutions.
 
 The following observations are worth to be done,
 + $\mbox{rank }A = \mbox{rank }\left(\begin{bmatrix} A & b \end{bmatrix}\right)$ is equivalent to state that $b \in \mbox{im }A$;
@@ -448,8 +448,8 @@ The minimum\--norm solution can be then found by substituting the second in the 
 #+ATTR_LATEX: :scale 0.3
 [[./pics/alg/mns.jpg]]
 
-The minimum norm solution is /orthogonal/ to $\mbox{ker }A$, as for any $\varkappa \in \mbox{ker }A$ one has both $A\varkappa = 0$ and $\varkappa^\top A^\top = 0$; thus,
-$$\varkappa^\top \hat x = \varkappa^\top A^\top (AA^\top)^{-1}b = 0.$$
+The minimum norm solution is /orthogonal/ to $\mbox{ker }A$, as for any $\kappa \in \mbox{ker }A$ one has both $A\kappa = 0$ and $\kappa^\top A^\top = 0$; thus,
+$$\kappa^\top \hat x = \kappa^\top A^\top (AA^\top)^{-1}b = 0.$$
 
 The geometric interpretation for the minimum norm solution is that $\hat x$ is the /projection/ of the origin of $\mathbb{R}^n$ onto the solution set of $Ax - b =0$.
 ** Singular Value Decomposition
@@ -576,7 +576,9 @@ As $\mbox{rank }D = k$, one has that $\mbox{rank }B \leq k$; for this reason, th
 \vspace*{0.4cm}
 *Preposition* $B = U_k\Sigma_k V^\top_k$ also satisfied the constrained problem, for $B$ of the form $DD^\top X$ with $D$ having orthonormal columns, with $D = U_k$.
 
-*Proof* Let's decompose to the singular values $X = U\Sigma V^\top$. Let's denote $\bigstar$ any submatrix that doesn't affect the result in any way. One then has
+*Proof* Let's decompose to the singular values $X = U\Sigma V^\top$. Let's denote $\bigstar$ any submatrix that doesn't affect the result in any way (as the term is multiplied by zero, thus canceled).
+
+One then has
 
 \[\begin{array}{rcl} U_k U^\top_k X & = & U_k U^\top_k U \Sigma V^\top \\ & = & U_k \begin{bmatrix}I_k & 0 \end{bmatrix}\begin{bmatrix}\Sigma_k & 0 \\ 0 & \bigstar \end{bmatrix}\begin{bmatrix}V^\top_k \\ \bigstar \end{bmatrix} \\ & = & U_k\begin{bmatrix}\Sigma_k & 0 \end{bmatrix}\begin{bmatrix}V^\top_k \\ \bigstar \end{bmatrix} \\ & = & U_k \Sigma_k V^\top_k. \end{array}\]
 
@@ -651,7 +653,7 @@ Hence, being orthogonal is not a sufficient condition for being a rotation matri
 
 #+ATTR_LATEX: :scale 0.3
 [[./pics/alg/neg-rot.jpg]]
-
+\clearpage
 *** Coordinate transformations
 **** Translation and rotation
 Given $S_0$ world reference frame, a new reference frame $S_1$ can differ from $S_0$ by a translation of the origin from $t_0$ to $t_1$ and a rotation of the axes from $i_0, j_0, k_0$ to $i_1, j_1, k_1$. A point $P$ whose coordinates $p = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$ will end up having coordinates ${}^1 p = \begin{bmatrix}{}^1 x \\ {}^1 y \\ {}^1 z\end{bmatrix}$ on the reference system $S_1$.
@@ -1003,6 +1005,8 @@ compensate it. Thick lenses suffer from side effects such as /radial
 distorsion/ (straight lines become curve), /pincushion distorsion/
 (increasing magnification) and /barrel distorsion/ (decreasing
 magnification).
+
+[[./pics/visio/distortion.jpg]]
 
 [[./pics/visio/thick-lens.jpg]]
 
@@ -2734,9 +2738,7 @@ detect.
 [[./pics/det/zebra-4.jpg]]
 
 **** Non-maximum suppression
-    :PROPERTIES:
-    :CUSTOM_ID: non-maximum-suppression
-    :END:
+#+ATTR_LATEX: :scale 0.3
 [[./pics/det/non-maximum-suppression.jpg]]
 
 *Non-maximum suppression* allows finding out whether a given pixel \(q\)
@@ -2905,12 +2907,10 @@ flows, earth mover's distance is defined as the resulting effort
 Normalization is usually needed, otherwise smaller signatures would be
 favored.
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/det/emd-explanation.jpg]]
 
 **** Possible boundary detection with Earth Mover's Distance
-    :PROPERTIES:
-    :CUSTOM_ID: possible-boundary-detection-with-earth-movers-distance
-    :END:
 Consider a circular mask, divided in two regions: region \(1\) and
 region \(2\). For a given location of the image, compute two signatures
 for different orientations of the mask. Orientation of the mask is
@@ -3160,6 +3160,7 @@ A /least square residual/ is the quantity \(r^2 = (y - (px + q))^2\),
 which is the vertical distance between the line \(px + q\) and the point
 \(y\).
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/fit/least-squares.jpg]]
 
 The problem is formalized as follows,
@@ -3182,9 +3183,6 @@ the variable \(y\) is affected by noise*, while we know that in an image
 both variables are equally important.
 
 **** Total least squares
-    :PROPERTIES:
-    :CUSTOM_ID: total-least-squares-1
-    :END:
 The solution of the least squares formalization is the adoption of the
 *total least squares* formalization.
 
@@ -3196,6 +3194,7 @@ one can formalize the problem in such a way that
 \[\min_{a, b, c} (ax_i + by_i + c)^2,\] under constraint
 \(a^2 + b^2 = 1.\)
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/fit/total-least-squares.jpg]]
 
 To solve this, let's apply the *Lagrangian multiplier technique*.
@@ -3221,11 +3220,11 @@ the /average/. Basically, one gets
 and dividing both members by \(N\), one can compute averages for the
 remaining terms, and get the matrix form
 
-\[ \begin{bmatrix} \overline{x^2} - \overline{x}\overline{x} & \overline{xy} - \overline{y}\overline{x} \\ \overline{xy}- \overline{x}\overline{y} & \overline{y^2} - \overline{y}\overline{y} \end{bmatrix} \begin{bmatrix} a\\ b \end{bmatrix} = \mu \begin{bmatrix} a\\ b \end{bmatrix}, \]
+\[ \begin{bmatrix} \overline{x}^2 - \bar{x}\bar{x} & \overline{xy} - \bar{y}\bar{x} \\ \overline{xy}- \bar{x}\bar{y} & \overline{y}^2 - \bar{y}\bar{y} \end{bmatrix} \begin{bmatrix} a\\ b \end{bmatrix} = \mu \begin{bmatrix} a\\ b \end{bmatrix}, \]
 
 where we substituted \(\displaystyle-\frac{\lambda}{N} \doteq \mu\). By calling
 
-\[ M = \begin{bmatrix} \overline{x}^2 - \overline{x}\overline{x} & \overline{xy} - \overline{y}\overline{x} \\ \overline{xy}- \overline{x}\overline{y} & \overline{y}^2 - \overline{y}\overline{y} \end{bmatrix}, \]
+\[ M = \begin{bmatrix} \overline{x}^2 - \bar{x}\bar{x} & \overline{xy} - \bar{y}\bar{x} \\ \overline{xy}- \bar{x}\bar{y} & \overline{y}^2 - \bar{y}\bar{y} \end{bmatrix}, \]
 
 one gets an /eigenvalue problem/ of the general form \(M\nu = \mu \nu\),
 with \(\mu\) eigenvalue and \(\nu = \begin{bmatrix}a\\ b\end{bmatrix}\)
@@ -3249,9 +3248,6 @@ existing solutions, each one corresponding to an eigenvector, we should
 pick the one that corresponds to the minimum total least squares error.
 
 **** Implementing robustness in fitting techniques
-    :PROPERTIES:
-    :CUSTOM_ID: implementing-robustness-in-fitting-techniques
-    :END:
 The aforementioned techniques still suffer from the outliers issue. In
 fact, squared error terms provide nice analytic treatment, at the price
 of a high sensitivity to outliers, because any outlier term distant from
@@ -3277,6 +3273,7 @@ A common family is
 \[\rho(r) = \frac{r^2}{r^2 + k^2},\] with \(k\) parameter that controls
 the point in which the function flattens out.
 
+#+ATTR_LATEX: :scale 0.32
 [[./pics/fit/m-estimators-k.jpg]]
 
 A second family of function is the /Huber loss function/, defined in
@@ -3287,6 +3284,7 @@ such way,
 which has the peculiarity that, after a certain point controlled by the
 value of \(k\), the function changes from quadratic to linear.
 
+#+ATTR_LATEX: :scale 0.32
 [[./pics/fit/m-estimators-huber.jpg]]
 
 M-estimators lead to a /nonlinear minimization problem/ that is
@@ -5100,6 +5098,7 @@ related to how large our steps in finding the local minima will be. Too
 large \(\varepsilon\) will yield too large steps for some minima, while
 a too low value will make learning very slow.
 
+#+ATTR_LATEX: :scale 0.3
 [[./pics/cnn/learning-rate.jpg]]
 
 **** Stochastic Gradient Descent
