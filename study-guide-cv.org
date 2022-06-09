@@ -39,6 +39,7 @@
 #+LATEX_HEADER: \fancyhead[LE,RO]{\leftmark}
 #+LATEX_HEADER: \fancyfoot[LE,RO]{\thepage}
 #+LATEX_HEADER: \renewcommand{\headrulewidth}{1pt}
+#+LATEX_HEADER: \newtheorem{theorem}{Theorem}[theorem]
 
 #+begin_src emacs-lisp :exports results :results none :eval export
   (make-variable-buffer-local 'org-latex-title-command)
@@ -306,7 +307,7 @@ Another fundamental theorem is the following *Theorem of the orthogonal compleme
 **** QR decomposition theorem
 Every matrix $A \in \mathbb{R}^{m \times n}$ with /linearly independent columns/ can be uniquely factorized as $$A = QR$$, in which the columns of $Q \in \mathbb{R}^{m \times n}$ are an orthonormal basis for $\mbox{im }A$ and $R\in\mathbb{R}^{n \times n}$ is an upper\--triangular matrix with positive entries on the diagonal.
 **** Eigenvalues and eigenvectors
-Given a square matrix $A\in\mathbb{R}^{n \times n}$, $\lambda \in \mathbb{C}$ is an *eigenvalue* of $A$ and $\nu \in \mathbb{C}^n$ is the corresponding *eigenvector* if $$A\nu = \lambda\nu, \nu\neq 0,$$ with $(\nu, \lambda)$ *eigenpair*. Multiplying $A$ by one of its eigenvectors $\nu$ results in the very same vector $\nu$, multiplied by the eigenvalue $\lambda$. Rewriting the above equation as $$(\lambda I - A)\nu = 0$$ results in an equation whose non\--zero solutions exist if and only if the matrix $(\lambda I - A)$ is rank\--deficient (not a full\--rank matrix); that happens if and only if $$\mbox{det}(\lambda I - A) = 0,$$ that also means that the eigenvalues are the roots of the $n$ th degree *characteristic polynomial* $$p(\lambda) = \mbox{det}(\lambda I - A).$$ A $n$ rows and columns matrix will possess $n$ eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$.
+Given a square matrix $A\in\mathbb{R}^{n \times n}$, $\lambda \in \mathbb{C}$ is an *eigenvalue* of $A$ and $\nu \in \mathbb{C}^n$ is the corresponding *eigenvector* if $$A\nu = \lambda\nu, \nu\neq 0,$$ with $(\nu, \lambda)$ *eigenpair*. Multiplying $A$ by one of its eigenvectors $\nu$ results in the very same vector $\nu$, multiplied by the eigenvalue $\lambda$. Rewriting the above equation as $$(\lambda I - A)\nu = 0$$ results in an equation whose non\--zero solutions exist if and only if the matrix $(\lambda I - A)$ is rank\--deficient (not a full\--rank matrix); that happens if and only if $$\mbox{det}(\lambda I - A) = 0,$$ that also means that the eigenvalues are the roots of the $n\mbox{-th}$ degree *characteristic polynomial* $$p(\lambda) = \mbox{det}(\lambda I - A).$$ A $n$ rows and columns matrix will possess $n$ eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$.
 
 If $\lambda_k$ is an eigenvalue, the set of corresponding eigenvectors is the set of the non\--zero solutions of $$\mbox{det}(\lambda_k I - A)\nu = 0.$$ The union between such set and $\{0\}$ is said to be *eigenspace*.
 
@@ -370,15 +371,324 @@ The matrix $XX^\top$ is called the *covariance matrix*, a symmetric and positive
 #+ATTR_LATEX: :scale 0.3
 [[./pics/alg/pca2.jpg]]
 
+From the above formulation, it is clear that also the subsequent $t_2, t_3, \dots, t_m$ represent directions orthogonal to each other that show subsequently decreasing variance, as in Figure.
+
+The PCA can be also used for /dimensionality reduction/. In particular, by projecting the original data in the subspace spanned by the first $k < m$ columns of $T$, one can actually reduce the number of dimensions required to describe each example. In practice, this is done picking any original vector $x \in \mathbb{R}^m$ and projecting it onto the subspace $\mathcal T$ spanned by vectors $\{t_1, t_2, \dots, t_m\}$ that were solutions of the previous eigenvalue problem, by means of the matrix $D = \begin{bmatrix}t_1 & t_2& \cdots & t_m\end{bmatrix}$. The obtained vector $\hat x \in \mathbb{R}^m$ is \[\hat x = DD^\top x.\] The crucial aspect is that the coordinates of $\hat x$ with respect to the basis of $\mathcal T$ (the set of $t_i$) are given by $$z = D^\top x,$$ and are called the *first $\bf k$ principal components* of $x$.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/pca3.jpg]]
+** Solution to linear systems of equations
+*** Exact solutions
+**** Homogeneous linear systems
+Let the following linear system of equations $$Ax = b$$ where $A \in\mathbb{R}^{m\times n}$, $x\in\mathbb{R}^n$ and $b\in\mathbb{R}^m$. If $b=0$ the system is said to be /homoegeneous/, $$Ax=0.$$ From the definition of nullspace, the solution is then the $\mbox{ker }A$. Two cases regarding the rank of the matrix are possible,
+1. the $\mbox{rank }A = n$, or $A$ is a full\--column rank matrix. In this case, by the rank\--nullity theorem, $\mbox{dim}(\mbox{ker }A) = 0$. It follows that $\mbox{ker }A = \{0\}$ and the only solution is the trivial solution $x = 0$;
+2. the matrix $A$ is not a full\--rank matrix, that is when $\mbox{rank }A < n$. In that case, there exist infinite solutions, and the set of solutions is the subspace of $\mathbb{R}^n$ of dimension $$\mbox{dim}(\mbox{ker }A) = n - \mbox{rank }A \geq 1.$$
+**** Non\--homogeneous linear systems
+If $b \neq 0$, the system is said to be /non\--homogeneous/.
+
+*Theorem* Consider the system $$Ax = b$$, where $A \in\mathbb{R}^{m\times n}$, $x\in\mathbb{R}^n$ and $b\in\mathbb{R}^m$; the system admits solution if and only if $$\mbox{rank }A = \mbox{rank }\left(\begin{bmatrix} A & b \end{bmatrix}\right).$$ If the system admits solution $\overline x$, then $$\{x:x = x_0 + \overline x \mbox{ where } x_0 \in \mbox{ker }A\}$$ is the entire space of the solutions.
+
+The following observations are worth to be done,
++ $\mbox{rank }A = \mbox{rank }\left(\begin{bmatrix} A & b \end{bmatrix}\right)$ is equivalent to state that $b \in \mbox{im }A$;
++ if $\mbox{rank }A = n$ and the system admits a solution, then the solution is unique;
++ if $A$ is a squared, full\--rank matrix the condition is certainly satisfied and there exists a unique solution, which can be found as $x = A^{-1}b$;
++ the set of solutions is a /linear variety/, as represented in Figure.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/lssolker.jpg]]
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+
+*Property* For any $A \in \mathbb{R}^{m \times n}$ it is that $$\mbox{rank }A = \mbox{rank}(A^\top A) = \mbox{rank}(AA^\top).$$
+
+*Proof* Let's prove the first equality. Let $x \in \mbox{ker}(A^\top A)$; then $(A^\top A)=0$, and multiplying it by $x^\top$ to the left one gets $x^\top A^\top A x = 0$, which means that $||Ax|| = 0$, hence $x \in \mbox{ker }A$ belongs to the nullspace. This means that $$x \in \mbox{ker}(A^\top A) \Leftrightarrow x \in \mbox{ker }A,$$ as the other way around is obvious. The second equality follows as $\mbox{rank }M = \mbox{rank }M^\top$.
+
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+
+In other words, $A^\top A$ and $A$ possess the same nullspace, and since they have the same number $n$ of columns this also means that for the rank\--nullity theorem the dimension of their columnspace must be the same.
+
+*** Least\--squares approximate solution to overdetermined systems
+In the attempt of fitting a model with real and noisy data, *overdetermination* of a system of equations is frequently encountered. Overdetermination is a condition in which the ``height'' of $A$ and $b$ is much greater than the height of $x$ -- one will say that $A$ is a /tall/ matrix. One wants to solve $Ax = b$ with $b \notin \mbox{im }A$; since the system does not admit a solution, the best idea is to get the $x$ so that $Ax$ is the /closest possible/ to $b$. Measuring the distance with Euclidean norm one gets the problem $$\min_{x} ||Ax - b||^2_2.$$
+
+In most frequent cases, $A$ is a full\--rank matrix and the problem admits a single solution of the form
+
+\[
+\begin{array}{rcl} || Ax - b || ^2_2 & = & (Ax - b)^\top (Ax - b) = (x^\top A^\top - b^\top)(Ax - b) \\ & = & x^\top A^\top A x - 2 x^\top A^\top b + b^\top b;\end{array}\] by taking the gradient with respect to $x$ and equating to zero to find the solutionone gets \[2A^\top A x - 2A^\top b = 0, \mbox{ that is } A^\top A x = A^\top b.\] The matrix $A^\top A \in \mathbb{R}^{n \times n}$ and its rank is $n$ (full\--rank matrix). For these reasons $A^\top A$ is invertible, and one can obtain the closest solution $$\hat x = (A^\top A)^{-1}A^\top b.$$
+
+The geometric interpretation of the least\--squares solution, since $A\hat x$ is, by definition, the point that is /the closest/ to $b$ while still belonging to $\mbox{im }A$. This means that $||A\hat x||$ is the /projection/ of $b$ onto $\mbox{im }A$.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/lsas.jpg]]
+*** Minimum\--norm solution to underdetermined systems
+Differently from the previous case, *underdetermined* systems are all systems whose $x$ is ``taller'' than $A$ and $b$, a case that happens when when there are more variables than independent equations. In this case, infinite solutions exists if $\mbox{rank }A = m$ and $m > n$. A possible workaround in this case is to find the /minimum\--norm solution/ by solving the problem $$\min||x||_2$$ subject to $$Ax = b.$$
+
+The problem can be stated as $$\min x^\top x$$, with the same constraints. By introducing the /Lagrange multipliers/ on $\lambda \in \mathbb {R}^m$ one can get the problem \[\mathcal{L}(x, \lambda) = x^\top x + \lambda^\top (Ax - b).\] Since this is a problem with a Lagrangian multiplier, to solve it one should impose the /stationary conditions/ by computing the gradient for all variables and set the obtained quantities to $0$,
+
+\[\begin{array}{rcl}
+\nabla_x \mathcal{L}(x, \lambda) & = & 2x + A^\top \lambda = 0\\
+\nabla_\lambda \mathcal{L}(x, \lambda) & = & Ax - b = 0.
+\end{array} \]
+
+From the first, $x = -A^\top \frac \lambda 2$, and from the second $\lambda = -2(AA^\top)^{-1}b$, with $AA^\top \in \mathbb{R}^{m \times m}$ certainly invertible as it is a full\--rank matrix whose rank is $m$.
+
+The minimum\--norm solution can be then found by substituting the second in the first, that is $$\hat x = A^\top(AA^\top)^{-1}b.$$
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/mns.jpg]]
+
+The minimum norm solution is /orthogonal/ to $\mbox{ker }A$, as for any $\varkappa \in \mbox{ker }A$ one has both $A\varkappa = 0$ and $\varkappa^\top A^\top = 0$; thus,
+$$\varkappa^\top \hat x = \varkappa^\top A^\top (AA^\top)^{-1}b = 0.$$
+
+The geometric interpretation for the minimum norm solution is that $\hat x$ is the /projection/ of the origin of $\mathbb{R}^n$ onto the solution set of $Ax - b =0$.
+** Singular Value Decomposition
+*** Theorem of SVD
+Any matrix $A \in \mathbb{R}^{m \times n}$ can be written with the *Singular Value Decomposition* as $$A = U\Sigma V^\top$$ where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are /orthogonal/ matrices and $\Sigma \in \mathbb{R}^{m \times n}$ possesses the form
+\[\Sigma = \begin{bmatrix}\Sigma_1 & 0 \\ 0 & 0\end{bmatrix},\] where
+\[\Sigma_1 = \begin{bmatrix} \sigma_1 & 0 & \cdots & 0 \\ 0 & \sigma_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & \sigma_p\end{bmatrix},\] and $$\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_p \geq 0, p = \min(m,n).$$
+
+The $\sigma_i$ are called *singular values* of $A$, while the $m$ columns $u_i$ of $U$ are called *left singular vectors* of $A$, and the $n$ columns $v_i$ of $V$ are said to be *right singular vectors* of $A$. For any $1 \leq i \leq p$ it holds that
+
+$$Av_i = U\Sigma V^\top v_i = U\Sigma \begin{bmatrix}0 \\ \vdots \\ 1 \\ 0 \\ \vdots \\ 0\end{bmatrix} = U\begin{bmatrix}0 \\ \vdots \\ \sigma_i \\ 0 \\ \vdots \\ 0\end{bmatrix} = \sigma_i u_i,$$ and similarly $$A^\top u_i = \sigma_i v_i.$$ Rearranging these equations, $$(A^\top A)v_i = \sigma^2_i u_i, i = 1,\dots, p,$$ therefore $(v_i, \sigma^2_i)$ is an /eigenpair/ of $A^\top A$; the same goes for $$(AA^\top )u_i = \sigma^2_i v_i, i = 1,\dots, p,$$ so $(u_i, \sigma^2_i)$ is /eigenpair/ of $AA^\top$.
+
+*Property* Let $A \in \mathbb{R}^{m \times n}$. If $n \geq m$, the singular values of $A$ are the square roots of the eigenvalues of $AA^\top$, else if $m \geq n$ the singular values of $A$ are the square roots of the eigenvalues of $A^\top A$.
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+
+*Property* The rank of $A$ equals to the number of non\--zero singular values of $A$.
+
+*Proof* Observe that, since $U$ and $V^\top$ are not singular and orthogonal, $$\mbox{rank }A = \mbox{rank }(U\Sigma V^\top)= \mbox{rank }\Sigma.$$
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+
+*** Interpretation of SVD
+**** SVD to provide bases for the image and the kernel of $A$
+*Proposition* If $A = U\Sigma V^\top$ (has a singular value decomposition) and $\mbox{rank }A = r$, then
+1. the first $r$ columns of $U$ are a basis for $\mbox{im }A$;
+2. the last $n - r$ columns of $V$ are a basis for $\mbox{ker }A$.
+
+Moreover, the Frobenius norm and the Euclidean norm can be expressed in terms of singular values, so that
+
+\[\begin{array}{lcl} ||A||^2_F & = &  \sigma^2_1 + \sigma^2_2 + \dots + \sigma^2_p \\ ||A||_2 & = & \sigma_1. \end{array}\]
+
+[[./pics/alg/fundamental-subspaces.jpg]]
+[[./pics/alg/fundamental-subspaces2.jpg]]
+
+**** Geometrical meaning of SVD
+Singular Value Decomposition admits a fundamental geometrical meaning. The singular values of $A \in \mathbb{R}^{m \times n}$ represent the /length of the semiaxes of the hyperellipse/ in $\mathbb{R}^m$ obtained by applying linear map $A$ to the unit hypersphere in $\mathbb{R}^n$, centered at the origin, as in Figure, where it is shown an example concerning $\mathbb{R}^2$.
+
+[[./pics/alg/svd-geom.jpg]]
+
+In fact,
+
+\[\begin{array}{rcl} ||Av_1|| & = & ||\sigma_1 u_1|| = \sigma_1 ||u_1|| = \sigma_1\\ ||Av_2|| & = & ||\sigma_2 u_2|| = \sigma_2 ||u_2|| = \sigma_2\end{array}.\]
+**** Singular values against eigenvalues
+
+Singular values are different from eigenvalues, as they exist for /any/ matrix, while eigenvalues are only possessed by square matrices. Singular values are also /always real/ and /always non\--negative/. For a square matrix $A$, one can compute singular values from eigenvalues in the following way, $$\sigma_i = \sqrt{\lambda_i},$$ with the eigenvalues computed either from $A^\top A$ or $AA^\top$.
+*** Compact Singular Value Decomposition and dyadic expansion
+**** Compact SVD and dyadic expansion
+*Compact SVD* form can be achieved by the following way.
+
+*Proposition* Let $A \in \mathbb{R}^{m \times n}$ and $\mbox{rank }A =r$. If $A = U\Sigma V^\top$, it is $$A = U_r\Sigma_r V^\top_r,$$ where $U_r = \begin{bmatrix}u_1 & \cdots  & u_r\end{bmatrix}$, $V_r = \begin{bmatrix}v_1 & \cdots  & v_r\end{bmatrix}$, and \(\Sigma_r = \mbox{diag }\{\sigma_1, \sigma_2, \dots, \sigma_r\}.\) Moreover, $A$ admits its /dyadic expansion/ such that $$A = \sum_{i=1}^r \sigma_i \underbrace{u_i v^\top_i}_{Z_i} = \sum_{i=1}^r \sigma_i Z_i,$$ with matrices $Z_i \in \mathbb{R}^{m \times n}$, and $\mbox{rank }Z_i = 1$.
+**** Two theorems for low rank approximation
+*Theorem* Let $k < r = \mbox{rank }A$ and $A_{(k)} = \sum_{i=1}^k \sigma_i u_i v^\top_i$. Then, $$\min_{\mbox{\footnotesize rank }B \leq k} ||A-B||_2 = ||A - A_{(k)}||_2 = \sigma_{k+1}.$$
+
+*Theorem* Let $k < r = \mbox{rank }A$ and $A_{(k)} = \sum_{i=1}^k \sigma_i u_i v^\top_i$. Then, $$\min_{\mbox{\footnotesize rank }B \leq k} ||A-B||_F = ||A - A_{(k)}||_F = \sum_{i=k+1}^r \sigma_{i}.$$
+
+Basically, $A_{(k)}$ is the best approximation of low rank $k \leq r$ of $A$, with respect to both Euclidean and Frobenius norm. One can write $$A_{(k)} = U_k \Sigma_k V^\top_k,$$ where $U_k = \begin{bmatrix}u_1 & \cdots  & u_k\end{bmatrix}$, $V_k = \begin{bmatrix}v_1 & \cdots  & v_k\end{bmatrix}$, and \(\Sigma_k = \mbox{diag }\{\sigma_1, \sigma_2, \dots, \sigma_k\},\) with only $k$ entries instead of $r$. This means that we can use $k$ singular values only instead of all $r$ ones to approximate a matrix $A$.
+*** Solution to problems
+**** Non\--trivial approximate solutions to linear, homogeneous systems
+Let $Ax = 0$ a linear homogeneous system of equations with $A \in \mathbb{R}^{m \times n}$. The only case where $A$ doesn't have a trivial $x=0$ solution is when $A$ is not full\--rank. Unfortunately, when dealing with noisy data, it almost always happens that $A$ is a full\--rank matrix. In order to get a non\--trivial solution, the following problem can be solved $$\min_{||x||=1} ||Ax||^2,$$ that is the problem of minimization (closest to zero) of the norm of $Ax$, provided $x \neq \bf 0$. The choice of $||x|| = 1$ is arbitrary, as we are only interested in the direction of $x$.
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+*Theorem* Let $A\in\mathbb{R}^{m \times n}$ and $Ax = 0$ a linear, homogeneous system of equations. The solution of constrained minimization problem $$\min_{||x||=1} ||Ax||^2$$ is $\hat x = v_n$, with $v_n$ being the $n\mbox{-th}$ column of $V$, the right singular vector associated to the /smallest/ singular value.
+
+*Proof* Recalling that $U$ and $V$ are orthogonal, it follows that
+$$\begin{array}{rcl} \min_{||x||=1} ||Ax||^2 & = & \min_{||x||=1} ||U\Sigma V^\top||^2 x = \min_{||x||=1} ||\Sigma V^\top x||^2 = \min_{||y||=1}||\Sigma y||^2 \\ & = & \min_{||y||=1} \sum_{i}\sigma^2_i y_i.\end{array}$$
+
+As the singular values appear in decreasing order, the solution is $y = \begin{bmatrix}0 \\ 0 \\ \vdots \\ 1\end{bmatrix}$, therefore $\hat x = v_n$.
+
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+**** Orthogonal Procrustes problem
+
+The *Orthogonal Procrustes problem* amounts to finding the orthogonal transformation $W$ that renders the transformed matrix $WB$ as close as possible to $A$ in Frobenius norm.
+
+*Theorem (Orthogonal Procrustes problem)* Given $A$ and $B$ matrices, the solution to $$\min_{W^\top W=I} ||A - WB||^2_F$$ is $W=VU^\top$, where $BA^\top = U\Sigma V^\top$ is the singular value decomposition of $BA^\top$.
+
+A special case is when $B = I$, with the goal of finding $W$ closest to $A$. Hence,
+$$\min_{W^\top W=I} ||A - W||^2_F,$$ whose solution is $W = VU^\top$ but with $IA^\top = A^\top = U\Sigma V^\top$.
+**** PCA and SVD
+Principal Component Analysis of a matrix $X$ corresponds to the eigenvalue decomposition of the symmetric and positive semidefinite matrix $XX^\top$, such that $XX^\top = T\Lambda T^\top$. Considering now the SVD of $X = U\Sigma V^\top$, one obtains
+
+$$XX^\top = \left(U\Sigma V^\top\right)\left(U\Sigma V^\top\right)^\top = U\Sigma \underbrace{V^\top V}_{I} \Sigma^\top U^\top = U\Sigma^2 U^\top.$$ But, since $\Sigma$ is diagonal, $\Sigma^2$ is diagonal as well and it corresponds to an eigenvalue decomposition as in the original PCA computation and the columns $u_i$ of $U$ are indeed the eigenvectors of $XX^\top$ associated with the eigenvalues $\lambda_i =\sigma^2_i$. This basically means that $U = T$ and $\Lambda = \Sigma^2$. The Principal Component Analysis reduces to computing the Singular Value Decomposition for $X$ /without computing the matrix/ $XX^\top$, then performing the square of the singular values.
+
+By denoting $U_k$ the matrix containing the first $k$ columns of $U$, one can state that the vector containing the first $k$ principal compoments of $x$ is indeed $U^\top_k x$.
+**** Dimensionality reduction with SVD
+Suppose $n$ points are given in $\mathbb{R}^m$. One can build the matrix $X$ as $$X = \begin{bmatrix}x_1 & x_2 & \cdots & x_n\end{bmatrix} \in \mathbb{R}^{m \times n}.$$ Let now $D$ be an orthornormal basis for a subspace $\mathcal D$ of $\mathbb{R}^m$, $$D = \begin{bmatrix} d_1 & d_2 & \cdots & d_k\end{bmatrix},$$ with $k < n$. The projection of $x$ onto $\mathcal D$ is $$\hat x = DD^\top x.$$
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/proj-d.jpg]]
+
+The dimensionality of the set of vectors can be reduced by encoding each $x_i$ as a vector $z_i \in \mathbb{R}^k$ of the components of $\hat {x}_i$ along the basis given by the columns of $D$, $$z_i = D^\top x_i.$$
+
+Reconstruction of the vector can be performed by simply \(\hat {x}_i = Dz_i \in \mathbb{R}^m.\) For a given $k < m$ /target dimensionality/ a reasonable criterion for the choice of $D$ is the /minimization of the sum of the squared reconstruction errors/, that is
+$$D_{opt} = \mbox{arg} \min_{D^\top D = I} \sum_{i=1}^n ||x_i - \underbrace{DD^\top x_i}_{\hat x_i}||^2_2,$$ with the constraint that guarantees that all columns of $D$ form a orthonormal basis.
+
+Rewriting the same, but employing Frobenius norm, one can jot down the corresponding compact form
+$$D_{opt} = \mbox{arg} \min_{D^\top D = I} \sum_{i=1}^n ||X - \underbrace{DD^\top X}_{\doteq \hat B}||^2_F.$$
+
+As $\mbox{rank }D = k$, one has that $\mbox{rank }B \leq k$; for this reason, the problem expressed in Frobenius norm can be seen as a constrained, low\--rank approximation problem (the constraint is on $B$, which must be of the form $DD^\top X$ with $D$ of orthogonal, unit norm, columns). Since we are in front of a low\--rank approximation problem, the solution of the /unconstrained/ problem is $$B = U_k\Sigma_k V^\top_k.$$
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+*Preposition* $B = U_k\Sigma_k V^\top_k$ also satisfied the constrained problem, for $B$ of the form $DD^\top X$ with $D$ having orthonormal columns, with $D = U_k$.
+
+*Proof* Let's decompose to the singular values $X = U\Sigma V^\top$. Let's denote $\bigstar$ any submatrix that doesn't affect the result in any way. One then has
+
+\[\begin{array}{rcl} U_k U^\top_k X & = & U_k U^\top_k U \Sigma V^\top \\ & = & U_k \begin{bmatrix}I_k & 0 \end{bmatrix}\begin{bmatrix}\Sigma_k & 0 \\ 0 & \bigstar \end{bmatrix}\begin{bmatrix}V^\top_k \\ \bigstar \end{bmatrix} \\ & = & U_k\begin{bmatrix}\Sigma_k & 0 \end{bmatrix}\begin{bmatrix}V^\top_k \\ \bigstar \end{bmatrix} \\ & = & U_k \Sigma_k V^\top_k. \end{array}\]
+
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+
+\vspace*{0.6cm}\hrule
+\hrule
+\hrule
+\vspace*{0.4cm}
+** Rigid Geometric Transforms
+*** Reference systems
+**** Cartesian reference system
+A *Cartesian reference system* for three\--dimensional space consists of a point called /origin/ and three mutually perpendicular oriented lines through the origin, called /axes/. The order in which the axes are listed $(x, y, z)$ is fixed and is a part of the definition itself. Three planes exist -- the plane perpendicular to the first axis $x$ is the /first reference plane/. Positive directions of the axes are typically marked by specific points at distance $1$ from the origin. These points are called the /unit points/. A Cartesian reference system is said to be /right\--handed/ if the smallest rotation that brings the first unit point to the second unit point is counterclockwise, as viewed from the third unit point. It is /left\--handed/ if otherwise. The vectors $e_x$, $e_y$ and $e_z$ specify the unit points and lie on the axes, respectively, $x$, $y$ and $z$.
+**** Cartesian coordinates
+*Cartesian coordinates* are the /signed distances/ of the point from the first, second and third reference plane. The sign of the $i\mbox{-th}$ coordinate is positive whether it belongs to the the half\--space delimited by the $i\mbox{-th}$ reference plane containing the $i\mbox{-th}$ point.
+
+It follows that
++ coordinates of the origin are vector $t = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}^\top$;
++ coordinates of the unit points are $e_x = \begin{bmatrix} 1 \\ 0 \\ 0\end{bmatrix}$, $e_y = \begin{bmatrix} 0 \\ 1 \\ 0\end{bmatrix}$ and $e_z = \begin{bmatrix} 0 \\ 0 \\ 1\end{bmatrix}$;
++ the vector $p = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$, coordinates of a generic point $P$ in space, can be written as $$p = xe_x + ye_y + ze_z;$$
++ applying Pytagorean theorem, the distance from the origin $O$ is $$d(O, P) = \sqrt{x^2 + y^2 + z^2} = ||p||_2.$$
+**** Orthogonal projection
+Given two vectors $a$ and $b$, the *orthogonal projection* of $a$ onto $b$ is the vector $p \in \mbox{span }\{b\}$ that is /the closest to/ $a$:
+
+$$p = \mbox{arg}\min_{p\in\mbox{\footnotesize span}\{b\}} ||p - a||.$$ In Figure,
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/orth-proj.jpg]]
+
+Projection $p$ can also be obtained via a suitable /projection matrix/ $P_b$, that is $$p = P_b a,$$ where $P_b$ is the following square symmetric matrix having rank $1$ $$P_b = \frac{bb^\top}{b^\top b} = \frac{bb^\top}{||b||^2}.$$
+
+Orthogonal projection has its own sign. The /signed magnitude/ of the orthogonal projection is $$\tilde p = \frac{b^\top a}{||b||} =||p||\mbox{sign}(b^\top a).$$
+
+*Property* The coordinates of a point in space are the signed magnitudes of the orthogonal projections of the vector of coordinates of the point onto the three unit vectors that define the coordinate axes.
+**** Multiple reference systems
+*Multiple reference systems* can be introduced. To avoid confusion, notation will be clarified now:
++ reference systems are identified as natural numbers -- to each of them, a natural number label will be assigned;
++ the reference system whose number is $0$ is said to be the *world reference frame*;
++ a left superscript will be used to denote the reference system a vector belongs to;
++ left superscript of zero might be omitted for brevity;
++ the origin will be denoted as ${}^{i}t_i$ for all $i$;
++ unit vectors for $q\mbox{-th}$ reference system will be denoted as ${}^qi_q$, ${}^qj_q$ and ${}^qk_q$, and for each $q\mbox{-th}$ reference system, $$\begin{bmatrix} {}^qi_q & {}^qj_q & {}^qk_q \end{bmatrix} = \begin{bmatrix} i_0 & j_0 & k_0 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} = I.$$
+*** Rotations
+
+**** Definition
+
+A *rotation* is a transformation between two Cartesian reference systems $S_0$ and $S_1$ of equal origin \(t_0 = t_1 = \begin{bmatrix}0 \\ 0 \\ 0 \end{bmatrix}\) and handedness.
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/rotation.jpg]]
+
+One has that a point $P$ can be expressed as \[p = \begin{bmatrix} x \\ y \\ z\end{bmatrix} = xi_0 + yj_0 + zk_0;\] in $S_1$ the very same triplet is \[p = {}^1 xi_1 + {}^1 yj_1 + {}^1 zk_1,\] with ${}^1x$, ${}^1y$ and ${}^1z$ the orthogonal projections of $p$ onto $i_1$, $j_1$ and $k_1$ respectively. That is $${}^1x = i^\top_1 p, \hspace{1cm}{}^1y = j^\top_1 p, \hspace{1cm}{}^1z = k^\top_1 p.$$ If one defines ${}^1 p = \begin{bmatrix} {}^1 x & {}^1 y & {}^1 z\end{bmatrix}^\top$, he can reach a compact form ${}^1 p = R_1 p$, where $$R_1 = {}^0R_1 = \begin{bmatrix}i^\top_1 \\ j^\top_1 \\ k^\top_1\end{bmatrix},$$ with ${}^0R_1$ being a $3 \times 3$ *rotation matrix*.
+
+In general, given any two Cartesian reference systems $S_a$ and $S_b$ sharing the same origin, any point $${}^bp = {}^aR_b {}^a p, \mbox{ where } {}^aR_b = \begin{bmatrix} {}^a i^\top_b &  {}^a j^\top_b &  {}^a k^\top_b \end{bmatrix}.$$ Vector ${}^b p$ expressed in corodinates of system $S_b$ can be obtained by left\--multiplying by ${}^aR_b$ the vector ${}^a p$ expressed in coordinates of system $S_a$. Finally, the rows of ${}^a R_b$ are the coordinates of unit points of $S_b$ expressed in the reference $S_a$, so that the transformations occurs.
+
+If a rotation is obtained by rotating $S_0$ about its third axis $z$, one can express \[{}^0 R_1(\theta) = \begin{bmatrix} \cos \theta & \sin \theta & 0 \\ -\sin \theta & \cos\theta & 0 \\ 0 & 0 & 1\end{bmatrix},\] with the third row being different, so that the third coordinate \(z\) remains unchanged.
+**** Inverse rotation
+
+As the rotation is a reversible transformation, it means that its inverse must exist. Indeed, its inverse is such that $${}^a p = {}^b R_a {}^b p.$$ By applying previous transformation on this equation, one gets
+
+$${}^a p = {}^b R_a ({}^a R_b {}^a p) =\underbrace{{}^b R_a {}^a R_b}_{I} {}^a p.$$
+
+*Theorem* The inverse of a rotation matrix $R$ is its transpose $R^{-1} = R^\top$, hence $$R^\top R = RR^\top = I.$$
+
+For this reason, $R$ is an /orthogonal/ matrix (its columns are mutually orthogonal and unitary, as well as its rows). Orthogonal matrices can have determinant either equal to $1$ or equal to $-1$. An orthogonal matrix /is not/ a rotation matrix if its determinant is equal to $-1$, as it would correspond to an /inversion/ -- also called /mirror flip/ -- of the axes. Basically, it would correspond to a rotation /plus/ an inversion of the third axis.
+
+*Lemma* A matrix $R$ is a rotation matrix if and only if $R^\top R= RR^\top = I$ and $\mbox{det }R = 1$.
+
+Hence, being orthogonal is not a sufficient condition for being a rotation matrix, as the determinant of a rotation matrix should be equal to $1$. Figure shows a transformation performed with an orthogonal matrix whose determinant is equal to $-1$,
+
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/neg-rot.jpg]]
+
+*** Coordinate transformations
+**** Translation and rotation
+Given $S_0$ world reference frame, a new reference frame $S_1$ can differ from $S_0$ by a translation of the origin from $t_0$ to $t_1$ and a rotation of the axes from $i_0, j_0, k_0$ to $i_1, j_1, k_1$. A point $P$ whose coordinates $p = \begin{bmatrix}x \\ y \\ z\end{bmatrix}$ will end up having coordinates ${}^1 p = \begin{bmatrix}{}^1 x \\ {}^1 y \\ {}^1 z\end{bmatrix}$ on the reference system $S_1$.
+
+Let's divide the entire transformation into two distinct transformations:
+1. the first involves the origin of $S_0$ to be translated from $t_0$ to $t_1$ by performing a /translation/. The new coordinates for the point are $p - t_1$;
+2. the second involves a rotation of the axis so that they are properly rotated. The rotation is described by the rotation matrix $R_1$.
+
+   #+ATTR_LATEX: :scale 0.3
+   [[./pics/alg/rot-transl.jpg]]
+
+The coordinates in $S_1$ are thus expressed as $${}^1 p = R_1(p - t_1).$$ Indeed, solving for $p$ yields the inverse transformation $$p = R^\top_1 {}^1 p + t_1,$$ corresponding to a rotation of $R^\top_1$, followed by a translation of the quantity $-t_1$. It can be rewritten as $$p = R^\top_1 ({}^1 p - (-R_1 t_1)),$$ and by comparing the previous ones it follows that $${}^1 R_0 = {}^0 R^\top_1, \hspace*{1cm} \mbox{and} \hspace*{1cm} {}^1 t_0 = -{}^0 R_1 {}^0 t_1.$$
+
+More generally, if ${}^b p = {}^aR_b({}^a p - {}^at_b)$, it follows that
+
+$${}^a p =  {}^bR_a ({}^b p - {}^b t_a),$$ where
+$${}^b R_a = {}^a R^\top_b, \hspace*{1cm} \mbox{and} \hspace*{1cm} {}^b t_a = -{}^a R_b {}^a t_b.$$
+
+**** Homogeneous transformations
+Consider ${}^b p = {}^aR_b({}^a p - {}^at_b)$. A compact representation of the coordinate transform can be obtained by rearranging terms in such way,
+
+\[\begin{array}{rcl} {}^b p = {}^a R_b ({}^a p - {}^a t_b) & = & {}^a R_b {}^a p - {}^a R_b {}^a t_b \\ & = & \begin{bmatrix} \underbrace{{}^a R_b}_{3 \times 3} & \underbrace{-{}^a R_b{}^a t_b}_{3 \times 1}\end{bmatrix}\begin{bmatrix}{}^a p \\ 1\end{bmatrix}. \end{array}\]
+
+One can interpret this result as first /rotating/ and then /translating/ -- with the translated vector expressed with respect to the intermediate, rotated reference system. Indeed,
+
+\[\begin{bmatrix}{}^b p \\ 1\end{bmatrix} = \begin{bmatrix} {}^a R_b & - {}^a R_b {}^a t_b \\ 0^\top & 1 \end{bmatrix}\begin{bmatrix} {}^a p \\ 1\end{bmatrix}.\]
+
+Homogeneous transformations make use of the so\--called *homogeneous representation* of a generic vector $p$, as the vector $\tilde p$ obtained by adding a foruth unit component such that $$p = \begin{bmatrix} p \\ 1\end{bmatrix}.$$ In terms of homogeneous representation, the previous overall transformation becomes
+
+\[{}^b \tilde p  = \begin{bmatrix} {}^a R_b & - {}^a R_b {}^a t_b \\ 0^\top & 1 \end{bmatrix}{}^a \tilde p = {}^a A_b {}^a \tilde p.\]
+
+The rigid transformation can be expressed as a multiplication by a suitable /homogeneous transformation/ ${}^a A_b$ which is determined by ${}^a R_b$ and ${}^a t_b$. In general, homogeneous transformations are not orthogonal, hence $A^{-1} \neq A^\top$.
+
+
 * Image Formation
 ** Image Formation
-  :PROPERTIES:
-  :CUSTOM_ID: image-formation
-  :END:
 *** The pinhole camera model
-   :PROPERTIES:
-   :CUSTOM_ID: the-pinhole-camera-model
-   :END:
 At the very basis of image formation understanding there's the *camera
 obscura* (dark room) principle.
 
@@ -3366,18 +3676,19 @@ calculations.
 The decision function can be expressed in both primal and dual form,
 namely
 
-\[\hat{h}(x) = \Theta(\hat{w} \cdot x + \hat{b})\] is the formulation in
-primal form. The optimal \(\hat{b}\) can be obtained by imposing KKT
-condition on support vectors, which yields
-
-\[\hat{b} = y_i - \sum_{SV} y_j \hat{\alpha}_ j (x_j \cdot x_i);\] this
-formula is derived from the KKT condition
-\(y_i(x_i \cdot \hat{w} + \hat{b}) = 1\) for the \(i\)-th vector.
-
 \vspace*{0.6cm}\hrule
 \hrule
 \hrule
 \vspace*{0.4cm}
+
+\[\hat{h}(x) = \Theta(\hat{w} \cdot x + \hat{b})\] is the formulation in
+primal form. The optimal \(\hat{b}\) can be obtained by imposing KKT
+condition on support vectors, which yields
+
+
+\[\hat{b} = y_i - \sum_{SV} y_j \hat{\alpha}_ j (x_j \cdot x_i);\] this
+formula is derived from the KKT condition
+\(y_i(x_i \cdot \hat{w} + \hat{b}) = 1\) for the \(i\)-th vector.
 
 *Proof* In fact, from stationary condition one has
 \[\hat{w} = \sum_{i=1}^l \hat{\alpha}_ i y_i x_i,\] and for KKT conditions \[\hat \alpha_i[y_i(x_i \cdot \hat{w} + \hat{b}) - 1] = 0.\] This means that for support vectors whose $\alpha_i \neq 0$ it holds
@@ -3814,11 +4125,11 @@ expressed in dual form, to avoid any computational issue.
 **** One--against--rest classifier when adopting decision trees
 The same can be done with decision trees.
 
-We need to train $n-1$ classifiers at most, with the $i$ -th classifier that will
+We need to train $n-1$ classifiers at most, with the $i$-th classifier that will
 separate class $i$ from classes $i + 1, \dots, n$.
 
 Classification is performed by evaluating, in sequence, the binary classifiers
-in the constructed decision tree. As soon as the $i$ -th classifier produces a
+in the constructed decision tree. As soon as the $i$-th classifier produces a
 positive output, the pattern is classified into class $i$.
 
 #+ATTR_LATEX: :scale 0.25
@@ -3845,7 +4156,7 @@ function separating class $i$ from class $j$, with positive outputs
 corresponding to class $i$.
 
 In order to classify a point $x$, it is necessary to consider where it falls:
-- if $x$ lies in the so\--called *disjoint regions* $$R_i = \{x|h_{ij} > 0 \forall j \neq i\}$$ that are the regions where all classifiers involving $i$ agree and classify $x$ as $i$ -th class, then there is no ambiguity and the predicted class should be $i$;
+- if $x$ lies in the so\--called *disjoint regions* $$R_i = \{x|h_{ij} > 0 \forall j \neq i\}$$ that are the regions where all classifiers involving $i$ agree and classify $x$ as $i$-th class, then there is no ambiguity and the predicted class should be $i$;
 - if $x$ lies elsewhere, the class is *decided by voting*,
   $$\mbox{ predicted class } = \mbox{arg}\max_{i=1,\dots,n} \sum_{j \neq i, j =
   1}^n h_{ij}(x),$$ with a sum across decision functions of all classifiers
@@ -4097,9 +4408,9 @@ The crucial point is that a subwindow can be immediately be rejected by the firs
 
 Each weak classifier in the stage is composed of multiple features, basically classifiers built with the Boosting method. That classifier will analyze the subwindow, and respond with a /face/ or /not face/. In the first case, the subwindow is passed to the next classifier, in the second case the wubwindow is immediately rejected in order to spare computations.
 
-The *false positive rate* of a trained cascade is the product of the false positive rates of each step, $$F = \prod_{i=1}^K F_i,$$ with $K$ number of stages and $F_i$ false positive rate of $i$ -th classifier, on the examples that pass through it.
+The *false positive rate* of a trained cascade is the product of the false positive rates of each step, $$F = \prod_{i=1}^K F_i,$$ with $K$ number of stages and $F_i$ false positive rate of $i$-th classifier, on the examples that pass through it.
 
-Similarly, the *detection rate* of the cascade is $$D = \prod_{i=1}^K D_i,$$ with $D_i$ detection rate of each $i$ -th classifier, on examples that pass through it.
+Similarly, the *detection rate* of the cascade is $$D = \prod_{i=1}^K D_i,$$ with $D_i$ detection rate of each $i$-th classifier, on examples that pass through it.
 
 For instance, a detection rate of $0.9$ can be achieved by $10$ stage classifiers with detection rate $0.99$, as $0.9 \approx 0.99^{10}$. This only requires that each stage has a false positive rate of $0.30$, indeed $0.30^{10} \approx 6 \times 10^{-6}$.
 
