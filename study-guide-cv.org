@@ -340,9 +340,9 @@ A *negative semi semidefinite* matrix $A\in\mathbb{R}^{n \times n}$ is a matrix 
 
 Since all eigenvalues of a symmetric matrix $A$ are real, the following lemmas are useful.
 
-*Lemma 1* A symmetric matrix $A$ is positive (negative) definite if and only if all its eigenvalues $\lambda_i$ are strictly positive (strictly negative), $$A \succ 0 \Longrightarrow \lambda_i > (<) 0, i=1,\dots,n.$$
+*Lemma 1* A symmetric matrix $A$ is positive (negative) definite if and only if all its eigenvalues $\lambda_i$ are strictly positive (strictly negative), $$A \succ (\prec) 0 \Longrightarrow \lambda_i > (<) 0, i=1,\dots,n.$$
 
-*Lemma 2* A symmetric matrix $A$ is positive (negative) semidefinite if and only if all its eigenvalues $\lambda_i$ are positive (negative), $$A \succeq 0 \Longrightarrow \lambda_i \geq (\leq) 0, i=1,\dots,n.$$
+*Lemma 2* A symmetric matrix $A$ is positive (negative) semidefinite if and only if all its eigenvalues $\lambda_i$ are positive (negative), $$A \succeq (\preceq) 0 \Longrightarrow \lambda_i \geq (\leq) 0, i=1,\dots,n.$$
 
 For any squared matrix $A$, the matrices $(A^\top A)$ and $(AA^\top)$ are both positive semidefinite. For non symmetric matrices, the eigenvalue check should be carried out on their symmetric part.
 **** Gradient and Hessian matrix of a quadratic form
