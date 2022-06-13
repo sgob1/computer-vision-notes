@@ -234,7 +234,7 @@ $$\mbox{tr} A = \mbox{tr}A^\top \hspace*{0.5cm} \mbox{tr}(A + B) = \mbox{tr}A + 
 A *norm* is any function $||\cdot||:\mathbb{R}^n \longrightarrow \mathbb{R}$ such that
 1. $||x|| > 0, \forall x\neq 0$ (positivity);
 2. $||ax|| = |a|||x||, \forall a \in \mathbb R$ (homogeneity);
-3. $||x + y|| \leq ||x|| + ||y|| (triangle inequality);
+3. $||x + y|| \leq ||x|| + ||y||$ (triangle inequality);
 
 Some examples are the /Euclidean norm/ $$||x||_2 = \sqrt{\sum_{i=1}^n x^2_i},$$ the $\mathcal {L}_1$ norm $$||x||_1 = \sum_{i=1}^n |x_i|$$ and the $\mathcal{L}_\infty$ norm $$||x||_\infty = \max_{i}|x_i|.$$ The level surfaces of the previous norms are, respectively, spheres, diamonds and cubes. The generic $\mathcal{L}_p$ norm for $p\in \mathbb R, p \geq 1$ is defined as $$||x||_p = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac 1 p}.$$
 
