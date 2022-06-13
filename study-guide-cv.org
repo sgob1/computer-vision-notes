@@ -425,7 +425,7 @@ In the attempt of fitting a model with real and noisy data, *overdetermination* 
 In most frequent cases, $A$ is a full\--rank matrix and the problem admits a single solution of the form
 
 \[
-\begin{array}{rcl} || Ax - b || ^2_2 & = & (Ax - b)^\top (Ax - b) = (x^\top A^\top - b^\top)(Ax - b) \\ & = & x^\top A^\top A x - 2 x^\top A^\top b + b^\top b;\end{array}\] by taking the gradient with respect to $x$ and equating to zero to find the solutionone gets \[2A^\top A x - 2A^\top b = 0, \mbox{ that is } A^\top A x = A^\top b.\] The matrix $A^\top A \in \mathbb{R}^{n \times n}$ and its rank is $n$ (full\--rank matrix). For these reasons $A^\top A$ is invertible, and one can obtain the closest solution $$\hat x = (A^\top A)^{-1}A^\top b.$$
+\begin{array}{rcl} || Ax - b || ^2_2 & = & (Ax - b)^\top (Ax - b) = (x^\top A^\top - b^\top)(Ax - b) \\ & = & x^\top A^\top A x - 2 x^\top A^\top b + b^\top b;\end{array}\] by taking the gradient with respect to $x$ and equating to zero to find the solution one gets \[2A^\top A x - 2A^\top b = 0, \mbox{ that is } A^\top A x = A^\top b.\] The matrix $A^\top A \in \mathbb{R}^{n \times n}$ and its rank is $n$ (full\--rank matrix). For these reasons $A^\top A$ is invertible, and one can obtain the closest solution $$\hat x = (A^\top A)^{-1}A^\top b.$$
 
 The geometric interpretation of the least\--squares solution, since $A\hat x$ is, by definition, the point that is /the closest/ to $b$ while still belonging to $\mbox{im }A$. This means that $||A\hat x||$ is the /projection/ of $b$ onto $\mbox{im }A$.
 
@@ -434,7 +434,7 @@ The geometric interpretation of the least\--squares solution, since $A\hat x$ is
 *** Minimum\--norm solution to underdetermined systems
 Differently from the previous case, *underdetermined* systems are all systems whose $x$ is ``taller'' than $A$ and $b$, a case that happens when when there are more variables than independent equations. In this case, infinite solutions exists if $\mbox{rank }A = m$ and $m > n$. A possible workaround in this case is to find the /minimum\--norm solution/ by solving the problem $$\min||x||_2$$ subject to $$Ax = b.$$
 
-The problem can be stated as $$\min x^\top x$$, with the same constraints. By introducing the /Lagrange multipliers/ on $\lambda \in \mathbb {R}^m$ one can get the problem \[\mathcal{L}(x, \lambda) = x^\top x + \lambda^\top (Ax - b).\] Since this is a problem with a Lagrangian multiplier, to solve it one should impose the /stationary conditions/ by computing the gradient for all variables and set the obtained quantities to $0$,
+The problem can be stated as $$\min x^\top x,$$ with the same constraints. By introducing the /Lagrange multipliers/ on $\lambda \in \mathbb {R}^m$ one can get the problem \[\mathcal{L}(x, \lambda) = x^\top x + \lambda^\top (Ax - b).\] Since this is a problem with a Lagrangian multiplier, to solve it one should impose the /stationary conditions/ by computing the gradient for all variables and set the obtained quantities to $0$,
 
 \[\begin{array}{rcl}
 \nabla_x \mathcal{L}(x, \lambda) & = & 2x + A^\top \lambda = 0\\
@@ -456,11 +456,11 @@ The geometric interpretation for the minimum norm solution is that $\hat x$ is t
 *** Theorem of SVD
 Any matrix $A \in \mathbb{R}^{m \times n}$ can be written with the *Singular Value Decomposition* as $$A = U\Sigma V^\top$$ where $U \in \mathbb{R}^{m \times m}$ and $V \in \mathbb{R}^{n \times n}$ are /orthogonal/ matrices and $\Sigma \in \mathbb{R}^{m \times n}$ possesses the form
 \[\Sigma = \begin{bmatrix}\Sigma_1 & 0 \\ 0 & 0\end{bmatrix},\] where
-\[\Sigma_1 = \begin{bmatrix} \sigma_1 & 0 & \cdots & 0 \\ 0 & \sigma_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & \sigma_p\end{bmatrix},\] and $$\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_p \geq 0, p = \min(m,n).$$
+\[\Sigma_1 = \begin{bmatrix} \sigma_1 & 0 & \cdots & 0 \\ 0 & \sigma_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & \sigma_p\end{bmatrix},\] and $$\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_p \geq 0, p \leq \min(m,n).$$
 
 The $\sigma_i$ are called *singular values* of $A$, while the $m$ columns $u_i$ of $U$ are called *left singular vectors* of $A$, and the $n$ columns $v_i$ of $V$ are said to be *right singular vectors* of $A$. For any $1 \leq i \leq p$ it holds that
 
-$$Av_i = U\Sigma V^\top v_i = U\Sigma \begin{bmatrix}0 \\ \vdots \\ 1 \\ 0 \\ \vdots \\ 0\end{bmatrix} = U\begin{bmatrix}0 \\ \vdots \\ \sigma_i \\ 0 \\ \vdots \\ 0\end{bmatrix} = \sigma_i u_i,$$ and similarly $$A^\top u_i = \sigma_i v_i.$$ Rearranging these equations, $$(A^\top A)v_i = \sigma^2_i u_i, i = 1,\dots, p,$$ therefore $(v_i, \sigma^2_i)$ is an /eigenpair/ of $A^\top A$; the same goes for $$(AA^\top )u_i = \sigma^2_i v_i, i = 1,\dots, p,$$ so $(u_i, \sigma^2_i)$ is /eigenpair/ of $AA^\top$.
+$$Av_i = U\Sigma V^\top v_i = U\Sigma \begin{bmatrix}0 \\ \vdots \\ 1 \\ 0 \\ \vdots \\ 0\end{bmatrix} = U\begin{bmatrix}0 \\ \vdots \\ \sigma_i \\ 0 \\ \vdots \\ 0\end{bmatrix} = \sigma_i u_i,$$ and similarly $$A^\top u_i = \sigma_i v_i.$$ Rearranging these equations, $$(A^\top A)v_i = \sigma^2_i v_i, i = 1,\dots, p,$$ therefore $(v_i, \sigma^2_i)$ is an /eigenpair/ of $A^\top A$; the same goes for $$(AA^\top )u_i = \sigma^2_i u_i, i = 1,\dots, p,$$ so $(u_i, \sigma^2_i)$ is /eigenpair/ of $AA^\top$.
 
 *Property* Let $A \in \mathbb{R}^{m \times n}$. If $n \geq m$, the singular values of $A$ are the square roots of the eigenvalues of $AA^\top$, else if $m \geq n$ the singular values of $A$ are the square roots of the eigenvalues of $A^\top A$.
 
@@ -528,7 +528,7 @@ Let $Ax = 0$ a linear homogeneous system of equations with $A \in \mathbb{R}^{m 
 *Theorem* Let $A\in\mathbb{R}^{m \times n}$ and $Ax = 0$ a linear, homogeneous system of equations. The solution of constrained minimization problem $$\min_{||x||=1} ||Ax||^2$$ is $\hat x = v_n$, with $v_n$ being the $n\mbox{-th}$ column of $V$, the right singular vector associated to the /smallest/ singular value.
 
 *Proof* Recalling that $U$ and $V$ are orthogonal, it follows that
-$$\begin{array}{rcl} \min_{||x||=1} ||Ax||^2 & = & \min_{||x||=1} ||U\Sigma V^\top||^2 x = \min_{||x||=1} ||\Sigma V^\top x||^2 = \min_{||y||=1}||\Sigma y||^2 \\ & = & \min_{||y||=1} \sum_{i}\sigma^2_i y_i.\end{array}$$
+$$\begin{array}{rcl} \min_{||x||=1} ||Ax||^2 & = & \min_{||x||=1} ||U\Sigma V^\top x||^2  = \min_{||x||=1} ||\Sigma V^\top x||^2 = \min_{||y||=1}||\Sigma y||^2 \\ & = & \min_{||y||=1} \sum_{i}\sigma^2_i y_i.\end{array}$$
 
 As the singular values appear in decreasing order, the solution is $y = \begin{bmatrix}0 \\ 0 \\ \vdots \\ 1\end{bmatrix}$, therefore $\hat x = v_n$.
 
