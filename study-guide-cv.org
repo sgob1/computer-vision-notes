@@ -305,7 +305,7 @@ Another fundamental theorem is the following *Theorem of the orthogonal compleme
 [[./pics/alg/orthogonal-complements.jpg]]
 
 **** QR decomposition theorem
-Every matrix $A \in \mathbb{R}^{m \times n}$ with /linearly independent columns/ can be uniquely factorized as $$A = QR$$, in which the columns of $Q \in \mathbb{R}^{m \times n}$ are an orthonormal basis for $\mbox{im }A$ and $R\in\mathbb{R}^{n \times n}$ is an upper\--triangular matrix with positive entries on the diagonal.
+Every matrix $A \in \mathbb{R}^{m \times n}$ with /linearly independent columns/ can be uniquely factorized as $$A = QR,$$ in which the columns of $Q \in \mathbb{R}^{m \times n}$ are an orthonormal basis for $\mbox{im }A$ and $R\in\mathbb{R}^{n \times n}$ is an upper\--triangular matrix with positive entries on the diagonal.
 **** Eigenvalues and eigenvectors
 Given a square matrix $A\in\mathbb{R}^{n \times n}$, $\lambda \in \mathbb{C}$ is an *eigenvalue* of $A$ and $\nu \in \mathbb{C}^n$ is the corresponding *eigenvector* if $$A\nu = \lambda\nu, \nu\neq 0,$$ with $(\nu, \lambda)$ *eigenpair*. Multiplying $A$ by one of its eigenvectors $\nu$ results in the very same vector $\nu$, multiplied by the eigenvalue $\lambda$. Rewriting the above equation as $$(\lambda I - A)\nu = 0$$ results in an equation whose non\--zero solutions exist if and only if the matrix $(\lambda I - A)$ is rank\--deficient (not a full\--rank matrix); that happens if and only if $$\mbox{det}(\lambda I - A) = 0,$$ that also means that the eigenvalues are the roots of the $n\mbox{-th}$ degree *characteristic polynomial* $$p(\lambda) = \mbox{det}(\lambda I - A).$$ A $n$ rows and columns matrix will possess $n$ eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$.
 
