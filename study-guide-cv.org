@@ -553,7 +553,7 @@ Principal Component Analysis of a matrix $X$ corresponds to the eigenvalue decom
 
 $$XX^\top = \left(U\Sigma V^\top\right)\left(U\Sigma V^\top\right)^\top = U\Sigma \underbrace{V^\top V}_{I} \Sigma^\top U^\top = U\Sigma^2 U^\top.$$ But, since $\Sigma$ is diagonal, $\Sigma^2$ is diagonal as well and it corresponds to an eigenvalue decomposition as in the original PCA computation and the columns $u_i$ of $U$ are indeed the eigenvectors of $XX^\top$ associated with the eigenvalues $\lambda_i =\sigma^2_i$. This basically means that $U = T$ and $\Lambda = \Sigma^2$. The Principal Component Analysis reduces to computing the Singular Value Decomposition for $X$ /without computing the matrix/ $XX^\top$, then performing the square of the singular values.
 
-By denoting $U_k$ the matrix containing the first $k$ columns of $U$, one can state that the vector containing the first $k$ principal compoments of $x$ is indeed $U^\top_k x$.
+By denoting $U_k$ the matrix containing the first $k$ columns of $U$, one can state that the vector containing the first $k$ principal components of $x$ is indeed $U^\top_k x$.
 **** Dimensionality reduction with SVD
 Suppose $n$ points are given in $\mathbb{R}^m$. One can build the matrix $X$ as $$X = \begin{bmatrix}x_1 & x_2 & \cdots & x_n\end{bmatrix} \in \mathbb{R}^{m \times n}.$$ Let now $D$ be an orthornormal basis for a subspace $\mathcal D$ of $\mathbb{R}^m$, $$D = \begin{bmatrix} d_1 & d_2 & \cdots & d_k\end{bmatrix},$$ with $k < n$. The projection of $x$ onto $\mathcal D$ is $$\hat x = DD^\top x.$$
 
@@ -759,14 +759,14 @@ similarity of triangles construction, we will have that
 \[ [X', Y', Z']^T =  [-\frac{f}{Z}X, -\frac{f}{Z}Y, -f]^T,\]
 
 because of the similarity relationship of \[\frac{M'}{f} = \frac{M}{Z}\]
-hence the ratio \[\frac{M'}{M} = \frac{f}{Z} \equiv p.\] The latter is
+hence the ratio \[\frac{M'}{M} = \frac{f}{Z} \equiv \varrho.\] The latter is
 called /perspective scale factor/, and it describes the effect for which
 farther away objects appear smaller. The far the object moves, the
 smaller the shrinking due to perspective scale factor is.
 
 Hence,
 
-$$ \begin{bmatrix}x' \\ y' \\ z'\end{bmatrix} = \begin{bmatrix} -px \\ -py \\ -pz\end{bmatrix}$$ and one soon obtains the previous relationship.
+$$ \begin{bmatrix}X' \\ Y' \\ Z'\end{bmatrix} = \begin{bmatrix} -\varrho X \\ -\varrho Y \\ -\varrho Z\end{bmatrix}$$ and one soon obtains the previous relationship.
 
 In particular, for objects very far from the camera - so that they're
 thin (with maximum length \(\Delta Z\)) with respect to their distance
@@ -831,7 +831,7 @@ particular properties:
 2. rays coming horizontally will be all directed towards a single point
    \(F\), called /focal point/;
 3. rays departing from the same point will follow other directions, but
-   always reach the focal point. That's how more light can actually be collected, as many rays will be collected by the lens and will hit the same point on the image plane.
+   always reach the point $M^\prime$. That's how more light can actually be collected, as many rays will be collected by the lens and will hit the same point on the image plane.
 
 With these properties we can build our pinhole system with a thin lens.
 
