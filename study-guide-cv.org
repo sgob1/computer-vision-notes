@@ -1624,7 +1624,8 @@ in the \(s\) shape. Some operations are
   a pixel becomes \(1\) if /\(f\) and \(s\) are fully-intersected, or
   when the entire \(s\) falls inside \(f\)/. This happens because the
   threshold is the same of the total numbers of point in shape \(s\),
-  which is \(S\); *majority*, \(\mbox{maj}(f, s) = \theta(c, S/2)\).
+  which is \(S\);
+- *majority*, \(\mbox{maj}(f, s) = \theta(c, S/2)\).
   This operation assigns \(1\) to the center of the filtering window
   \(s\) if /the majority of \(s\) falls inside \(f\)/. Basically,
   picking a threshold of \(\frac{S}{2}\) means that the result will be
