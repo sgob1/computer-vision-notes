@@ -3619,7 +3619,7 @@ to take advantage of the information we obtained above,
 With this formulation, substituting the two stationary conditions
 results in
 
-\[L(w, b, \alpha) = \frac 1 2 \sum_{i=1}^l (\alpha_i y_i x_i)^2 - \sum_{i=1}^l \alpha_i y_i(\sum_{j=1}^l \alpha_j y_j x_j \cdot x_i) + \sum_{i=1}^l \alpha_i.\]
+\[L(w, b, \alpha) = \frac 1 2 \sum_{i=1}^l (\alpha_i \alpha_i \underbrace{y_i y_i}_{=1}) (x_i \cdot x_i) - \sum_{i=1}^l \alpha_i y_i(\sum_{j=1}^l \alpha_j y_j x_j \cdot x_i) + \sum_{i=1}^l \alpha_i.\]
 
 Solving, the equivalent dual problem is the following one,
 
@@ -3674,19 +3674,11 @@ Vectors only. Instead of picking all vectors of the training set, one could
 simply consider the Support Vectors, sparing a lot of otherwise--useless
 calculations.
 
-**** Express the decision function in both primal and dual form. Compare them.
-The decision function can be expressed in both primal and dual form,
-namely
 
-\vspace*{0.6cm}\hrule
-\hrule
-\hrule
-\vspace*{0.4cm}
+**** Finding the optimal $\hat{b}$
 
-\[\hat{h}(x) = \Theta(\hat{w} \cdot x + \hat{b})\] is the formulation in
-primal form. The optimal \(\hat{b}\) can be obtained by imposing KKT
+The optimal \(\hat{b}\) can be obtained by imposing KKT
 condition on support vectors, which yields
-
 
 \[\hat{b} = y_i - \sum_{SV} y_j \hat{\alpha}_ j (x_j \cdot x_i);\] this
 formula is derived from the KKT condition
@@ -3705,10 +3697,9 @@ $$\begin{array}{rcl} \hat b & = & \displaystyle y_i - \left(\sum_{j=1}^{l}\hat\a
 $\blacksquare$
 \end{flushright}
 
-\vspace*{0.6cm}\hrule
-\hrule
-\hrule
-\vspace*{0.4cm}
+The expression
+\[\hat{h}(x) = \Theta(\hat{w} \cdot x + \hat{b})\] is the formulation in
+primal form.
 
 However, a better formulation comes in the case where we express the
 decision function in terms of the support vectors only.
