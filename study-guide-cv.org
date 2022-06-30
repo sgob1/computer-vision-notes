@@ -1062,8 +1062,8 @@ blue.
 A simple sensor model is composed by
 
 - an /integrator/, for instance a capacitance element;
-- a /sampler/, used to sample the amount of charge from the capacitor; a
-  /quantizer/, necessary to convert such information to a number.
+- a /sampler/, used to sample the amount of charge from the capacitor;
+- a /quantizer/, necessary to convert such information to a number.
 
 Noise will enter this process. In particular, we have noise entering the
 capacitor, and entering the quantizer. Noise will largely depend on
@@ -1195,7 +1195,9 @@ Properties of convolution and correlation together are the following:
 
 - is /commutative/;
 
-- is /associative/; its fourier transform has the remarkable property
+- is /associative/;
+
+- its fourier transform has the remarkable property
   that \[ f * g \longleftrightarrow F\cdot G,\] with the
   \(\longleftrightarrow\) symbol denoting a fourier transform (and
   viceversa) of an entire equation. This is very important: *a
@@ -1890,7 +1892,8 @@ detection/, and then by /finding two features which are very similar
 across images/. Such features are, usually:
 
 - /keypoints/: texture patches surrounding the point location;
-- /edges/; /geometric primitives/ such as lines, curves, and so on.
+- /edges/;
+- /geometric primitives/ such as lines, curves, and so on.
 
 When it comes to finding features and matching them across images, there
 are two approaches.
@@ -2203,7 +2206,7 @@ Gaussian one obtains
 convolution property. Since there is a decreasing exponential term,
 \(L\) will decrease exponentially as we get to a higher scale \(t\). If
 we maximize with respect to \(x\), at each scale we get
-\[L_{max}^x (t) = e^{\frac{\omega_0^2 t}{2}},\] which depends on scale
+\[L_{max}^x (t) = e^{-\frac{\omega_0^2 t}{2}},\] which depends on scale
 only. The same happens when we apply a \(m\)-th order derivative, which
 is
 
@@ -2625,7 +2628,7 @@ actually is:
 [[./pics/det/edges-derivatives-with-noise.jpg]]
 
 An easy solution could still be applying low-pass filtering
-(e.g. Gaussian filtering) to the image. This way, noise can be reduced.
+(e.g. Gaussian filtering) to the image. This way, noise can be reduced.
 
 Moreover, in place of computing derivative of a Gaussian filtered image,
 one could simply convolve image \(f\) with a derivative of a Gaussian
@@ -2746,9 +2749,9 @@ detect.
 is actually a point in which the gradient is maximum. In order to
 discover that (such point could be a /fake/ maximum, in the sense that
 it is maximum with respect to the other pixels, but it is not a true
-maximum) we interpolate the picture with a function and then we check
-nearby points with wub-pixel precision, and get the actual maximum
-position. Procedure works as follows:
+maximum --- the true maximum could still lie in between pixels) we interpolate
+the picture with a function and then we check nearby points with sub-pixel
+precision, and get the actual maximum position. Procedure works as follows:
 
 1. We want to be sure that the gradient is at maximum in \(q\), and do
    it in a computationally efficient way;
@@ -3200,9 +3203,9 @@ one can formalize the problem in such a way that
 
 To solve this, let's apply the *Lagrangian multiplier technique*.
 Basically, one starts with the Lagrangian
-\[L(a, b, c, \lambda) = \sum_i (ax_i + by_i + c) + \lambda(a^2 + b^2 - 1),\] and imposes the /stationary conditions/
+\[L(a, b, c, \lambda) = \sum_i (ax_i + by_i + c)^2 + \lambda(a^2 + b^2 - 1),\] and imposes the /stationary conditions/
 
-\[ \left\{ \begin{array}{lll} \frac{\partial \mathcal{L}}{\partial a} & = & 2\sum_i x_i(ax_i + by_i + c) + 2 \lambda a = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial b} & = & 2\sum_i y_i(ax_i + by_i + c) + 2 \lambda b = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial c} & = & 2\sum_(ax_i + by_i + c) = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial \lambda} & = & a^2 + b^2 - 1 = 0 \end{array} \right. . \]
+\[ \left\{ \begin{array}{lll} \frac{\partial \mathcal{L}}{\partial a} & = & 2\sum_i x_i(ax_i + by_i + c) + 2 \lambda a = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial b} & = & 2\sum_i y_i(ax_i + by_i + c) + 2 \lambda b = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial c} & = & 2\sum (ax_i + by_i + c) = 0 \\ \\ \frac{\partial \mathcal{L}}{\partial \lambda} & = & a^2 + b^2 - 1 = 0 \end{array} \right. . \]
 
 The third equation leads to
 \[c = -\frac{a}{N}\sum_i x_i -\frac{b}{N}\sum_i y_i,\] which is then
@@ -3239,7 +3242,7 @@ yield the scale factor).
 \(M\) is symmetric, thus the eivengectors are orthogonal. For this
 reason, the two solutions to the problem are the /lines at right
 angles/, one of which corresponds to the minimum (we should discard the
-line that yields the greates amount of total least squares error).
+line that yields the greatest amount of total least squares error).
 
 To summarize, we applied the Lagrangian multiplier technique in order to
 get a system of equations which corresponds to an eigenvalue problem.
@@ -3349,7 +3352,7 @@ which minimizes a loss function that depends on \(f(\cdot)\);
    \(W^{(t - 1)} = \mbox{diag}\left\{w_i^{(t - 1)}, i = 1,\dots, m\right\}\);
    compute the new estimate by solving the /weighted/ least squares
    problem
-   \[\hat x^{(t)} = \left(A^\top W^{(t-1)} A\right)^{-1}A^\top W^{(t-1)};b\]
+   \[\hat x^{(t)} = \left(A^\top W^{(t-1)} A\right)^{-1}A^\top W^{(t-1)}b;\]
 5. *if* \(||\hat x ^{(t)} - \hat x ^{(t-1)}|| < \varepsilon\), *then*
    copy \(\hat x = \hat x ^{(t)}\), *return* it, and *exit*;
 6. *else* =t++=, and go to step \(3\);
