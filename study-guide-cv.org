@@ -4383,7 +4383,7 @@ The steps are the following ones:
 5. choose the classifier $h_t$ (that corresponds to the feature) with the /lowest error/ $\varepsilon_t$;
 6. update the weights with a formula of choice: $$w_{t+1,i} = w_{t,i}\beta_{t}^{1-e_i},$$ where $e_i = \{0, 1\}$ corresponding, repsectively, to a correct and an uncorrect classification of $x_i$ and $\beta_t = \frac{\varepsilon_t}{1 - \varepsilon_t};$
 7. *end for*.
-8. The final, strong classifier can be built as $$C(x) ) \left\{\begin{array}{ll} 1 & \mbox{ if } \displaystyle \sum_{t=1}^T\alpha_t h_t(x) \geq \frac 1 2 \sum_{t=1}^T \alpha_t \\ 0 & \mbox{ otherwise } \end{array}\right. ,$$ where $\alpha_t = \log{\frac 1 {\beta_t}}$.
+8. The final, strong classifier can be built as $$C(x) = \left\{\begin{array}{ll} 1 & \mbox{ if } \displaystyle \sum_{t=1}^T\alpha_t h_t(x) \geq \frac 1 2 \sum_{t=1}^T \alpha_t \\ 0 & \mbox{ otherwise } \end{array}\right. ,$$ where $\alpha_t = \log{\frac 1 {\beta_t}}$.
 \vspace*{0.6cm}\hrule
 \hrule
 \hrule
@@ -4430,7 +4430,7 @@ An example of training could be the following one:
 
 *** Instance recognition
 **** Instance recognition from local features
-*Local features* can be exploited in order to perform /instance recognition/. In particular, at training time a possible approach could be to /build a model as a collection of local features and their relative location/. The features will be invariant to translation, rotation and scale. At testing time, instead, the goal will be to /detect local features/ in the image, /find candidate matches/ based on Euclidean distance between feature descriptors (of course, any metric can ne used) and finally /check geometric consistency/.
+*Local features* can be exploited in order to perform /instance recognition/. In particular, at training time a possible approach could be to /build a model as a collection of local features and their relative location/. The features will be invariant to translation, rotation and scale. At testing time, instead, the goal will be to /detect local features/ in the image, /find candidate matches/ based on Euclidean distance between feature descriptors (of course, any metric can be used) and finally /check geometric consistency/.
 
 **** Geometric consistency
 
@@ -4469,7 +4469,7 @@ Subsequently, *k\--means clustering* is applied, with /the visual words as clust
 
 [[./pics/recog/visual-vocabulary-construction.jpg]]
 
-Alternatives to the above method exist. For instance, patches are collected on a regular grid and emplpyed as visual words (after k\--means clustering). In principle, the database employed for reconstructing the visual vocabulary could be different from the set of images one wants to retrieve -- if the corpus of images is sufficiently representative, the obtained vocabulary will be ``universal''. In this method, we ignore the decection phase, simply collecting randomly or regularly spaced /sample points/ from which we extract descriptors.
+Alternatives to the above method exist. For instance, patches are collected on a regular grid and employed as visual words (after k\--means clustering). In principle, the database employed for reconstructing the visual vocabulary could be different from the set of images one wants to retrieve -- if the corpus of images is sufficiently representative, the obtained vocabulary will be ``universal''. In this method, we ignore the decection phase, simply collecting randomly or regularly spaced /sample points/ from which we extract descriptors.
 
 Very common visual words are not informative (as the word /and/ in English language), thus they are put in a *stop list* and dropped from further consideration.
 
@@ -4478,7 +4478,11 @@ To speed up the searching of potentially matching instances and discarding non\-
 **** Term frequency\---inverse document frequency
 Information retrieval systems are based on the *relative frequence of words in documents*.
 
-Let $n_{id}$ be the number of occurrences of a word $i$ in the document $d$. The *term frequency* is the quantity $$f_t = \frac{n_{id}}{n_d}.$$ In order to downweight words that occur frequently and focus on rarer ones (corresponding to more informative tokens) an *inverse document frequency* weighting $\log{\frac{N}{N_i}}$ is applied. Hence, the *term frequency\---inverse document frequency* /tf--idf/ will be the quantity $$t_i = \frac{n_{id}{n_d}}\log{\frac{N}{N_i}}.$$
+Let $n_{id}$ be the number of occurrences of a word $i$ in the document $d$. The *term frequency* is the quantity $$f_t = \frac{n_{id}}{n_d}.$$ In order to downweight words that occur frequently and focus on rarer ones (corresponding to more informative tokens) an *inverse document frequency* weighting $\log{\frac{N}{N_i}}$ is applied. Hence, the *term frequency\---inverse document frequency* /tf--idf/ will be the quantity $$t_i = \frac{n_{id}}{n_d}\log{\frac{N}{N_i}}.$$
+
+Regarding $N$ and $N_i$, the first is the total number of documents available,
+while the second one is the number of documents containing the $i\mbox{-th}$
+word.
 
 **** The retrieval of words
 How to retrieve words? A straightforward way is to represent each document $d$ by a vector $t$ of the form $$t = [t_1, \dots, t_i, \dots, t_m]^\top.$$ We can now determine the *similarity* $s(a,b)$ between two documents, a quantity that measures the similarity between documents $a$ and $b$; to do so, we compute the dot product between their corresponding /normalized vectors/, that is $$s(a,b) = \frac{t_a}{||t_a||}\cdot\frac{t_b}{||t_b||}.$$ Basically, what happens is that two documents are similar if /the angle of the cosine between them has a low value/.
