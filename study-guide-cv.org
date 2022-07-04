@@ -3619,7 +3619,7 @@ to take advantage of the information we obtained above,
 With this formulation, substituting the two stationary conditions
 results in
 
-\[L(w, b, \alpha) = \frac 1 2 \sum_{i=1}^l (\alpha_i \alpha_i \underbrace{y_i y_i}_{=1}) (x_i \cdot x_i) - \sum_{i=1}^l \alpha_i y_i(\sum_{j=1}^l \alpha_j y_j x_j \cdot x_i) + \sum_{i=1}^l \alpha_i.\]
+\[L(w, b, \alpha) = \frac 1 2 \sum_{i=1}^l \sum_{j=1}^l \alpha_i \alpha_j y_i y_j (x_i \cdot x_i) - \sum_{i=1}^l \alpha_i y_i(\sum_{j=1}^l \alpha_j y_j x_j \cdot x_i) + \sum_{i=1}^l \alpha_i.\]
 
 Solving, the equivalent dual problem is the following one,
 
@@ -3902,7 +3902,7 @@ needed computations become largely unfeasible.
 To solve it, let's consider the *dual form*,
 \[\max_{\alpha} W(\alpha) = \sum_{i=1}^l \alpha_i - \frac 1 2 \sum_{i,j} \alpha_i \alpha_j y_i y_j (\Phi(x_i) \cdot \Phi(x_j)),\]
 under constraints
-\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \geq \alpha_i \geq C, \forall i=1,\dots,l,\] with the corresponding decision function
+\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \leq \alpha_i \leq C, \forall i=1,\dots,l,\] with the corresponding decision function
 
 $$h(x) = \Theta\left[\sum_{SV} y_i\alpha_i(\Phi(x_i) \cdot \Phi(x_j)) + b\right].$$
 
@@ -3944,7 +3944,7 @@ We now are ready to formalize the optimization problem, whose solution is the op
 
 \[\max_{\alpha} W(\alpha) = \sum_{i=1}^l \alpha_i - \frac 1 2 \sum_{i,j} \alpha_i \alpha_j y_i y_j k(x_i,x_j),\]
 under constraints
-\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \geq \alpha_i \geq C, \forall i=1,\dots,l,\] with the corresponding decision function
+\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \leq \alpha_i \leq C, \forall i=1,\dots,l,\] with the corresponding decision function
 
 $$h(x) = \Theta\left[\sum_{SV} y_i\alpha_i k(x_i, x_j) + b\right].$$ An
 important remark is that the matrix $[K_{ij}] = [k(x_i, x_j)], i,j=1,\dots,l$ is
@@ -4118,11 +4118,11 @@ expressed in dual form, to avoid any computational issue.
 **** One--against--rest classifier when adopting decision trees
 The same can be done with decision trees.
 
-We need to train $n-1$ classifiers at most, with the $i$-th classifier that will
+We need to train $n-1$ classifiers at most, with the $i\mbox{-th}$ classifier that will
 separate class $i$ from classes $i + 1, \dots, n$.
 
 Classification is performed by evaluating, in sequence, the binary classifiers
-in the constructed decision tree. As soon as the $i$-th classifier produces a
+in the constructed decision tree. As soon as the $i\mbox{-th}$ classifier produces a
 positive output, the pattern is classified into class $i$.
 
 #+ATTR_LATEX: :scale 0.25
@@ -4149,7 +4149,7 @@ function separating class $i$ from class $j$, with positive outputs
 corresponding to class $i$.
 
 In order to classify a point $x$, it is necessary to consider where it falls:
-- if $x$ lies in the so\--called *disjoint regions* $$R_i = \{x|h_{ij} > 0 \forall j \neq i\}$$ that are the regions where all classifiers involving $i$ agree and classify $x$ as $i$-th class, then there is no ambiguity and the predicted class should be $i$;
+- if $x$ lies in the so\--called *disjoint regions* $$R_i = \{x|h_{ij} > 0 \forall j \neq i\}$$ that are the regions where all classifiers involving $i$ agree and classify $x$ as $i\mbox{-th}$ class, then there is no ambiguity and the predicted class should be $i$;
 - if $x$ lies elsewhere, the class is *decided by voting*,
   $$\mbox{ predicted class } = \mbox{arg}\max_{i=1,\dots,n} \sum_{j \neq i, j =
   1}^n h_{ij}(x),$$ with a sum across decision functions of all classifiers
@@ -4243,7 +4243,7 @@ and translation\--aware.
 **** Kernel jittering
 
 *Kernel jittering* is a technique in which the transformations of the training
- set vectors to not take place before the training, but /at the time of the
+ set vectors do not take place before the training, but /at the time of the
  kernel computation/, thus during training. A ``modified version'' of the
  /Hessian matrix/ $$K^J_{ij} = k^J(x_i, x_j)$$ is adopted in place of the
  ``standard'' version $$K_{ij} = k(x_i, x_j).$$
@@ -4288,7 +4288,7 @@ Support Vector method (VSV):
 ** Recognition
 *** Recognition
 **** Recognition in a broad sense
-*Recognition* can thought as three main things:
+*Recognition* can be thought as three main things:
 1. /object detection/ -- find all the regions of an image where an object is likely to occur (for instance, a face);
 2. /instance recognition/ -- given a known specific object, recognize it after perturbations, occlusions or under a novel viewpoint;
 3. /category\--level recognition/ -- categorize images as belonging to certain general classes, for instance ``cars'', ``vans'', ``bycicles'', ``cats'' and so on.
@@ -4401,9 +4401,9 @@ The crucial point is that a subwindow can be immediately be rejected by the firs
 
 Each weak classifier in the stage is composed of multiple features, basically classifiers built with the Boosting method. That classifier will analyze the subwindow, and respond with a /face/ or /not face/. In the first case, the subwindow is passed to the next classifier, in the second case the wubwindow is immediately rejected in order to spare computations.
 
-The *false positive rate* of a trained cascade is the product of the false positive rates of each step, $$F = \prod_{i=1}^K F_i,$$ with $K$ number of stages and $F_i$ false positive rate of $i$-th classifier, on the examples that pass through it.
+The *false positive rate* of a trained cascade is the product of the false positive rates of each step, $$F = \prod_{i=1}^K F_i,$$ with $K$ number of stages and $F_i$ false positive rate of $i\mbox{-th}$ classifier, on the examples that pass through it.
 
-Similarly, the *detection rate* of the cascade is $$D = \prod_{i=1}^K D_i,$$ with $D_i$ detection rate of each $i$-th classifier, on examples that pass through it.
+Similarly, the *detection rate* of the cascade is $$D = \prod_{i=1}^K D_i,$$ with $D_i$ detection rate of each $i\mbox{-th}$ classifier, on examples that pass through it.
 
 For instance, a detection rate of $0.9$ can be achieved by $10$ stage classifiers with detection rate $0.99$, as $0.9 \approx 0.99^{10}$. This only requires that each stage has a false positive rate of $0.30$, indeed $0.30^{10} \approx 6 \times 10^{-6}$.
 
@@ -4548,7 +4548,7 @@ Recall that formulation for a non\--linear binary SVM is
 
 \[\max_{\alpha} W(\alpha) = \sum_{i=1}^l \alpha_i - \frac 1 2 \sum_{i,j} \alpha_i \alpha_j y_i y_j k(x_i,x_j),\]
 under constraints
-\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \geq \alpha_i \geq C, \forall i=1,\dots,l,\] with the corresponding decision function
+\[\sum_{i=1}^l \alpha_i y_i = 0, \mbox{ and } 0 \leq \alpha_i \leq C, \forall i=1,\dots,l,\] with the corresponding decision function
 
 $$h(x) = \Theta\left[\sum_{SV} y_i\alpha_i k(x_i, x_j) + b\right].$$ An
 important remark is that the matrix $[K_{ij}] = [k(x_i, x_j)], i,j=1,\dots,l$ is
@@ -6275,8 +6275,8 @@ More generally, triangulation is much more complex. In fact, we must employ homo
 
 [[./pics/stereo/triangulation2.jpg]]
 
-For matrix $M^\prime$ one gets the system of equations $$\left\{\begin{array}{ccc} (p^{\prime\top}_1 - u^\prime p^{\prime\top}_3)m & = & 0 \\ p^{\prime\top}_2 - u^\prime p^{\prime\top}_3)m & = & 0\end{array}\right.$$
-Similarly, for $M^{\prime\prime}$ one gets another system of equations $$\left\{\begin{array}{ccc} (p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0 \\ p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0\end{array}\right.$$ Thus, a homogeneous linear system of $4$ equations and $4$ (parameter) unknowns can be built with both matrices, $$\begin{bmatrix} p^{\prime\top}_1 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\top}_2 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3 \\ p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3\end{bmatrix}m = 0,$$ with the only solution of the full\--rank matrix the /null\--space/ of the matrix of the coefficients. What should happen in order to avoid the null solution $m=0$ is that the matrix of coefficient must have rank $3$. Unfortunately, due to noise the matrix /will/ have full\--rank, therefore a least squares solution must be found using singular value decomposition as in the previous cases. The method can be generalized to $N > 2$ cameras, obtaining a homogeneous linear system of $2N$ equations, that should be solved in a similar manner as just described.
+For matrix $M^\prime$ one gets the system of equations $$\left\{\begin{array}{ccc} (p^{\prime\top}_1 - u^\prime p^{\prime\top}_3)m & = & 0 \\ (p^{\prime\top}_2 - u^\prime p^{\prime\top}_3)m & = & 0\end{array}\right.$$
+Similarly, for $M^{\prime\prime}$ one gets another system of equations $$\left\{\begin{array}{ccc} (p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0 \\ (p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0\end{array}\right.$$ Thus, a homogeneous linear system of $4$ equations and $4$ (parameter) unknowns can be built with both matrices, $$\begin{bmatrix} p^{\prime\top}_1 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\top}_2 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3 \\ p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3\end{bmatrix}m = 0,$$ with the only solution of the full\--rank matrix the /null\--space/ of the matrix of the coefficients. What should happen in order to avoid the null solution $m=0$ is that the matrix of coefficient must have rank $3$. Unfortunately, due to noise the matrix /will/ have full\--rank, therefore a least squares solution must be found using singular value decomposition as in the previous cases. The method can be generalized to $N > 2$ cameras, obtaining a homogeneous linear system of $2N$ equations, that should be solved in a similar manner as just described.
 
 The corresponding geometric residual will be
 
