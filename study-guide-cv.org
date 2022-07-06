@@ -4678,7 +4678,7 @@ Hence, deep learning means that a hierarchy of features is learned from
 the raw input.
 
 In Figure, the gray shading represents the blocks where some learning
-occurs. For instance, this could happend with a SVM.
+occurs. For instance, this could happen with an SVM.
 
 #+ATTR_LATEX: :scale 0.35
 [[./pics/cnn/representation-learning.jpg]]
@@ -4787,7 +4787,7 @@ which:
   same set of weights (which can be interpreted as coefficients of a
   /spatial filter/ - actually this is a crucial aspect when dealing with
   images) is applied to different sets of neurons (regions of the
-  input). Basically, the same weight is applied to all local connection
+  input). Basically, the same weight is applied to all local connections
   based on ordering and spatial location of neurons with respect to a
   connection. This is in contrast to the fully-connected network in
   which all weights are different according to the connection;
@@ -4871,9 +4871,9 @@ interspersed with activation functions. This is depicted in Figure.
 [[./pics/cnn/conv-layers-3.jpg]]
 
 **** Equivariance to translation
-The first one is the *equivariance to translation* $T$. Basically, given a translation $T$ of an image, the following property holds
+*Equivariance to translation* $T$ is the property for which, given a translation $T$ of an image,
 
-\[f(T(x)) = T(f(x)),\] for which activation maps of translated images are translated activation maps of the original image.
+\[f(T(x)) = T(f(x));\] in simple words, one can say that activation maps of translated images are translated activation maps of the original image.
 
 **** Pooling layers
     :PROPERTIES:
@@ -4908,10 +4908,11 @@ CNN rebirth was possible due to:
 - ReLU non-linearity that avoid /vanishing gradient problem/. Vanishing
   gradient problem happens when activation functions are flat in some
   regions. In those points, gradient is so small that the computations
-  needed to obtain the optimum are too huge; fast GPU implementations;
+  needed to obtain the optimum are too huge;
 - We now can exploit capabilities of GPU in order to perform
   convolutions, speeding up training process with their multi-core
-  computing; more data available.
+  computing;
+- more data available.
 
 **** Weights training during an optimization problem
     :PROPERTIES:
@@ -4943,7 +4944,7 @@ capability will be, the better it is.
 This way we face the problem as an optimization problem. In order to do
 so, we first identify the *cost function* or *objective function*
 
-\[J(\theta) = \frac{1}{N} = \sum_{i=1}^{N} L(f(x_i, \theta), y_i) + \lambda R(\theta),\]
+\[J(\theta) = \frac{1}{N} \sum_{i=1}^{N} L(f(x_i, \theta), y_i) + \lambda R(\theta),\]
 
 which is a weighted sum (the average) of the empirical loss \(L\), and
 \(R(\theta)\) is a regularization term, with \(\lambda\) being a value
@@ -4951,7 +4952,7 @@ that allows trade-off regularization and loss. ``Loss'' function \(L\)
 can be chosen among many possibilities. For instance, in *multiclass SVM
 loss*, we choose
 \[L(f(x_i, \theta), y_i) = \sum_{j \neq y_i} \max{(0, f_j(x_i, \theta) - f_{y_i}(x_i, \theta) + \Delta)},\]
-with the term \(f_j(x_i, \theta) - f_{y_i}(x_i, \theta) + \Delta)\)
+with the term \(f_j(x_i, \theta) - f_{y_i}(x_i, \theta) + \Delta\)
 being the difference between the \(j\mbox{-th}\) neuron and the real
 class neuron, summed up with a \(\Delta\) quantity, which is a margin.
 If that overall term is negative, there's no contribution to the cost
@@ -4963,7 +4964,7 @@ greater than \(\Delta\).
 
 Another possibility is the *cross-entropy loss*, for which
 
-\[L(f(x_i, \theta), y_i) = \sum_{j} -\log{\frac{e^{f_{y_i}(x_i, \theta)}}{\sum_j e^{f_j(x_i, \theta)}}}.\]
+\[L(f(x_i, \theta), y_i) = \sum_{j} -\log{\frac{e^{f_{y_i}(x_i, \theta)}}{\sum_k e^{f_k(x_i, \theta)}}}.\]
 
 \(R\) can be chosen in many ways. For example, in \(L_2\)
 regularization,
@@ -5134,7 +5135,7 @@ of randomness. For each iteration,
 \vspace*{0.4cm}
 
 An important parameter in SGD is the size of minibatch \(m\). Computing
-gradient with a high value of examples can lead to more accurate
+gradient with a high number of examples can lead to more accurate
 results, at the expense of more computation power required to perform
 the same operations in the same amount of time. By tuning that value we
 are able to express what we prefer between speed and precision. In
@@ -5297,7 +5298,7 @@ it to a limited radius.
 
 The idea of *Dropout* is to randomly drop units, along with this
 connections, from the neural network during training. With dropouts we
-are baiscally `mimicking' what happens in a Random Forest, in which we
+are basically `mimicking' what happens in a Random Forest, in which we
 employ many different trees, *each one with a different view*. Randomly
 removing a fraction of neurons means we have many different `brains',
 which basically means each one of them will yield a /different view of
@@ -5315,14 +5316,14 @@ average gradient over the minibatch: the same as before, except for the removed 
 A special technique goes even further: *during training*, for each element of the training set a
 different subnetwork with random sampled nodes is employed to compute
 the gradient. Dropout is a way of approximating an ensamble of several
-different subnetworks, efficiently, and has be proven to be effective in
+different subnetworks, efficiently, and has been proven to be effective in
 reducing overfitting.
 
 At *test time*, the effect of averaging the prediction of all those
 subnetworks is approximated by simply using the *complete network with
 smaller weights*, scaled by \(p\). Hence, in test time we will not
 remove neurons: we will only change weights according to \(p\). This key
-idea allow efficiency, since we can ``simulate'' the learning of an
+idea allows efficiency, since we can ``simulate'' the learning of an
 ensamble of subnetworks. In plain words, this idea of weighting weights
 with \(p\) is equivalent of adopting all the subnetwork. Of course, this
 is done in test time only: in training time, neurons were removed, to ``simulate'' the learning process of multiple (simpler) networks.
@@ -5349,9 +5350,9 @@ of change of distributions of parameters in internal nodes is called
 
 For instance we can consider a two layer network as the composition of
 two functions \(F_1(., \theta_1)\) and \(F_2(., \theta_2)\), so that
-\(y = F_2(F_1(u,\theta_1), \theta_2)\). To avoid divergenze of the
+\(y = F_2(F_1(u,\theta_1), \theta_2)\). To avoid divergence of the
 optimizer due to large changes of the input distributions to each
-leayer, a *small learning rate* is necessary so that the training
+layer, a *small learning rate* is necessary so that the training
 process is slow.
 
 #+ATTR_LATEX: :scale 0.4
@@ -5464,7 +5465,7 @@ winner of the 2015 competition ILSVRC (the top five error was
 
 [[./pics/cnn/resnet.jpg]]
 
-The idea of ResNet is that it adopts /residuals/ as we have seen them before.
+The idea of ResNet is that it adopts /residuals/ as we will see them later on.
 
 **** Issues when training Deep Networks
 Training deep network is very difficult. Difficulty comes from the fact
@@ -5594,9 +5595,9 @@ the difference that it is represented by four real numbers
 \((i, j, k, l)\).
 
 Points whose last coordinate is zero are said to be *improper points*.
-Those who are not, are proper points. The represent a point at infinite
+Those who are not, are proper points. An Improper point represents a point at infinite
 /along a direction which is specified by the first two, non-zero,
-coordinates/. Basically, with this trick we get points at infinite in
+coordinates/. Basically, with this trick we are able to get points at infinite in
 Euclidean space.
 
 ***** Homogeneous coordinates representation
@@ -5645,8 +5646,8 @@ applied both /translation/ \(t\) and /rotation/ \(R\). In particular,
 \[x' = \begin{bmatrix} R & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} R & t\\ 0^\top & 1 \end{bmatrix}, \]
 
 where rotation matrix \(R\) is an orthonormal matrix so that
-\[RR^\top = R^\top R = I\] and \(\mbox{det}(R) = 1\), which satisfy the
-requrement of the transformations being rigid body motions.
+\[RR^\top = R^\top R = I\] and \(\mbox{det}(R) = 1\), which satisfies the
+requirement of the transformations being rigid body motions.
 
 In the two-dimensional case \(R\) takes the form
 
@@ -5784,7 +5785,7 @@ Indeed,
 To get back to non-homogeneous coordinates, we take each row and
 multiply it by \(m\), then dividing it by the last element; that is,
 
-\[m' = Pm = \begin{bmatrix} p_1^\top \\ p_2^\top \\ p_3^\top \end{bmatrix},\]
+\[m' = Pm = \begin{bmatrix} p_1^\top \\ p_2^\top \\ p_3^\top \end{bmatrix} = \begin{bmatrix} p_1^\top m \\ p_2^\top m \\ p_3^\top m\end{bmatrix},\]
 and corresponding non-homogeneous coordinates are
 
 \[\left\{\begin{array}{l} \displaystyle u = \frac{p_1^\top m}{p_3^\top m} \\ \\ \displaystyle v = \frac{p_2^\top m}{p_3^\top m} \end{array}\right.,\]
@@ -5986,8 +5987,8 @@ and this means that the space of solutions has greater dimension than
 and \(d\) such that
 
 \[a x_ i + by_ i + cz_ i + d = 0, \mbox{ with } i=1,\dots,n,\] for which
-\(\mbox{rank}(A) \leq 8\). Coplanar points are basically to avoid at any
-cost. Basically, we want to avoid /the points that all lie on the union of a
+\(\mbox{rank}(A) \leq 8\). Coplanar points are to avoid at any
+cost. To be clear, we want to avoid /the points that all lie on the union of a
 plane and a single, straight line containing the camera center./
 
 The rule is to /take many more than six non-coplanar points/ (just be
@@ -6098,7 +6099,7 @@ Basically, the map from a 3D plane \(\Pi\) to its perspective image is
 easily seen to be a homography. Let the plane having \(z=0\) equation,
 then
 
-\[ m' = w\begin{bmatrix} u \\ v \\ 1\end{bmatrix} = P\begin{bmatrix} x \\ y \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix}p_1 & p_2 & p_3 & p_4 \end{bmatrix} \begin{bmatrix} x \\ y \\ 0 \\ 1\end{bmatrix} = \begin{bmatrix}p_1 & p_2 & p_4\end{bmatrix} \begin{bmatrix} x \\ y \\ 1\end{bmatrix},\]
+\[ m' = w\begin{bmatrix} u \\ v \\ 1\end{bmatrix} = P\begin{bmatrix} x \\ y \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix}p_1 & p_2 & p_3 & p_4 \end{bmatrix} \begin{bmatrix} x \\ y \\ 0 \\ 1\end{bmatrix} = \underbrace{\begin{bmatrix}p_1 & p_2 & p_4\end{bmatrix}}_{H} \begin{bmatrix} x \\ y \\ 1\end{bmatrix},\]
 
 with matrix \(H=\begin{bmatrix} p_1 & p_2 & p_4 \end{bmatrix}\) be
 non-singular unless for degenerate cases.
@@ -6183,7 +6184,7 @@ one gets two scalar constraints as the following system, where $B = (KK^\top)^{-
 
 An useful formula to get expression for \(B^\top\) is the following one
 
-\[B^\top = [(K K^\top)^{-1}]^\top = [(KK^\top)\top]^{-1} = [KK^\top]^{-1}\]
+\[B^\top = [(K K^\top)^{-1}]^\top = [(KK^\top)^\top]^{-1} = [KK^\top]^{-1}\]
 
 By takin $n$ planes and the corresponding estimated homographies $\Pi^{(k)}, H^{(k)}, k=1,\dots,n$, one gets $2n$ constraints on the same $B$.
 
