@@ -6186,7 +6186,7 @@ An useful formula to get expression for \(B^\top\) is the following one
 
 \[B^\top = [(K K^\top)^{-1}]^\top = [(KK^\top)^\top]^{-1} = [KK^\top]^{-1}\]
 
-By takin $n$ planes and the corresponding estimated homographies $\Pi^{(k)}, H^{(k)}, k=1,\dots,n$, one gets $2n$ constraints on the same $B$.
+By taking $n$ planes and the corresponding estimated homographies $\Pi^{(k)}, H^{(k)}, k=1,\dots,n$, one gets $2n$ constraints on the same $B$.
 
 How can we solve for $B$? First, notice that $B = B^\top$ ($B$ is symmetric) by construction, therefore /there are only $6$ unknowns/ due to symmetry. The vector of unknowns can be expressed such as $$b = \begin{bmatrix} B_{11} & B_{12} & B_{22} & B_{13} & B_{23} & B_{33}\end{bmatrix}^\top.$$
 
@@ -6305,7 +6305,10 @@ Let's derive the /equation of the epipolar line/.
 
 Suppose we employ two perspective projection matrices $P^\prime = \begin{bmatrix} Q^\prime & \vline & q^\prime\end{bmatrix}$ and $P^{\prime\prime} = \begin{bmatrix} Q^{\prime\prime} & \vline & q^{\prime\prime}\end{bmatrix}$; then $$\left\{\begin{array}{lll} m^\prime & \simeq & P^\prime m \\ m^{\prime\prime} & \simeq & P^{\prime\prime}m\end{array}\right.,$$ with $\simeq$ that means /equal up to a scale factor/.
 
-The epipolar line corresponding to $M^\prime$ -- in violet -- is the /projection/ through $P^{\prime\prime}$ of the optical ray through $M^\prime$ -- in orange. The equation of the orange line is indeed $$m = c^\prime + \lambda\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix},$$ where $c^\prime$ is the /vector of homogeneous coordinates of $C^\prime$, with respect to the world refedence frame/. By substitution, one can soon obtain the following chain of equations,
+[[./pics/stereo/epipolar-equation.jpg]]
+
+The epipolar line corresponding to $M^\prime$ -- in violet -- is the /projection/ through $P^{\prime\prime}$ of the optical ray through $M^\prime$ -- in orange. The equation of the orange line is indeed $$m = c^\prime + \lambda\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix},$$ where $c^\prime$ is the /vector of homogeneous coordinates of $C^\prime$, with respect to the world reference frame/. By substitution, one can soon obtain the following chain of equations,
+
 
 $$\begin{array}{lll}m^{\prime\prime} & \simeq & P^{\prime\prime}m = P^{\prime\prime} \left(c^\prime + \lambda\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix}\right) = \underbrace{P^{\prime\prime}c^\prime}_{e^{\prime\prime}} + \lambda\begin{bmatrix}Q^{\prime\prime} & \vline & q^{\prime\prime}\end{bmatrix}\begin{bmatrix}(Q^\prime)^{-1} m^\prime \\ 0 \end{bmatrix} \\ & = & e^{\prime\prime} + \lambda Q^{\prime\prime} (Q^\prime)^{-1} m^\prime,\end{array}$$
 
@@ -6348,7 +6351,7 @@ Basically, for \(N\) correspondences, one gets
 $$\underbrace{\begin{bmatrix} m^{\prime(1)\top}_a \otimes m^{\prime(1)\top}_b \\
 m^{\prime(2)\top}_a \otimes m^{\prime(2)\top}_b \\
 \vdots \\
-m^{\prime(N)\top}_a \otimes m^{\prime(N)\top}_b \\ \end{bmatrix}}_{A^{n \times 9}}\mbox{ vec}(F) = 0,$$ whose solution is the null\--space of matrix $A$. For $N = 8$, the null\--space has dimension $1$, therefore the result is determined up to a /multiplicative constant/. In all relevant practices, more than $8$ correspondences are available, and due to noise the matrix $A$ will possess full\--rank, that is rank $9$. Therefore, a least square solution should be determined by solving $$\mbox{arg}\min_{||f||=1} ||Af||^2,$$ where the constraint $||f||=1$ forces to discard the trivial solution $f=0$, which is not acceptable since $F\neq 0$. The solution is well\--known to be, again, the right singular vector of $A$, corresponding to the smallest singular value. Provided $$A = U\Sigma V^\top,$$ one has $f = v_9$; that is, the rightmost column of $V$.
+m^{\prime(N)\top}_a \otimes m^{\prime(N)\top}_b \\ \end{bmatrix}}_{A^{N \times 9}}\mbox{ vec}(F) = 0,$$ whose solution is the null\--space of matrix $A$. For $N = 8$, the null\--space has dimension $1$, therefore the result is determined up to a /multiplicative constant/. In all relevant practices, more than $8$ correspondences are available, and due to noise the matrix $A$ will possess full\--rank, that is rank $9$. Therefore, a least square solution should be determined by solving $$\mbox{arg}\min_{||f||=1} ||Af||^2,$$ where the constraint $||f||=1$ forces to discard the trivial solution $f=0$, which is not acceptable since $F\neq 0$. The solution is well\--known to be, again, the right singular vector of $A$, corresponding to the smallest singular value. Provided $$A = U\Sigma V^\top,$$ one has $f = v_9$; that is, the rightmost column of $V$.
 
 In order to force the rank of \(F\) equal to \(2\), a nice approach is
 to simply pick the singular value decomposition of \(F\), and set the
@@ -6372,11 +6375,11 @@ Since the equation corresponding to the pair $m^\prime_a = \begin{bmatrix}u_a & 
 \hrule
 \vspace*{0.4cm}
 
-*Input:* a set of at least eight corresponding points $\{(m^\prime_a, m^\prime_b\}$ in two images
+*Input:* a set of at least eight corresponding points $\{(m^\prime_a, m^\prime_b)\}$ in two images
 
 *Output:* the fundamental matrix $F$
 
-1. Center the image data at the origin, and rescale it to get a mean distance from the origin of $sqrt 2$;
+1. Center the image data at the origin, and rescale it to get a mean distance from the origin of $\sqrt 2$;
 2. employ the eight\--point algorithm in its standard form to obtain $F$ from the normalized points;
 3. enforce rank\--two constraint via singular value decomposition; force smallest value to $0$;
 4. transform the fundamental matrix back to its original units. If $T_a$ and $T_b$ are normalizing transformations for the two images, then $$F_{orig} = T^\top_b F T_a.$$
