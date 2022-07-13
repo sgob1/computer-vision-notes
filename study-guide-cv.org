@@ -662,8 +662,8 @@ Let's divide the entire transformation into two distinct transformations:
 1. the first involves the origin of $S_0$ to be translated from $t_0$ to $t_1$ by performing a /translation/. The new coordinates for the point are $p - t_1$;
 2. the second involves a rotation of the axis so that they are properly rotated. The rotation is described by the rotation matrix $R_1$.
 
-   #+ATTR_LATEX: :scale 0.3
-   [[./pics/alg/rot-transl.jpg]]
+#+ATTR_LATEX: :scale 0.3
+[[./pics/alg/rot-transl.jpg]]
 
 The coordinates in $S_1$ are thus expressed as $${}^1 p = R_1(p - t_1).$$ Indeed, solving for $p$ yields the inverse transformation $$p = R^\top_1 {}^1 p + t_1,$$ corresponding to a rotation of $R^\top_1$, followed by a translation of the quantity $-t_1$. It can be rewritten as $$p = R^\top_1 ({}^1 p - (-R_1 t_1)),$$ and by comparing the previous ones it follows that $${}^1 R_0 = {}^0 R^\top_1, \hspace*{1cm} \mbox{and} \hspace*{1cm} {}^1 t_0 = -{}^0 R_1 {}^0 t_1.$$
 
@@ -695,7 +695,7 @@ At the very basis of image formation understanding there's the *camera
 obscura* (dark room) principle.
 
 #+begin_quote
-  /*Camera obscura* is a darkened room with a small hole or lens at one side through which an image is projected onto a wall or table opposite the hole./
+/*Camera obscura* is a darkened room with a small hole or lens at one side through which an image is projected onto a wall or table opposite the hole./
 #+end_quote
 
 [[./pics/visio/camera-obscura.jpg]]
@@ -716,17 +716,17 @@ collect raylights from a figure, projecting them to a plane that can
 capture them.
 
 **** Geometrical description of the pinhole model
-    :PROPERTIES:
-    :CUSTOM_ID: geometrical-description-of-the-pinhole-model
-    :END:
+:PROPERTIES:
+:CUSTOM_ID: geometrical-description-of-the-pinhole-model
+:END:
 Pinhole camera principles are the following:
 
 - put a film in front of a scene;
 - rays departing from the same point of the scene reach the film in
-  different places; conversely, rays departing from different points of
-  the scene, reach the film in the same place; ideally, a single light
-  ray from the scene should reach the image plane in a given point; put
-  in between a barrier with a hole - *the pinhole*:
+different places; conversely, rays departing from different points of
+the scene, reach the film in the same place; ideally, a single light
+ray from the scene should reach the image plane in a given point; put
+in between a barrier with a hole - *the pinhole*:
 
 [[./pics/visio/pinhole1.jpg]]
 
@@ -750,9 +750,9 @@ into \(M'(X',Y',Z')\) in the image plane. The object appears to be
 /reversed/.
 
 **** Perspective
-    :PROPERTIES:
-    :CUSTOM_ID: perspective
-    :END:
+:PROPERTIES:
+:CUSTOM_ID: perspective
+:END:
 At right, we have a perspective projection of the same scheme. By
 similarity of triangles construction, we will have that
 
@@ -786,9 +786,9 @@ This rule helps us determine when perspective becomes /weak perspective/
 in the sense that it doesn't count much anymore.
 
 **** Aperture and blur
-    :PROPERTIES:
-    :CUSTOM_ID: aperture-and-blur
-    :END:
+:PROPERTIES:
+:CUSTOM_ID: aperture-and-blur
+:END:
 Pinhole cameras are - by definition - constructed with /very/ small
 holes. But, when we leave the mathematics realm and become aware of the
 real-world problems, we find out that the pinhole cannot be smaller than
@@ -815,9 +815,9 @@ solution without pinhole. Many example pictures of both blurring and
 diffraction can be found online.
 
 *** Lenses
-   :PROPERTIES:
-   :CUSTOM_ID: lenses
-   :END:
+:PROPERTIES:
+:CUSTOM_ID: lenses
+:END:
 Lenses are the solution to the brightness problem. Lenses allow
 collection of a larger portion of the ray light, directing it inside the
 pinhole. Therefore, a larger amount of light will be let in the dark
@@ -829,16 +829,16 @@ particular properties:
 
 1. rays reaching the centre of the lens will be left untouched;
 2. rays coming horizontally will be all directed towards a single point
-   \(F\), called /focal point/;
+\(F\), called /focal point/;
 3. rays departing from the same point will follow other directions, but
-   always reach the point $M^\prime$. That's how more light can actually be collected, as many rays will be collected by the lens and will hit the same point on the image plane.
+always reach the point $M^\prime$. That's how more light can actually be collected, as many rays will be collected by the lens and will hit the same point on the image plane.
 
 With these properties we can build our pinhole system with a thin lens.
 
 **** The geometry of a lens system
-    :PROPERTIES:
-    :CUSTOM_ID: the-geometry-of-a-lens-system
-    :END:
+:PROPERTIES:
+:CUSTOM_ID: the-geometry-of-a-lens-system
+:END:
 [[./pics/visio/thin-lens.jpg]]
 
 Image above describes the thin lens in detail. Aside from the previously
@@ -893,11 +893,10 @@ be determined by the left member of the equation.
 - when \(Z\) = \(Z'\), the only possible solution is \(Z = Z' = 2D\). In
   such situation the focal point will be in the middle between the
   distance between lens and objects. Since objects distance with respect
-  to the lens is the same, this is called /1:1 imaging/; when
-  \(2D < Z < \infty\), equation implies \(D < Z' < 2D\); when
-  \(D < Z < 2D\), equation yields the viceversa \(2D < Z' < \infty\);
-  when \(Z = D\) focus is impossible, for rays are spread horizontally
-  towards the image plane.
+  to the lens is the same, this is called /1:1 imaging/;
+- when \(2D < Z < \infty\), equation implies \(D < Z' < 2D\);
+- when \(D < Z < 2D\), equation yields the viceversa \(2D < Z' < \infty\);
+- when \(Z = D\) focus is impossible, for rays are spread horizontally towards the image plane.
 
 Basically, we can't focus objects closer than \(2D\), otherwise our
 sensor would have to go back - possibly very much - to keep focus.
@@ -1806,9 +1805,8 @@ the image).
 Common interpolation kernels are:
 
 - /bilinear/;
-- /bicubic/, the product of two bicubic
-  [[https://en.wikipedia.org/wiki/Spline_(mathematics)][splines]], that
-  is
+- /bicubic/;
+- the product of two bicubic [[https://en.wikipedia.org/wiki/Spline_(mathematics)][splines]], that is
 
 \[h(x) = \left\{ \begin{array}{ll} 1 - (a + 3)x^2 + (a + 2)|x|^3 & \mbox{ if } |x| < 1\\ a(|x| - 1)(|x| - 2)^2 & \mbox{ if } 1 \leq |x| < 2\\ 0 & \mbox{ otherwise } \end{array} \right. \]
 
@@ -3169,7 +3167,7 @@ which is the vertical distance between the line \(px + q\) and the point
 
 The problem is formalized as follows,
 
-\[\min_{r} \sum_{i=1}^N r_i^2 = \min_{p, q} \sum_{i=1}^N y_i - (px_i + q).\]
+\[\min_{r} \sum_{i=1}^N r_i^2 = \min_{p, q} \sum_{i=1}^N [y_i - (px_i + q)]^2.\]
 
 Formalizing our problem such as
 
@@ -3857,7 +3855,7 @@ if each of those three pixels will have high intensity -- that could be a
 
 [[./pics/svm/polynomial-monomials.jpg]]
 
-If $x \in \mathbb{R}^n$, the number of monomials of degree $d$ obtained by mulitplying the components of $x$ is the following one,
+If $x \in \mathbb{R}^n$, the number of monomials of degree $d$ obtained by multiplying the components of $x$ is the following one,
 
 $$ \binom{n + d - 1}{d}, $$
 
@@ -5643,7 +5641,7 @@ We can also represent rotations and translations (so called /rigid body
 motions/); the transformed augmented vector will be \[x' = Rx + t,\] where we
 applied both /translation/ \(t\) and /rotation/ \(R\). In particular,
 
-\[x' = \begin{bmatrix} R & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} R & t\\ 0^\top & 1 \end{bmatrix}, \]
+\[x' = \begin{bmatrix} R & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} R & t\\ 0^\top & 1 \end{bmatrix}\overline{x}, \]
 
 where rotation matrix \(R\) is an orthonormal matrix so that
 \[RR^\top = R^\top R = I\] and \(\mbox{det}(R) = 1\), which satisfies the
@@ -5656,7 +5654,7 @@ In the two-dimensional case \(R\) takes the form
 Similarity transformations can be described as well,
 
 \[x' = sRx + t,\] and
-\[x' = \begin{bmatrix} sR & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} sR & t\\ 0^\top & 1 \end{bmatrix}. \]
+\[x' = \begin{bmatrix} sR & \vline & t\end{bmatrix}\overline{x};\] \[x' = \begin{bmatrix} sR & t\\ 0^\top & 1 \end{bmatrix}\overline{x}. \]
 
 ***** Perspective projection matrix
       :PROPERTIES:
@@ -6033,7 +6031,7 @@ it works.
 
 Given estimated \(P\) of the form \(P = [Q|q]\), we would like to
 partition \(P\) in such a manner that we can express \(K\) as upper
-triangular and \(R\) as a rotation orthogonoal matrix. This is the case
+triangular and \(R\) as a rotation orthogonal matrix. This is the case
 of
 
 \[P = K[R|t] = [KR|Kt].\]
@@ -6202,7 +6200,7 @@ $$r_2 = \lambda K^{-1}h_2,$$
 $$t = \lambda K^{-1}h_3,$$ and $$r_3 = r_1 \times r_2.$$
 
 The factor \(\lambda\) will be such that \(r_1\) and \(r_2\) have norm \(1\). Therefore, $$\lambda = \frac{1}{||K^{-1}h_1||} = \frac{1}{||K^{-1}h_2||}.$$
-However, it's not guaranteed that those two vectors, forming a matrix $R$, are orthogonal ($R$ might not be orthogonal). We should then find the /closest/ orthogonal matrix (/in Frobenius norm/, which is the Euclidean norm of two matrices by picking all elements and summing them up), which is \[R' = UV^\top,\] having \[R = U\Sigma V^\top \] as the singular value decomposition of \(R\), and replacing \(\Sigma\) with the identity matrix \(I_3\). Typical approach is to force orthogonoality by singular value decomposition and just pick the \(R'\) matrix with the just mentioned process.
+However, it's not guaranteed that those two vectors, forming a matrix $R$, are orthogonal ($R$ might not be orthogonal). We should then find the /closest/ orthogonal matrix (/in Frobenius norm/, which is the Euclidean norm of two matrices by picking all elements and summing them up), which is \[R' = UV^\top,\] having \[R = U\Sigma V^\top \] as the singular value decomposition of \(R\), and replacing \(\Sigma\) with the identity matrix \(I_3\). Typical approach is to force orthogonality by singular value decomposition and just pick the \(R'\) matrix with the just mentioned process.
 
 **** How the number of calibration images affects the accuracy of the calibration?
 
@@ -6280,8 +6278,10 @@ More generally, triangulation is much more complex. In fact, we must employ homo
 
 [[./pics/stereo/triangulation2.jpg]]
 
-For matrix $M^\prime$ one gets the system of equations $$\left\{\begin{array}{ccc} (p^{\prime\top}_1 - u^\prime p^{\prime\top}_3)m & = & 0 \\ (p^{\prime\top}_2 - u^\prime p^{\prime\top}_3)m & = & 0\end{array}\right.$$
-Similarly, for $M^{\prime\prime}$ one gets another system of equations $$\left\{\begin{array}{ccc} (p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0 \\ (p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0\end{array}\right.$$ Thus, a homogeneous linear system of $4$ equations and $4$ (parameter) unknowns can be built with both matrices, $$\begin{bmatrix} p^{\prime\top}_1 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\top}_2 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3 \\ p^{\prime\prime\top}_2 - u^{\prime\prime} p^{\prime\prime\top}_3\end{bmatrix}m = 0,$$ with the only solution of the full\--rank matrix the /null\--space/ of the matrix of the coefficients. What should happen in order to avoid the null solution $m=0$ is that the matrix of coefficient must have rank $3$. Unfortunately, due to noise the matrix /will/ have full\--rank, therefore a least squares solution must be found using singular value decomposition as in the previous cases. The method can be generalized to $N > 2$ cameras, obtaining a homogeneous linear system of $2N$ equations, that should be solved in a similar manner as just described.
+For matrix $M^\prime$ one gets the system of equations $$\left\{\begin{array}{ccc} (p^{\prime\top}_1 - u^\prime p^{\prime\top}_3)m & = & 0 \\ (p^{\prime\top}_2 - v^\prime p^{\prime\top}_3)m & = & 0\end{array}\right.$$
+Similarly, for $M^{\prime\prime}$ one gets another system of equations $$\left\{\begin{array}{ccc} (p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0 \\ (p^{\prime\prime\top}_2 - v^{\prime\prime} p^{\prime\prime\top}_3)m & = & 0\end{array}\right.$$ Thus, a homogeneous linear system of $4$ equations and $4$ (parameter) unknowns can be built with both matrices,
+$$\begin{bmatrix} p^{\prime\top}_1 - u^{\prime} p^{\prime\top}_3 \\ p^{\prime\top}_2 - v^{\prime} p^{\prime\top}_3 \\ p^{\prime\prime\top}_1 - u^{\prime\prime} p^{\prime\prime\top}_3 \\ p^{\prime\prime\top}_2 - v^{\prime\prime} p^{\prime\prime\top}_3\end{bmatrix}m = 0,$$
+with the only solution of the full\--rank matrix the /null\--space/ of the matrix of the coefficients. What should happen in order to avoid the null solution $m=0$ is that the matrix of coefficient must have rank $3$. Unfortunately, due to noise the matrix /will/ have full\--rank, therefore a least squares solution must be found using singular value decomposition as in the previous cases. The method can be generalized to $N > 2$ cameras, obtaining a homogeneous linear system of $2N$ equations, that should be solved in a similar manner as just described.
 
 The corresponding geometric residual will be
 
