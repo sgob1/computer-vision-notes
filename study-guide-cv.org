@@ -1504,7 +1504,7 @@ matrix with rank \(r \neq 1\). For this reason, we would obtain
 having to perform \(2r\) convolutions, two for each generated pair of
 \(u_i\) and \(v_i^\top\).
 
-Why is this convenient? It makes compoutation cheaper, since instead of
+Why is this convenient? It makes computation cheaper, since instead of
 dealing with \(W^2\) operations, now it will be sufficient to precompute
 the gradient with \(u_r\) and \(v_r^\top\) only, and those vectors have
 size \(W\). Thus, only \(2W\) operations will be needed. However, keep
@@ -2510,7 +2510,7 @@ different approaches:
    space. Some features may not have matches, so a threshold is still
    adopted to reduce the number of wrong matches;
 3. *Nearest Neighbor Distance Ratio (NNDR)*: let \(D_B\) and \(D_C\),
-   respectively, the closest and the second closes neighbors of \(D_A\).
+   respectively, the closest and the second closest neighbors of \(D_A\).
    By heuristic \[NNDR = \frac{d(D_A, D_B)}{d(D_A, D_C)}\] one obtains
    an index that measures the ratio between the two closest neighbors of
    a given feature, in order to correctly match. A threshold is then
@@ -2700,7 +2700,7 @@ The algorithm is as follows,
 
 1. Form an estimate of the gradient of the image
 2. Obtain the magnitude of the gradient off the estimation
-3. Identify image points where the value of the gradient magnitude is maximal in the direction perpendicular to the edge, and also large: these are edge points. In order to find points, employ non-maximum soppression and thresholding to remove noise
+3. Identify image points where the value of the gradient magnitude is maximal in the direction perpendicular to the edge, and also large: these are edge points. In order to find points, employ non-maximum suppression and thresholding to remove noise
 
 \vspace*{0.6cm}\hrule
 \hrule
@@ -4591,7 +4591,7 @@ histogram intersections of the corresponding subregions.
 Steps are the following ones,
 
 1. extract affine regions descriptors (on a regular grid);
-2. quantize the descriptions into visual words;
+2. quantize the descriptors into visual words;
 3. form a spatial pyramid of bins containing word counts (histograms) as
    in figure;
 4. combine weighted histograms intersections in a hierarchical fashion.
@@ -4962,7 +4962,7 @@ greater than \(\Delta\).
 
 Another possibility is the *cross-entropy loss*, for which
 
-\[L(f(x_i, \theta), y_i) = \sum_{j} -\log{\frac{e^{f_{y_i}(x_i, \theta)}}{\sum_k e^{f_k(x_i, \theta)}}}.\]
+\[L(f(x_i, \theta), y_i) = -\log{\frac{e^{f_{y_i}(x_i, \theta)}}{\sum_k e^{f_k(x_i, \theta)}}}.\]
 
 \(R\) can be chosen in many ways. For example, in \(L_2\)
 regularization,
@@ -6328,7 +6328,7 @@ The fundamental matrix defines a /relationship between homogeneous pixels coordi
 
 Since the fundamental matrix depends on both $Q^{\prime}$ and $Q^{\prime\prime}$, it encodes information on /both intrinsic and extrinsic parameters/, and thus is of a crucial importance when it comes of camera calibration. Moreover, $F$ can be computed from $P^{\prime}$ and $P^{\prime\prime}$ and it can be estimated from point matches in pixel coordinates only.
 
-**** The eight\--point algorithm.
+**** The eight\--point algorithm
 Fundamental matrix can be estimated with the *eight-point algorithm*.
 The minimum number of correspondences needed in order to apply this
 method is \(8\). Given \(N\) pairs of pixels
